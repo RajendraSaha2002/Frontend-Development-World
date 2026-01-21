@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Pomodoro Timer</title>
+  <link rel="stylesheet" href="Pomodoro_Timer.css" />
+</head>
+<body>
+  <main class="container" role="main">
+    <h1>Pomodoro Timer</h1>
+
+    <section class="settings" aria-label="Timer settings">
+      <label>
+        Work (minutes)
+        <input id="work-min" type="number" min="1" max="180" step="1" inputmode="numeric" />
+      </label>
+
+      <label>
+        Break (minutes)
+        <input id="break-min" type="number" min="1" max="60" step="1" inputmode="numeric" />
+      </label>
+
+      <label class="toggle">
+        <input id="auto-start" type="checkbox" />
+        Auto-start next session
+      </label>
+    </section>
+
+    <section class="timer" aria-live="polite">
+      <div class="ring" id="ring" aria-hidden="true">
+        <div class="time" id="time">25:00</div>
+        <div class="mode" id="mode">Work</div>
+      </div>
+    </section>
+
+    <section class="controls" role="group" aria-label="Timer controls">
+      <button id="start" class="primary">Start</button>
+      <button id="pause" disabled>Pause</button>
+      <button id="reset">Reset</button>
+      <button id="skip">Skip</button>
+    </section>
+
+    <section class="meta" aria-label="Session info">
+      <div>Sessions completed: <span id="sessions">0</span></div>
+    </section>
+
+    <p class="hint">Tip: press Space to Start/Pause. Notification and sound available.</p>
+  </main>
+
+  <script src="Pomodoro_Timer.js"></script>
+</body>
+</html>

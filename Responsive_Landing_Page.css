@@ -1,0 +1,21 @@
+:root{--primary:#0f172a;--accent:#0ea5e9;--muted:#64748b}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,system-ui,Arial;background:#f8fafc;color:var(--primary)}
+.site-header{display:flex;align-items:center;justify-content:space-between;padding:16px 24px;background:#fff;box-shadow:0 2px 8px rgba(2,6,23,0.06)}
+.brand{font-weight:700}
+nav{display:flex;gap:12px}
+nav a{text-decoration:none;color:var(--muted)}
+.hamburger{display:none;background:none;border:none;font-size:20px}
+.hero{padding:60px 24px;text-align:center;background:linear-gradient(90deg, #e0f2fe 0%, #fff 100%)}
+.hero h1{margin:0 0 8px;font-size:28px}
+.cta{display:inline-block;margin-top:12px;padding:10px 14px;background:var(--accent);color:#fff;border-radius:8px;text-decoration:none}
+.features{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;padding:24px;max-width:980px;margin:0 auto}
+.card{background:#fff;padding:16px;border-radius:8px;box-shadow:0 6px 18px rgba(2,6,23,0.06);text-align:center}
+.site-footer{text-align:center;padding:20px;color:var(--muted)}
+
+/* Responsive */
+@media (max-width:760px){
+  nav{display:none;flex-direction:column;background:#fff;position:absolute;top:64px;right:16px;padding:12px;border-radius:8px;box-shadow:0 8px 30px rgba(2,6,23,0.08)}
+  .hamburger{display:block}
+  .features{grid-template-columns:1fr}
+}
