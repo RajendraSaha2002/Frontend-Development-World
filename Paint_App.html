@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Paint App</title>
+    <link rel="stylesheet" href="Paint_App.css" />
+</head>
+<body>
+
+<!-- ── Top Toolbar ── -->
+<header class="toolbar">
+
+    <div class="tool-group">
+        <span class="group-label">Tools</span>
+        <button class="tool-btn active" id="btn-brush"    title="Brush (B)">🖌️</button>
+        <button class="tool-btn"        id="btn-eraser"   title="Eraser (E)">🧹</button>
+        <button class="tool-btn"        id="btn-fill"     title="Fill (F)">🪣</button>
+        <button class="tool-btn"        id="btn-line"     title="Line (L)">📏</button>
+        <button class="tool-btn"        id="btn-rect"     title="Rectangle (R)">⬜</button>
+        <button class="tool-btn"        id="btn-circle"   title="Circle (C)">⭕</button>
+        <button class="tool-btn"        id="btn-eyedrop"  title="Eyedropper (I)">💉</button>
+    </div>
+
+    <div class="tool-group">
+        <span class="group-label">Brush Size</span>
+        <input type="range" id="brushSize" min="1" max="80" value="6" />
+        <span id="sizeLabel">6px</span>
+    </div>
+
+    <div class="tool-group">
+        <span class="group-label">Opacity</span>
+        <input type="range" id="opacity" min="1" max="100" value="100" />
+        <span id="opacityLabel">100%</span>
+    </div>
+
+    <div class="tool-group">
+        <span class="group-label">Color</span>
+        <input type="color" id="colorPicker" value="#e63946" />
+    </div>
+
+    <div class="tool-group palette-group">
+        <span class="group-label">Palette</span>
+        <div class="palette" id="palette"></div>
+    </div>
+
+    <div class="tool-group">
+        <span class="group-label">Actions</span>
+        <button class="action-btn" id="btn-undo"      title="Undo (Ctrl+Z)">↩️ Undo</button>
+        <button class="action-btn" id="btn-redo"      title="Redo (Ctrl+Y)">↪️ Redo</button>
+        <button class="action-btn" id="btn-clear"     title="Clear Canvas">🗑️ Clear</button>
+        <button class="action-btn save-btn" id="btn-save" title="Save Image">💾 Save</button>
+    </div>
+
+</header>
+
+<!-- ── Canvas Area ── -->
+<main class="canvas-wrapper">
+    <canvas id="canvas"></canvas>
+    <div class="cursor-preview" id="cursorPreview"></div>
+</main>
+
+<!-- ── Status Bar ── -->
+<footer class="statusbar">
+    <span id="coordsLabel">X: 0  Y: 0</span>
+    <span id="toolLabel">Tool: Brush</span>
+    <span id="canvasSizeLabel"></span>
+</footer>
+
+<script src="Paint_App_Tools.js"></script>
+<script src="Paint_App.js"></script>
+</body>
+</html>

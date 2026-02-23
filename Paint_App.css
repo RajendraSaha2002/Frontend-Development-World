@@ -1,0 +1,192 @@
+/* ── Reset & Base ── */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    background: #1e1e2e;
+    font-family: 'Segoe UI', sans-serif;
+    color: #cdd6f4;
+    overflow: hidden;
+    user-select: none;
+}
+
+/* ── Toolbar ── */
+.toolbar {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 8px 14px;
+    background: #181825;
+    border-bottom: 2px solid #313244;
+    z-index: 10;
+}
+
+.tool-group {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    background: #1e1e2e;
+    border-radius: 10px;
+    border: 1px solid #313244;
+}
+
+.group-label {
+    font-size: 10px;
+    color: #6c7086;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-right: 2px;
+}
+
+/* ── Tool Buttons ── */
+.tool-btn {
+    background: #313244;
+    border: 2px solid transparent;
+    border-radius: 8px;
+    width: 38px;
+    height: 38px;
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s;
+}
+
+.tool-btn:hover { background: #45475a; }
+
+.tool-btn.active {
+    border-color: #89b4fa;
+    background: #2a3a5e;
+}
+
+/* ── Action Buttons ── */
+.action-btn {
+    background: #313244;
+    border: none;
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-size: 13px;
+    color: #cdd6f4;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+
+.action-btn:hover { background: #45475a; }
+
+.save-btn {
+    background: #40a02b !important;
+    color: white;
+    font-weight: 600;
+}
+.save-btn:hover { background: #50c43b !important; }
+
+/* ── Range Inputs ── */
+input[type="range"] {
+    -webkit-appearance: none;
+    width: 90px;
+    height: 5px;
+    border-radius: 5px;
+    background: #45475a;
+    outline: none;
+    cursor: pointer;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #89b4fa;
+    cursor: pointer;
+}
+
+input[type="range"] + span {
+    font-size: 12px;
+    color: #89b4fa;
+    min-width: 34px;
+}
+
+/* ── Color Picker ── */
+input[type="color"] {
+    width: 38px;
+    height: 38px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    padding: 2px;
+    background: #313244;
+}
+
+/* ── Palette ── */
+.palette {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    max-width: 180px;
+}
+
+.palette-color {
+    width: 22px;
+    height: 22px;
+    border-radius: 5px;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: transform 0.1s, border-color 0.1s;
+}
+
+.palette-color:hover { transform: scale(1.2); }
+.palette-color.selected { border-color: #ffffff; transform: scale(1.15); }
+
+/* ── Canvas Wrapper ── */
+.canvas-wrapper {
+    flex: 1;
+    overflow: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background:
+            linear-gradient(45deg, #2a2a3e 25%, transparent 25%),
+            linear-gradient(-45deg, #2a2a3e 25%, transparent 25%),
+            linear-gradient(45deg, transparent 75%, #2a2a3e 75%),
+            linear-gradient(-45deg, transparent 75%, #2a2a3e 75%);
+    background-size: 20px 20px;
+    background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+    position: relative;
+    cursor: none;
+}
+
+#canvas {
+    background: #ffffff;
+    box-shadow: 0 0 40px rgba(0,0,0,0.6);
+    display: block;
+    cursor: none;
+}
+
+/* ── Custom Cursor Preview ── */
+.cursor-preview {
+    position: fixed;
+    border-radius: 50%;
+    border: 2px solid #000;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    z-index: 999;
+    mix-blend-mode: difference;
+    transition: width 0.1s, height 0.1s;
+}
+
+/* ── Status Bar ── */
+.statusbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 4px 16px;
+    background: #181825;
+    border-top: 1px solid #313244;
+    font-size: 12px;
+    color: #6c7086;
+}
