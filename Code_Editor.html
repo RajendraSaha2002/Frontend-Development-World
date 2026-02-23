@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mini VS Code</title>
+  <link rel="stylesheet" href="Code_Editor.css" />
+</head>
+<body>
+
+<!-- ── Title Bar ── -->
+<div class="titlebar">
+  <div class="titlebar-left">
+    <span class="logo">&#9635;</span>
+    <span class="app-name">Mini VS Code</span>
+  </div>
+  <div class="titlebar-center" id="activeFileName">untitled.html</div>
+  <div class="titlebar-right">
+    <button class="tb-btn" id="btn-newfile"  title="New File">＋ New</button>
+    <button class="tb-btn" id="btn-download" title="Download File">⬇ Download</button>
+    <button class="tb-btn run-btn" id="btn-run" title="Run Preview">▶ Run</button>
+  </div>
+</div>
+
+<!-- ── Tab Bar ── -->
+<div class="tabbar" id="tabbar"></div>
+
+<!-- ── Main Layout ── -->
+<div class="main-layout">
+
+  <!-- ── Sidebar ── -->
+  <aside class="sidebar">
+    <div class="sidebar-title">EXPLORER</div>
+    <ul class="file-list" id="fileList"></ul>
+  </aside>
+
+  <!-- ── Editor Pane ── -->
+  <div class="editor-pane">
+
+    <!-- Line numbers + code area -->
+    <div class="editor-container" id="editorContainer">
+      <div class="line-numbers" id="lineNumbers"></div>
+      <div class="code-area-wrapper">
+          <textarea
+                  id="codeInput"
+                  class="code-input"
+                  spellcheck="false"
+                  autocorrect="off"
+                  autocapitalize="off"
+          ></textarea>
+        <pre class="code-highlight" id="codeHighlight"
+             aria-hidden="true"><code id="highlightCode"></code></pre>
+      </div>
+    </div>
+
+    <!-- Status Bar -->
+    <div class="statusbar">
+      <span id="statusLang">HTML</span>
+      <span id="statusCursor">Ln 1, Col 1</span>
+      <span id="statusLines">0 lines</span>
+      <span id="statusEncoding">UTF-8</span>
+      <span id="statusIndent">Spaces: 2</span>
+    </div>
+  </div>
+
+  <!-- ── Preview Pane ── -->
+  <div class="preview-pane" id="previewPane">
+    <div class="preview-toolbar">
+      <span class="preview-title">🌐 Live Preview</span>
+      <button class="tb-btn" id="btn-refresh" title="Refresh Preview">⟳ Refresh</button>
+      <button class="tb-btn" id="btn-togglePreview" title="Toggle Preview">✕ Hide</button>
+    </div>
+    <iframe id="preview" sandbox="allow-scripts"></iframe>
+  </div>
+
+</div>
+
+<!-- ── New File Modal ── -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <h3>New File</h3>
+    <input type="text" id="newFileName" placeholder="filename.html" />
+    <div class="modal-btns">
+      <button class="tb-btn run-btn" id="btn-createFile">Create</button>
+      <button class="tb-btn" id="btn-cancelModal">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── Bracket Match Tooltip ── -->
+<div class="bracket-tooltip" id="bracketTooltip"></div>
+
+<script src="Code_Highlight.js"></script>
+<script src="Code_Tabs.js"></script>
+<script src="Code_editor.js"></script>
+</body>
+</html>
