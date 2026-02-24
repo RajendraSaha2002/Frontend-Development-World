@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>CTMS – Cyber Threat Management System</title>
+    <link rel="stylesheet" href="CTMS_Style.css"/>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════
+     SIDEBAR
+══════════════════════════════════════ -->
+<aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+        <div class="brand-icon">🛡️</div>
+        <div class="brand-text">
+            <span class="brand-title">CTMS</span>
+            <span class="brand-sub">C-DAC · Digital India</span>
+        </div>
+    </div>
+
+    <nav class="sidebar-nav">
+        <div class="nav-section-label">MAIN</div>
+        <a class="nav-item active" data-page="dashboard">
+            <span class="nav-icon">📊</span><span class="nav-label">Dashboard</span>
+        </a>
+        <a class="nav-item" data-page="threatmap">
+            <span class="nav-icon">🗺️</span><span class="nav-label">Threat Map</span>
+        </a>
+        <a class="nav-item" data-page="honeypot">
+            <span class="nav-icon">🍯</span><span class="nav-label">Active Honeypot</span>
+        </a>
+        <a class="nav-item" data-page="stats">
+            <span class="nav-icon">📈</span><span class="nav-label">Data Statistics</span>
+        </a>
+
+        <div class="nav-section-label">ANALYSIS</div>
+        <a class="nav-item" data-page="cnc">
+            <span class="nav-icon">🔍</span><span class="nav-label">C&amp;C Detection</span>
+            <span class="nav-badge red">LIVE</span>
+        </a>
+        <a class="nav-item" data-page="nodes">
+            <span class="nav-icon">🖧</span><span class="nav-label">Node Management</span>
+        </a>
+        <a class="nav-item" data-page="alerts">
+            <span class="nav-icon">⚠️</span><span class="nav-label">High Severity Alerts</span>
+            <span class="nav-badge orange" id="alertBadge">0</span>
+        </a>
+
+        <div class="nav-section-label">SYSTEM</div>
+        <a class="nav-item" data-page="reports">
+            <span class="nav-icon">📥</span><span class="nav-label">Report Download</span>
+        </a>
+        <a class="nav-item" data-page="search">
+            <span class="nav-icon">🔎</span><span class="nav-label">Search</span>
+        </a>
+        <a class="nav-item" data-page="users">
+            <span class="nav-icon">👥</span><span class="nav-label">User Management</span>
+        </a>
+        <a class="nav-item" data-page="logout" id="logoutBtn">
+            <span class="nav-icon">🚪</span><span class="nav-label">Logout</span>
+        </a>
+    </nav>
+</aside>
+
+<!-- ══════════════════════════════════════
+     MAIN AREA
+══════════════════════════════════════ -->
+<div class="main-wrapper">
+
+    <!-- Top Bar -->
+    <header class="topbar">
+        <div class="topbar-left">
+            <button class="sidebar-toggle" id="sidebarToggle">☰</button>
+            <div class="topbar-breadcrumb">
+                <span class="breadcrumb-root">CTMS</span>
+                <span class="breadcrumb-sep">›</span>
+                <span class="breadcrumb-current" id="breadcrumbCurrent">Dashboard</span>
+            </div>
+        </div>
+        <div class="topbar-center">
+            <div class="threat-level-bar">
+                <span class="tl-label">Threat Level:</span>
+                <div class="tl-indicator" id="threatLevelIndicator">
+                    <span class="tl-dot"></span>
+                    <span class="tl-text" id="threatLevelText">HIGH</span>
+                </div>
+            </div>
+        </div>
+        <div class="topbar-right">
+            <div class="topbar-clock" id="topbarClock">--:--:--</div>
+            <div class="topbar-date"  id="topbarDate">----</div>
+            <div class="topbar-notif" id="topbarNotif" title="Alerts">
+                🔔 <span class="notif-count" id="notifCount">0</span>
+            </div>
+            <div class="topbar-user">
+                <div class="user-avatar">A</div>
+                <span class="user-name">Admin</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- ── PAGE: DASHBOARD ── -->
+    <main class="page-content" id="pageDashboard">
+
+        <!-- Stat Cards Row -->
+        <section class="stat-cards" id="statCards"></section>
+
+        <!-- Row 1: Threat Map + Sector Chart -->
+        <div class="grid-row">
+            <div class="card wide-card">
+                <div class="card-header">
+                    <span class="card-title">🗺️ Threat Map (Real-time)</span>
+                    <div class="card-actions">
+                        <button class="card-btn" id="mapPauseBtn">⏸ Pause</button>
+                    </div>
+                </div>
+                <canvas id="threatMapCanvas" width="780" height="340"></canvas>
+                <div class="map-legend">
+                    <span class="legend-dot red"></span>Critical
+                    <span class="legend-dot orange"></span>High
+                    <span class="legend-dot yellow"></span>Medium
+                    <span class="legend-dot green"></span>Low
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title">🏢 Sector Classification</span>
+                </div>
+                <canvas id="sectorDonutCanvas" width="300" height="260"></canvas>
+                <div class="donut-legend" id="donutLegend"></div>
+            </div>
+        </div>
+
+        <!-- Row 2: Malware Bar + Attack Feed + Honeypot Table -->
+        <div class="grid-row">
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title">🦠 Top Malware Families</span>
+                </div>
+                <canvas id="malwareBarCanvas" width="360" height="220"></canvas>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title">⚡ Live Attack Feed</span>
+                    <span class="live-dot"></span>
+                </div>
+                <div class="attack-feed" id="attackFeed"></div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title">📡 Attack Trend (24h)</span>
+                </div>
+                <canvas id="trendLineCanvas" width="340" height="220"></canvas>
+            </div>
+        </div>
+
+        <!-- Row 3: Alerts Table + Honeypot Status -->
+        <div class="grid-row">
+            <div class="card wide-card">
+                <div class="card-header">
+                    <span class="card-title">⚠️ High Severity Alerts</span>
+                    <button class="card-btn" id="exportAlertsBtn">⬇ Export</button>
+                </div>
+                <div class="table-wrapper">
+                    <table class="data-table" id="alertsTable">
+                        <thead>
+                        <tr>
+                            <th>#</th><th>Time</th><th>Source IP</th>
+                            <th>Target</th><th>Attack Type</th>
+                            <th>Severity</th><th>Status</th><th>Action</th>
+                        </tr>
+                        </thead>
+                        <tbody id="alertsTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Row 4: Honeypot Nodes + CnC Table -->
+        <div class="grid-row">
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title">🍯 Honeypot Sensors</span>
+                </div>
+                <div class="table-wrapper">
+                    <table class="data-table" id="honeypotTable">
+                        <thead>
+                        <tr>
+                            <th>Sensor</th><th>Type</th><th>Location</th>
+                            <th>Attacks</th><th>Status</th>
+                        </tr>
+                        </thead>
+                        <tbody id="honeypotTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title">🕵️ C&amp;C Detection</span>
+                    <span class="live-dot"></span>
+                </div>
+                <div class="table-wrapper">
+                    <table class="data-table" id="cncTable">
+                        <thead>
+                        <tr>
+                            <th>C&amp;C IP</th><th>Country</th>
+                            <th>Bots</th><th>Protocol</th><th>Risk</th>
+                        </tr>
+                        </thead>
+                        <tbody id="cncTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </main><!-- /pageDashboard -->
+
+    <!-- ── PAGE: THREAT MAP ── -->
+    <main class="page-content hidden" id="pageThreatmap">
+        <div class="card full-card">
+            <div class="card-header">
+                <span class="card-title">🗺️ Global Threat Map – Full View</span>
+            </div>
+            <canvas id="threatMapFullCanvas" width="1100" height="520"></canvas>
+            <div class="map-stats" id="mapStats"></div>
+        </div>
+    </main>
+
+    <!-- ── PAGE: HONEYPOT ── -->
+    <main class="page-content hidden" id="pageHoneypot">
+        <div class="page-heading">🍯 Active Honeypot Sensors</div>
+        <div class="card full-card">
+            <div class="honeypot-grid" id="honeypotGrid"></div>
+        </div>
+    </main>
+
+    <!-- ── PAGE: STATS ── -->
+    <main class="page-content hidden" id="pageStats">
+        <div class="page-heading">📈 Data Statistics</div>
+        <div class="grid-row">
+            <div class="card">
+                <div class="card-header"><span class="card-title">Malware Type Distribution</span></div>
+                <canvas id="statsDonutCanvas" width="340" height="260"></canvas>
+            </div>
+            <div class="card wide-card">
+                <div class="card-header"><span class="card-title">Monthly Attack Volume</span></div>
+                <canvas id="monthlyBarCanvas" width="700" height="260"></canvas>
+            </div>
+        </div>
+        <div class="grid-row">
+            <div class="card full-card">
+                <div class="card-header"><span class="card-title">Attack Surface Enumeration & Risk Score</span></div>
+                <canvas id="riskLineCanvas" width="1060" height="220"></canvas>
+            </div>
+        </div>
+    </main>
+
+    <!-- ── PAGE: C&C ── -->
+    <main class="page-content hidden" id="pageCnc">
+        <div class="page-heading">🔍 C&amp;C Server Detection</div>
+        <div class="card full-card">
+            <div class="table-wrapper">
+                <table class="data-table">
+                    <thead>
+                    <tr><th>C&amp;C IP</th><th>Domain</th><th>Country</th>
+                        <th>Bots Connected</th><th>Protocol</th><th>First Seen</th>
+                        <th>Last Active</th><th>Risk Score</th><th>Action</th></tr>
+                    </thead>
+                    <tbody id="cncFullTableBody"></tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <!-- ── PAGE: NODES ── -->
+    <main class="page-content hidden" id="pageNodes">
+        <div class="page-heading">🖧 Node Management</div>
+        <div class="node-grid" id="nodeGrid"></div>
+    </main>
+
+    <!-- ── PAGE: ALERTS ── -->
+    <main class="page-content hidden" id="pageAlerts">
+        <div class="page-heading">⚠️ High Severity Alerts</div>
+        <div class="alert-filters">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="critical">Critical</button>
+            <button class="filter-btn" data-filter="high">High</button>
+            <button class="filter-btn" data-filter="medium">Medium</button>
+        </div>
+        <div class="card full-card">
+            <div class="table-wrapper">
+                <table class="data-table">
+                    <thead>
+                    <tr><th>#</th><th>Time</th><th>Source IP</th>
+                        <th>Target</th><th>Attack Type</th>
+                        <th>Malware</th><th>Severity</th><th>Status</th></tr>
+                    </thead>
+                    <tbody id="alertsFullBody"></tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <!-- ── PAGE: REPORTS ── -->
+    <main class="page-content hidden" id="pageReports">
+        <div class="page-heading">📥 Report Download</div>
+        <div class="report-grid" id="reportGrid"></div>
+    </main>
+
+    <!-- ── PAGE: SEARCH ── -->
+    <main class="page-content hidden" id="pageSearch">
+        <div class="page-heading">🔎 Threat Intelligence Search</div>
+        <div class="search-box-wrap">
+            <input type="text" id="searchInput" class="search-big" placeholder="Search IP, Domain, Hash, CVE…"/>
+            <button class="run-btn" id="searchBtn">Search</button>
+        </div>
+        <div id="searchResults"></div>
+    </main>
+
+    <!-- ── PAGE: USERS ── -->
+    <main class="page-content hidden" id="pageUsers">
+        <div class="page-heading">👥 User Management</div>
+        <div class="card full-card">
+            <div class="table-wrapper">
+                <table class="data-table">
+                    <thead>
+                    <tr><th>#</th><th>Username</th><th>Role</th>
+                        <th>Last Login</th><th>Status</th><th>Action</th></tr>
+                    </thead>
+                    <tbody id="usersTableBody"></tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+</div><!-- /main-wrapper -->
+
+<!-- ── ALERT TOAST ── -->
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- ── MODAL ── -->
+<div class="modal-overlay hidden" id="modalOverlay">
+    <div class="modal-box" id="modalBox">
+        <div class="modal-header" id="modalHeader"></div>
+        <div class="modal-body"   id="modalBody"></div>
+        <div class="modal-footer">
+            <button class="run-btn" id="modalClose">Close</button>
+        </div>
+    </div>
+</div>
+
+<script src="CTMS_Data.js"></script>
+<script src="CTMS_Charts.js"></script>
+<script src="CTMS_Dashboard.js"></script>
+</body>
+</html>
