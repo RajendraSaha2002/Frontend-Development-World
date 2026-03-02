@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>DEMS – Digital Evidence Management System</title>
+    <link rel="stylesheet" href="DEMS_style.css"/>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════
+     SIDEBAR
+══════════════════════════════════════ -->
+<aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+        <div class="brand-logo">
+            <span class="brand-dems">DEMS</span>
+        </div>
+        <div class="brand-text">
+            <span class="brand-title">Digital Evidence</span>
+            <span class="brand-sub">Management System · C-DAC</span>
+        </div>
+    </div>
+
+    <nav class="sidebar-nav">
+        <div class="nav-section-label">MAIN</div>
+        <a class="nav-item active" data-page="dashboard">
+            <span class="nav-icon">📊</span><span class="nav-label">Dashboard</span>
+        </a>
+
+        <div class="nav-section-label">CASE MANAGEMENT</div>
+        <a class="nav-item" data-page="cases">
+            <span class="nav-icon">📁</span><span class="nav-label">Cases</span>
+            <span class="nav-badge blue" id="casesBadge">0</span>
+        </a>
+        <a class="nav-item" data-page="newcase">
+            <span class="nav-icon">➕</span><span class="nav-label">New Case</span>
+        </a>
+        <a class="nav-item" data-page="lifecycle">
+            <span class="nav-icon">🔄</span><span class="nav-label">Life Cycle</span>
+        </a>
+
+        <div class="nav-section-label">EVIDENCE</div>
+        <a class="nav-item" data-page="evidence">
+            <span class="nav-icon">🗂️</span><span class="nav-label">Evidence List</span>
+        </a>
+        <a class="nav-item" data-page="upload">
+            <span class="nav-icon">⬆️</span><span class="nav-label">Upload Evidence</span>
+        </a>
+        <a class="nav-item" data-page="custody">
+            <span class="nav-icon">🔗</span><span class="nav-label">Chain of Custody</span>
+        </a>
+
+        <div class="nav-section-label">ANALYSIS</div>
+        <a class="nav-item" data-page="reports">
+            <span class="nav-icon">📋</span><span class="nav-label">Analysis Reports</span>
+        </a>
+        <a class="nav-item" data-page="search">
+            <span class="nav-icon">🔍</span><span class="nav-label">Search & Filter</span>
+        </a>
+        <a class="nav-item" data-page="sla">
+            <span class="nav-icon">⏱️</span><span class="nav-label">SLA Management</span>
+        </a>
+
+        <div class="nav-section-label">SYSTEM</div>
+        <a class="nav-item" data-page="notifications">
+            <span class="nav-icon">🔔</span><span class="nav-label">Notifications</span>
+            <span class="nav-badge orange" id="notifBadge">0</span>
+        </a>
+        <a class="nav-item" data-page="users">
+            <span class="nav-icon">👥</span><span class="nav-label">User Management</span>
+        </a>
+        <a class="nav-item" data-page="audit">
+            <span class="nav-icon">📝</span><span class="nav-label">Audit Log</span>
+        </a>
+        <a class="nav-item" data-page="logout">
+            <span class="nav-icon">🚪</span><span class="nav-label">Logout</span>
+        </a>
+    </nav>
+</aside>
+
+<!-- ══════════════════════════════════════
+     MAIN WRAPPER
+══════════════════════════════════════ -->
+<div class="main-wrapper" id="mainWrapper">
+
+    <!-- TOP BAR -->
+    <header class="topbar">
+        <div class="topbar-left">
+            <button class="sidebar-toggle" id="sidebarToggle">☰</button>
+            <div class="topbar-breadcrumb">
+                <span class="bc-root">DEMS</span>
+                <span class="bc-sep">›</span>
+                <span class="bc-current" id="bcCurrent">Dashboard</span>
+            </div>
+        </div>
+        <div class="topbar-center">
+            <div class="system-status">
+                <span class="status-dot green"></span>
+                <span class="status-text">System Online</span>
+                <span class="status-divider">|</span>
+                <span class="status-text" id="activeSessions">5 Active Sessions</span>
+            </div>
+        </div>
+        <div class="topbar-right">
+            <div class="topbar-clock">
+                <div class="clock-time" id="clockTime">--:--:--</div>
+                <div class="clock-date" id="clockDate">----</div>
+            </div>
+            <div class="topbar-notif" id="topbarNotif">
+                🔔<span class="notif-dot" id="notifDot">0</span>
+            </div>
+            <div class="topbar-user">
+                <div class="user-ava">SP</div>
+                <div class="user-info">
+                    <span class="user-name">Supt. Prasad</span>
+                    <span class="user-role">Super Admin</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ══ PAGE: DASHBOARD ══ -->
+    <main class="page-content" id="pageDashboard">
+        <div class="page-heading">
+            <span>📊 Dashboard Overview</span>
+            <div class="heading-actions">
+                <button class="hdr-btn" id="refreshDash">🔄 Refresh</button>
+                <button class="hdr-btn primary" id="printDash">🖨 Print</button>
+            </div>
+        </div>
+
+        <!-- Stat Cards -->
+        <section class="stat-grid" id="statGrid"></section>
+
+        <!-- Row 1: Case Status + Evidence Type Donut -->
+        <div class="grid-row">
+            <div class="card wide-card">
+                <div class="card-header">
+                    <span class="card-title">📊 Case Status Overview</span>
+                    <select class="card-select" id="caseChartFilter">
+                        <option>Last 30 Days</option>
+                        <option>Last 90 Days</option>
+                        <option>This Year</option>
+                    </select>
+                </div>
+                <canvas id="caseStatusBar" width="680" height="260"></canvas>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title">🗂️ Evidence by Type</span>
+                </div>
+                <canvas id="evidenceDonut" width="300" height="220"></canvas>
+                <div id="evidenceDonutLegend" class="donut-legend"></div>
+            </div>
+        </div>
+
+        <!-- Row 2: SLA Gauge + Monthly + Priority -->
+        <div class="grid-row">
+            <div class="card">
+                <div class="card-header"><span class="card-title">⏱️ SLA Compliance</span></div>
+                <canvas id="slaGaugeCanvas" width="300" height="200"></canvas>
+                <div class="gauge-label" id="gaugeLabel"></div>
+            </div>
+            <div class="card wide-card">
+                <div class="card-header"><span class="card-title">📈 Monthly Case Intake</span></div>
+                <canvas id="monthlyLineCanvas" width="640" height="200"></canvas>
+            </div>
+        </div>
+
+        <!-- Row 3: Recent Cases + Pending Evidence -->
+        <div class="grid-row">
+            <div class="card wide-card">
+                <div class="card-header">
+                    <span class="card-title">📁 Recent Cases</span>
+                    <button class="hdr-btn" onclick="navigate('cases')">View All</button>
+                </div>
+                <div class="table-wrapper">
+                    <table class="data-table" id="recentCasesTable">
+                        <thead>
+                        <tr><th>Case ID</th><th>Title</th><th>Type</th><th>Investigator</th>
+                            <th>Priority</th><th>Status</th><th>SLA</th><th>Action</th></tr>
+                        </thead>
+                        <tbody id="recentCasesBody"></tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title">⚠️ SLA Breach Alerts</span>
+                </div>
+                <div class="sla-alerts" id="slaAlerts"></div>
+            </div>
+        </div>
+
+        <!-- Row 4: Recent Evidence -->
+        <div class="grid-row">
+            <div class="card full-card">
+                <div class="card-header">
+                    <span class="card-title">🗂️ Recent Evidence Items</span>
+                    <button class="hdr-btn" onclick="navigate('evidence')">View All</button>
+                </div>
+                <div class="table-wrapper">
+                    <table class="data-table">
+                        <thead>
+                        <tr><th>Ev. ID</th><th>Case</th><th>Type</th><th>Description</th>
+                            <th>Size</th><th>Hash (MD5)</th><th>Uploaded By</th><th>Status</th></tr>
+                        </thead>
+                        <tbody id="recentEvidenceBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- ══ PAGE: CASES ══ -->
+    <main class="page-content hidden" id="pageCases">
+        <div class="page-heading">
+            <span>📁 Case Management</span>
+            <div class="heading-actions">
+                <button class="hdr-btn primary" onclick="navigate('newcase')">➕ New Case</button>
+                <button class="hdr-btn" id="exportCasesBtn">⬇ Export</button>
+            </div>
+        </div>
+        <div class="filter-bar">
+            <input type="text" class="filter-input" id="caseSearch" placeholder="🔍 Search by Case ID, Title, Investigator…"/>
+            <select class="filter-select" id="caseStatusFilter">
+                <option value="all">All Status</option>
+                <option value="open">Open</option>
+                <option value="under investigation">Under Investigation</option>
+                <option value="pending review">Pending Review</option>
+                <option value="closed">Closed</option>
+                <option value="archived">Archived</option>
+            </select>
+            <select class="filter-select" id="casePriorityFilter">
+                <option value="all">All Priority</option>
+                <option value="critical">Critical</option>
+                <option value="high">High</option>
+                <option value="medium">Medium</option>
+                <option value="low">Low</option>
+            </select>
+            <button class="hdr-btn primary" id="applyFilterBtn">Apply</button>
+        </div>
+        <div class="card full-card">
+            <div class="table-wrapper">
+                <table class="data-table">
+                    <thead>
+                    <tr><th>Case ID</th><th>Title</th><th>Type</th><th>FIR No.</th>
+                        <th>Investigator</th><th>Court</th><th>Priority</th>
+                        <th>Status</th><th>Created</th><th>SLA Due</th><th>Action</th></tr>
+                    </thead>
+                    <tbody id="casesFullBody"></tbody>
+                </table>
+            </div>
+            <div class="pagination" id="casesPagination"></div>
+        </div>
+    </main>
+
+    <!-- ══ PAGE: NEW CASE ══ -->
+    <main class="page-content hidden" id="pageNewcase">
+        <div class="page-heading"><span>➕ Register New Case</span></div>
+        <div class="form-grid">
+            <!-- Case Details -->
+            <div class="card form-card full-card">
+                <div class="card-header"><span class="card-title">📌 Case Details</span></div>
+                <div class="form-body">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Case Title *</label>
+                            <input type="text" class="form-input" id="fCaseTitle" placeholder="Enter case title"/>
+                        </div>
+                        <div class="form-group">
+                            <label>Case Type *</label>
+                            <select class="form-input" id="fCaseType">
+                                <option>Cybercrime</option><option>Financial Fraud</option>
+                                <option>Data Theft</option><option>Child Exploitation</option>
+                                <option>Terrorism</option><option>Drug Trafficking</option>
+                                <option>Identity Theft</option><option>Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>FIR / Case Number *</label>
+                            <input type="text" class="form-input" id="fFirNo" placeholder="FIR-2024-XXXX"/>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Priority *</label>
+                            <select class="form-input" id="fPriority">
+                                <option>Critical</option><option>High</option>
+                                <option>Medium</option><option>Low</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Assigned Investigator *</label>
+                            <select class="form-input" id="fInvestigator">
+                                <option>Insp. Sharma</option><option>Insp. Verma</option>
+                                <option>SI Nair</option><option>SI Gupta</option>
+                                <option>ASI Patel</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Court / Agency</label>
+                            <input type="text" class="form-input" id="fCourt" placeholder="Court name / Agency"/>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Incident Date</label>
+                            <input type="date" class="form-input" id="fIncidentDate"/>
+                        </div>
+                        <div class="form-group">
+                            <label>SLA Due Date *</label>
+                            <input type="date" class="form-input" id="fSlaDue"/>
+                        </div>
+                        <div class="form-group">
+                            <label>Jurisdiction</label>
+                            <input type="text" class="form-input" id="fJurisdiction" placeholder="State / District"/>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group full-group">
+                            <label>Case Description</label>
+                            <textarea class="form-input" id="fDescription" rows="3" placeholder="Detailed description of the case…"></textarea>
+                        </div>
+                    </div>
+                    <!-- Dynamic Fields -->
+                    <div class="dynamic-fields-section">
+                        <div class="df-header">
+                            <span class="card-title">🔧 Additional Dynamic Fields</span>
+                            <button class="hdr-btn" id="addFieldBtn">➕ Add Field</button>
+                        </div>
+                        <div id="dynamicFieldsContainer"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Suspect Details -->
+            <div class="card form-card full-card">
+                <div class="card-header"><span class="card-title">🧑 Suspect / Accused Details</span></div>
+                <div class="form-body">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Suspect Name</label>
+                            <input type="text" class="form-input" placeholder="Full name"/>
+                        </div>
+                        <div class="form-group">
+                            <label>ID / Aadhar / PAN</label>
+                            <input type="text" class="form-input" placeholder="Government ID"/>
+                        </div>
+                        <div class="form-group">
+                            <label>Contact Number</label>
+                            <input type="text" class="form-input" placeholder="+91 XXXXX XXXXX"/>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group full-group">
+                            <label>Address</label>
+                            <input type="text" class="form-input" placeholder="Full address"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Form Actions -->
+            <div class="form-actions full-card">
+                <button class="hdr-btn" onclick="navigate('cases')">Cancel</button>
+                <button class="hdr-btn primary" id="saveCaseBtn">💾 Save Case</button>
+                <button class="hdr-btn success" id="saveSendBtn">💾 Save &amp; Add Evidence</button>
+            </div>
+        </div>
+    </main>
+
+    <!-- ══ PAGE: LIFE CYCLE ══ -->
+    <main class="page-content hidden" id="pageLifecycle">
+        <div class="page-heading"><span>🔄 Case &amp; Evidence Life Cycle</span></div>
+        <div class="lifecycle-diagram" id="lifecycleDiagram"></div>
+        <div class="grid-row" style="margin-top:16px">
+            <div class="card full-card">
+                <div class="card-header"><span class="card-title">📊 Life Cycle Status Distribution</span></div>
+                <canvas id="lifecycleBarCanvas" width="1060" height="220"></canvas>
+            </div>
+        </div>
+    </main>
+
+    <!-- ══ PAGE: EVIDENCE ══ -->
+    <main class="page-content hidden" id="pageEvidence">
+        <div class="page-heading">
+            <span>🗂️ Evidence Management</span>
+            <div class="heading-actions">
+                <button class="hdr-btn primary" onclick="navigate('upload')">⬆️ Upload Evidence</button>
+                <button class="hdr-btn" id="exportEvidenceBtn">⬇ Export</button>
+            </div>
+        </div>
+        <div class="filter-bar">
+            <input type="text" class="filter-input" id="evSearch" placeholder="🔍 Search evidence…"/>
+            <select class="filter-select" id="evTypeFilter">
+                <option value="all">All Types</option>
+                <option value="Hard Disk">Hard Disk</option>
+                <option value="Image File">Image File</option>
+                <option value="Audio File">Audio File</option>
+                <option value="Video File">Video File</option>
+                <option value="CDR">CDR</option>
+                <option value="Mobile Phone">Mobile Phone</option>
+                <option value="Document">Document</option>
+            </select>
+            <select class="filter-select" id="evStatusFilter">
+                <option value="all">All Status</option>
+                <option value="received">Received</option>
+                <option value="under analysis">Under Analysis</option>
+                <option value="analysed">Analysed</option>
+                <option value="submitted">Submitted</option>
+            </select>
+            <button class="hdr-btn primary" id="applyEvFilterBtn">Apply</button>
+        </div>
+        <div class="card full-card">
+            <div class="table-wrapper">
+                <table class="data-table">
+                    <thead>
+                    <tr><th>Ev. ID</th><th>Case ID</th><th>Type</th><th>Description</th>
+                        <th>Size/Qty</th><th>Hash (MD5)</th><th>Received Date</th>
+                        <th>Analyst</th><th>Status</th><th>Action</th></tr>
+                    </thead>
+                    <tbody id="evidenceFullBody"></tbody>
+                </table>
+            </div>
+            <div class="pagination" id="evidencePagination"></div>
+        </div>
+    </main>
+
+    <!-- ══ PAGE: UPLOAD ══ -->
+    <main class="page-content hidden" id="pageUpload">
+        <div class="page-heading"><span>⬆️ Upload Digital Evidence</span></div>
+        <div class="upload-grid">
+            <!-- Upload Form -->
+            <div class="card form-card">
+                <div class="card-header"><span class="card-title">📎 Evidence Details</span></div>
+                <div class="form-body">
+                    <div class="form-group">
+                        <label>Case ID *</label>
+                        <select class="form-input" id="upCaseId"></select>
+                    </div>
+                    <div class="form-group">
+                        <label>Evidence Type *</label>
+                        <select class="form-input" id="upType">
+                            <option>Hard Disk</option><option>Image File</option>
+                            <option>Audio File</option><option>Video File</option>
+                            <option>Call Data Record (CDR)</option><option>Mobile Phone</option>
+                            <option>Document</option><option>Email Archive</option>
+                            <option>Network Log</option><option>Database Dump</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Description *</label>
+                        <textarea class="form-input" id="upDesc" rows="2" placeholder="Describe the evidence…"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Seizure Date</label>
+                        <input type="date" class="form-input" id="upSeizureDate"/>
+                    </div>
+                    <div class="form-group">
+                        <label>Seized By</label>
+                        <input type="text" class="form-input" id="upSeizedBy" placeholder="Officer name"/>
+                    </div>
+                    <div class="form-group">
+                        <label>Location of Seizure</label>
+                        <input type="text" class="form-input" id="upLocation" placeholder="Address / location"/>
+                    </div>
+                    <div class="form-group">
+                        <label>Condition</label>
+                        <select class="form-input" id="upCondition">
+                            <option>Good</option><option>Damaged</option>
+                            <option>Partially Damaged</option><option>Unknown</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Drop Zone -->
+            <div class="card form-card">
+                <div class="card-header"><span class="card-title">📂 File Upload</span></div>
+                <div class="form-body">
+                    <div class="drop-zone" id="dropZone">
+                        <div class="dz-icon">📁</div>
+                        <div class="dz-text">Drag &amp; drop files here</div>
+                        <div class="dz-sub">Supports: HDD images, audio, video, CDR, documents</div>
+                        <input type="file" id="fileInput" multiple style="display:none"/>
+                        <button class="hdr-btn primary" onclick="document.getElementById('fileInput').click()">Browse Files</button>
+                    </div>
+                    <div class="file-list" id="uploadFileList"></div>
+                    <div class="hash-section">
+                        <div class="hash-label">🔐 Auto-Generated Hash</div>
+                        <div class="hash-value" id="hashDisplay">MD5: — &nbsp;|&nbsp; SHA256: —</div>
+                    </div>
+                    <div class="integrity-check" id="integrityCheck"></div>
+                </div>
+            </div>
+        </div>
+        <div class="form-actions" style="margin-top:14px">
+            <button class="hdr-btn" onclick="navigate('evidence')">Cancel</button>
+            <button class="hdr-btn primary" id="submitEvidenceBtn">⬆️ Submit Evidence</button>
+        </div>
+        <!-- Upload Progress -->
+        <div class="upload-progress-section hidden" id="uploadProgressSection">
+            <div class="card full-card" style="margin-top:14px">
+                <div class="card-header"><span class="card-title">📊 Upload Progress</span></div>
+                <div class="progress-list" id="progressList"></div>
+            </div>
+        </div>
+    </main>
+
+    <!-- ══ PAGE: CHAIN OF CUSTODY ══ -->
+    <main class="page-content hidden" id="pageCustody">
+        <div class="page-heading"><span>🔗 Chain of Custody</span></div>
+        <div class="filter-bar">
+            <input type="text" class="filter-input" id="custodySearch" placeholder="🔍 Search by Evidence ID or Case ID…"/>
+            <button class="hdr-btn primary" id="custodySearchBtn">Search</button>
+        </div>
+        <div class="card full-card" id="custodyCard">
+            <div class="card-header"><span class="card-title">Evidence ID: Select evidence above</span></div>
+            <div class="custody-timeline" id="custodyTimeline">
+                <div class="empty-state">🔍 Enter an Evidence ID to view chain of custody</div>
+            </div>
+        </div>
+        <div class="grid-row" style="margin-top:14px">
+            <div class="card full-card">
+                <div class="card-header"><span class="card-title">📋 All Custody Records</span></div>
+                <div class="table-wrapper">
+                    <table class="data-table">
+                        <thead>
+                        <tr><th>Ev. ID</th><th>Case ID</th><th>Action</th><th>From</th>
+                            <th>To</th><th>Date &amp; Time</th><th>Reason</th><th>Seal Intact</th></tr>
+                        </thead>
+                        <tbody id="custodyTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- ══ PAGE: REPORTS ══ -->
+    <main class="page-content hidden" id="pageReports">
+        <div class="page-heading">
+            <span>📋 Analysis Reports</span>
+            <button class="hdr-btn primary" id="newReportBtn">➕ Upload Report</button>
+        </div>
+        <div class="grid-row">
+            <div class="card full-card">
+                <div class="table-wrapper">
+                    <table class="data-table">
+                        <thead>
+                        <tr><th>Report ID</th><th>Case ID</th><th>Title</th><th>Analyst</th>
+                            <th>Type</th><th>Date</th><th>Size</th><th>Status</th><th>Action</th></tr>
+                        </thead>
+                        <tbody id="reportsTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!-- Upload Report Modal -->
+        <div class="inline-form hidden" id="reportUploadForm">
+            <div class="card full-card" style="margin-top:14px">
+                <div class="card-header"><span class="card-title">➕ Upload New Analysis Report</span></div>
+                <div class="form-body">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Case ID</label>
+                            <select class="form-input" id="rptCaseId"></select>
+                        </div>
+                        <div class="form-group">
+                            <label>Report Title</label>
+                            <input type="text" class="form-input" placeholder="Report title…"/>
+                        </div>
+                        <div class="form-group">
+                            <label>Report Type</label>
+                            <select class="form-input">
+                                <option>Forensic Analysis</option><option>Network Analysis</option>
+                                <option>Malware Analysis</option><option>Mobile Forensics</option>
+                                <option>Audio/Video Analysis</option><option>Final Report</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group full-group">
+                            <label>Summary</label>
+                            <textarea class="form-input" rows="2" placeholder="Brief summary of findings…"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button class="hdr-btn" id="cancelReportBtn">Cancel</button>
+                        <button class="hdr-btn primary" id="submitReportBtn">Submit Report</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- ══ PAGE: SEARCH ══ -->
+    <main class="page-content hidden" id="pageSearch">
+        <div class="page-heading"><span>🔍 Search &amp; Filter</span></div>
+        <div class="search-hero">
+            <div class="search-tabs">
+                <button class="stab active" data-stab="cases">📁 Cases</button>
+                <button class="stab" data-stab="evidence">🗂️ Evidence</button>
+                <button class="stab" data-stab="hash">🔐 Hash Lookup</button>
+                <button class="stab" data-stab="suspect">🧑 Suspect</button>
+            </div>
+            <div class="search-inputs">
+                <input type="text" class="search-big" id="mainSearchInput" placeholder="Enter search query…"/>
+                <button class="hdr-btn primary" id="mainSearchBtn">🔍 Search</button>
+            </div>
+            <div class="adv-filters" id="advFilters">
+                <div class="form-row">
+                    <div class="form-group"><label>Date From</label><input type="date" class="form-input" id="sfFrom"/></div>
+                    <div class="form-group"><label>Date To</label><input type="date" class="form-input" id="sfTo"/></div>
+                    <div class="form-group">
+                        <label>Case Type</label>
+                        <select class="form-input" id="sfType">
+                            <option>All</option><option>Cybercrime</option><option>Financial Fraud</option>
+                            <option>Data Theft</option><option>Terrorism</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Priority</label>
+                        <select class="form-input" id="sfPriority">
+                            <option>All</option><option>Critical</option>
+                            <option>High</option><option>Medium</option><option>Low</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="searchResultsContainer"></div>
+    </main>
+
+    <!-- ══ PAGE: SLA ══ -->
+    <main class="page-content hidden" id="pageSla">
+        <div class="page-heading"><span>⏱️ SLA Management</span></div>
+        <div class="grid-row">
+            <div class="card full-card">
+                <div class="card-header"><span class="card-title">📋 SLA Rules Configuration</span></div>
+                <div class="table-wrapper">
+                    <table class="data-table">
+                        <thead>
+                        <tr><th>Rule ID</th><th>Case Type</th><th>Priority</th>
+                            <th>Target Days</th><th>Warning At</th><th>Breach Action</th><th>Status</th></tr>
+                        </thead>
+                        <tbody id="slaRulesBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="grid-row">
+            <div class="card wide-card">
+                <div class="card-header"><span class="card-title">📊 SLA Performance by Case Type</span></div>
+                <canvas id="slaBarCanvas" width="660" height="220"></canvas>
+            </div>
+            <div class="card">
+                <div class="card-header"><span class="card-title">⚠️ Breached Cases</span></div>
+                <div class="sla-breach-list" id="slaBreachList"></div>
+            </div>
+        </div>
+    </main>
+
+    <!-- ══ PAGE: NOTIFICATIONS ══ -->
+    <main class="page-content hidden" id="pageNotifications">
+        <div class="page-heading">
+            <span>🔔 Notifications</span>
+            <button class="hdr-btn" id="markAllReadBtn">✔ Mark All Read</button>
+        </div>
+        <div class="notif-filter">
+            <button class="notif-tab active" data-ntype="all">All</button>
+            <button class="notif-tab" data-ntype="case">Case Updates</button>
+            <button class="notif-tab" data-ntype="evidence">Evidence</button>
+            <button class="notif-tab" data-ntype="sla">SLA Alerts</button>
+            <button class="notif-tab" data-ntype="system">System</button>
+        </div>
+        <div class="notif-list" id="notifList"></div>
+    </main>
+
+    <!-- ══ PAGE: USERS ══ -->
+    <main class="page-content hidden" id="pageUsers">
+        <div class="page-heading">
+            <span>👥 User Management</span>
+            <button class="hdr-btn primary" id="addUserBtn">➕ Add User</button>
+        </div>
+        <!-- Auth Levels Info -->
+        <div class="auth-levels" id="authLevels"></div>
+        <div class="card full-card" style="margin-top:14px">
+            <div class="table-wrapper">
+                <table class="data-table">
+                    <thead>
+                    <tr><th>#</th><th>Name</th><th>Username</th><th>Role</th>
+                        <th>Auth Level</th><th>Department</th><th>Last Login</th>
+                        <th>Status</th><th>Action</th></tr>
+                    </thead>
+                    <tbody id="usersTableBody"></tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <!-- ══ PAGE: AUDIT LOG ══ -->
+    <main class="page-content hidden" id="pageAudit">
+        <div class="page-heading">
+            <span>📝 Audit Log</span>
+            <button class="hdr-btn" id="exportAuditBtn">⬇ Export Log</button>
+        </div>
+        <div class="card full-card">
+            <div class="table-wrapper">
+                <table class="data-table">
+                    <thead>
+                    <tr><th>#</th><th>Timestamp</th><th>User</th><th>Action</th>
+                        <th>Module</th><th>Record ID</th><th>IP Address</th><th>Result</th></tr>
+                    </thead>
+                    <tbody id="auditTableBody"></tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+</div><!-- /main-wrapper -->
+
+<!-- TOAST -->
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- MODAL -->
+<div class="modal-overlay hidden" id="modalOverlay">
+    <div class="modal-box">
+        <div class="modal-header" id="modalHeader"></div>
+        <div class="modal-body"   id="modalBody"></div>
+        <div class="modal-footer">
+            <button class="hdr-btn" id="modalClose">Close</button>
+        </div>
+    </div>
+</div>
+
+<script src="DEMS_data.js"></script>
+<script src="DEMS_charts.js"></script>
+<script src="DEMS_dashboard.js"></script>
+</body>
+</html>
