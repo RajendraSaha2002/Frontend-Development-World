@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>DARPAN S3 – Policy Based Autonomic Network & Cloud Management</title>
+    <link rel="stylesheet" href="DARPAN_S3_style.css"/>
+</head>
+<body>
+
+<!-- ══ SIDEBAR ══ -->
+<aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+        <div class="brand-logo"><span>D</span></div>
+        <div class="brand-info">
+            <span class="brand-name">DARPAN S3</span>
+            <span class="brand-sub">Autonomic NMS · C-DAC</span>
+        </div>
+    </div>
+    <nav class="sidebar-nav">
+        <div class="nav-group-label">OVERVIEW</div>
+        <a class="nav-item active" data-page="dashboard"><span class="ni">📊</span><span class="nl">Dashboard</span></a>
+        <a class="nav-item" data-page="topology"><span class="ni">🗺️</span><span class="nl">Topology Map</span></a>
+        <a class="nav-item" data-page="inventory"><span class="ni">🗃️</span><span class="nl">Inventory</span></a>
+
+        <div class="nav-group-label">MONITORING</div>
+        <a class="nav-item" data-page="performance"><span class="ni">📈</span><span class="nl">Performance</span></a>
+        <a class="nav-item" data-page="faults"><span class="ni">🚨</span><span class="nl">Fault Management</span><span class="nbadge red" id="faultBadge">0</span></a>
+        <a class="nav-item" data-page="traffic"><span class="ni">🌊</span><span class="nl">Traffic Flow</span></a>
+        <a class="nav-item" data-page="appmon"><span class="ni">🖥️</span><span class="nl">App & DB Monitor</span></a>
+
+        <div class="nav-group-label">AUTONOMIC (CHOP)</div>
+        <a class="nav-item" data-page="selfconfig"><span class="ni">⚙️</span><span class="nl">Self-Configuration</span></a>
+        <a class="nav-item" data-page="selfheal"><span class="ni">💊</span><span class="nl">Self-Healing</span></a>
+        <a class="nav-item" data-page="selfopt"><span class="ni">🔧</span><span class="nl">Self-Optimisation</span></a>
+        <a class="nav-item" data-page="selfprot"><span class="ni">🛡️</span><span class="nl">Self-Protection</span></a>
+
+        <div class="nav-group-label">MANAGEMENT</div>
+        <a class="nav-item" data-page="cloud"><span class="ni">☁️</span><span class="nl">Cloud Management</span></a>
+        <a class="nav-item" data-page="mpls"><span class="ni">🔀</span><span class="nl">MPLS Management</span></a>
+        <a class="nav-item" data-page="config"><span class="ni">📋</span><span class="nl">Configuration Mgmt</span></a>
+        <a class="nav-item" data-page="sla"><span class="ni">⏱️</span><span class="nl">SLA Management</span></a>
+        <a class="nav-item" data-page="security"><span class="ni">🔒</span><span class="nl">Security Management</span></a>
+
+        <div class="nav-group-label">TOOLS</div>
+        <a class="nav-item" data-page="logs"><span class="ni">📝</span><span class="nl">Log Management</span></a>
+        <a class="nav-item" data-page="helpdesk"><span class="ni">🎧</span><span class="nl">Help Desk</span><span class="nbadge orange" id="ticketBadge">0</span></a>
+        <a class="nav-item" data-page="reports"><span class="ni">📑</span><span class="nl">Reports</span></a>
+        <a class="nav-item" data-page="settings"><span class="ni">⚙️</span><span class="nl">Settings</span></a>
+    </nav>
+</aside>
+
+<!-- ══ MAIN ══ -->
+<div class="main-wrap" id="mainWrap">
+
+    <!-- TOPBAR -->
+    <header class="topbar">
+        <div class="tb-left">
+            <button class="toggle-btn" id="sidebarToggle">☰</button>
+            <div class="breadcrumb"><span class="bc-root">DARPAN S3</span><span class="bc-sep">›</span><span class="bc-page" id="bcPage">Dashboard</span></div>
+        </div>
+        <div class="tb-center">
+            <div class="chop-pills">
+                <span class="chop-pill" id="pill-cfg" title="Self-Configuration">⚙ CFG</span>
+                <span class="chop-pill" id="pill-heal" title="Self-Healing">💊 HEAL</span>
+                <span class="chop-pill" id="pill-opt" title="Self-Optimisation">🔧 OPT</span>
+                <span class="chop-pill" id="pill-prot" title="Self-Protection">🛡 PROT</span>
+            </div>
+        </div>
+        <div class="tb-right">
+            <div class="tb-clock"><span id="tbTime">--:--:--</span><span id="tbDate" class="tb-date"></span></div>
+            <div class="tb-notif" id="tbNotif">🔔<span class="notif-badge" id="notifBadge">0</span></div>
+            <div class="tb-proto">
+                <span class="proto-tag">SNMPv3</span>
+                <span class="proto-tag">NetFlow</span>
+                <span class="proto-tag">SSH</span>
+            </div>
+            <div class="tb-user"><div class="user-av">AD</div><span class="user-nm">Admin</span></div>
+        </div>
+    </header>
+
+    <!-- ════ PAGE: DASHBOARD ════ -->
+    <main class="page" id="pageDashboard">
+        <div class="pg-head"><span>📊 Network Overview – Dashboard</span>
+            <div class="pg-actions">
+                <button class="pbtn" id="discoverBtn">🔍 Auto-Discover</button>
+                <button class="pbtn primary" id="refreshDashBtn">🔄 Refresh</button>
+            </div>
+        </div>
+        <div class="stat-row" id="statRow"></div>
+
+        <!-- Row 1: Topology mini + Fault Donut -->
+        <div class="grid-row">
+            <div class="card wide-card">
+                <div class="card-hdr"><span class="ctitle">🗺️ Live Topology Map</span>
+                    <button class="pbtn" onclick="navigate('topology')">Full View →</button>
+                </div>
+                <canvas id="topoMiniCanvas" width="720" height="280"></canvas>
+            </div>
+            <div class="card">
+                <div class="card-hdr"><span class="ctitle">🚨 Fault Summary</span></div>
+                <canvas id="faultDonutCanvas" width="280" height="220"></canvas>
+                <div id="faultDonutLegend" class="donut-leg"></div>
+            </div>
+        </div>
+
+        <!-- Row 2: Perf Line + Traffic Bar -->
+        <div class="grid-row">
+            <div class="card wide-card">
+                <div class="card-hdr"><span class="ctitle">📈 Real-Time Bandwidth (Last 24h)</span></div>
+                <canvas id="bwLineCanvas" width="680" height="200"></canvas>
+            </div>
+            <div class="card">
+                <div class="card-hdr"><span class="ctitle">🌊 Top Traffic Sources</span></div>
+                <canvas id="trafficBarCanvas" width="300" height="200"></canvas>
+            </div>
+        </div>
+
+        <!-- Row 3: Device table + Events feed -->
+        <div class="grid-row">
+            <div class="card wide-card">
+                <div class="card-hdr"><span class="ctitle">🖧 Managed Devices</span>
+                    <button class="pbtn" onclick="navigate('inventory')">View All</button>
+                </div>
+                <div class="tbl-wrap">
+                    <table class="dtbl"><thead><tr>
+                        <th>Device</th><th>IP</th><th>Type</th><th>Vendor</th>
+                        <th>Status</th><th>CPU</th><th>Memory</th><th>Uptime</th>
+                    </tr></thead><tbody id="devTableBody"></tbody></table>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-hdr"><span class="ctitle">⚡ Live Event Feed</span><span class="live-dot"></span></div>
+                <div class="event-feed" id="eventFeed"></div>
+            </div>
+        </div>
+    </main>
+
+    <!-- ════ PAGE: TOPOLOGY ════ -->
+    <main class="page hidden" id="pageTopology">
+        <div class="pg-head"><span>🗺️ Network Topology Discovery & Mapping</span>
+            <div class="pg-actions">
+                <button class="pbtn" id="topoDiscoverBtn">🔍 Discover</button>
+                <button class="pbtn" id="topoZoomIn">🔍+</button>
+                <button class="pbtn" id="topoZoomOut">🔍-</button>
+                <button class="pbtn" id="topoReset">↺ Reset</button>
+                <select class="pselect" id="topoFilter">
+                    <option value="all">All Devices</option>
+                    <option value="router">Routers</option>
+                    <option value="switch">Switches</option>
+                    <option value="server">Servers</option>
+                    <option value="firewall">Firewalls</option>
+                </select>
+            </div>
+        </div>
+        <div class="grid-row">
+            <div class="card" style="flex:3">
+                <div class="card-hdr"><span class="ctitle">Network Graph</span>
+                    <div style="display:flex;gap:8px;align-items:center;font-size:11px">
+                        <span class="topo-legend-dot" style="background:#22c55e"></span>Up
+                        <span class="topo-legend-dot" style="background:#ef4444"></span>Down
+                        <span class="topo-legend-dot" style="background:#f59e0b"></span>Degraded
+                    </div>
+                </div>
+                <canvas id="topoFullCanvas" width="900" height="500"></canvas>
+            </div>
+            <div class="card" style="flex:1;min-width:240px">
+                <div class="card-hdr"><span class="ctitle">Device Inspector</span></div>
+                <div class="dev-inspector" id="devInspector">
+                    <div class="insp-empty">Click a device node to inspect</div>
+                </div>
+            </div>
+        </div>
+        <div class="grid-row">
+            <div class="card full-card">
+                <div class="card-hdr"><span class="ctitle">📡 Link Status Table</span></div>
+                <div class="tbl-wrap">
+                    <table class="dtbl"><thead><tr>
+                        <th>Link ID</th><th>Source</th><th>Destination</th><th>Type</th>
+                        <th>Speed</th><th>Utilization</th><th>Latency</th><th>Status</th>
+                    </tr></thead><tbody id="linkTableBody"></tbody></table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- ════ PAGE: INVENTORY ════ -->
+    <main class="page hidden" id="pageInventory">
+        <div class="pg-head"><span>🗃️ Asset & Inventory Management</span>
+            <div class="pg-actions">
+                <button class="pbtn primary" id="addDevBtn">➕ Add Device</button>
+                <button class="pbtn" id="exportInvBtn">⬇ Export</button>
+            </div>
+        </div>
+        <div class="filter-bar">
+            <input type="text" class="finput" id="invSearch" placeholder="🔍 Search device, IP, vendor…"/>
+            <select class="fselect" id="invTypeFilter"><option value="all">All Types</option>
+                <option>Router</option><option>Switch</option><option>Server</option>
+                <option>Firewall</option><option>AP</option><option>Load Balancer</option>
+            </select>
+            <select class="fselect" id="invStatusFilter"><option value="all">All Status</option>
+                <option value="up">Up</option><option value="down">Down</option><option value="degraded">Degraded</option>
+            </select>
+            <button class="pbtn primary" id="applyInvFilter">Apply</button>
+        </div>
+        <div class="card full-card">
+            <div class="tbl-wrap">
+                <table class="dtbl"><thead><tr>
+                    <th>Device Name</th><th>IP Address</th><th>Type</th><th>Vendor</th>
+                    <th>Model</th><th>OS Version</th><th>Location</th><th>Domain</th>
+                    <th>Status</th><th>Last Poll</th><th>Action</th>
+                </tr></thead><tbody id="invTableBody"></tbody></table>
+            </div>
+        </div>
+        <!-- Domain-based categories -->
+        <div class="grid-row" style="margin-top:14px">
+            <div class="card full-card">
+                <div class="card-hdr"><span class="ctitle">🏢 Domain-Based Asset Categories</span></div>
+                <div class="domain-grid" id="domainGrid"></div>
+            </div>
+        </div>
+    </main>
+
+    <!-- ════ PAGE: PERFORMANCE ════ -->
+    <main class="page hidden" id="pagePerformance">
+        <div class="pg-head"><span>📈 Real-Time Performance Monitoring</span>
+            <select class="pselect" id="perfDevSelect"></select>
+            <select class="pselect" id="perfInterval">
+                <option>Last 1 Hour</option><option>Last 6 Hours</option>
+                <option>Last 24 Hours</option><option>Last 7 Days</option>
+            </select>
+        </div>
+        <div class="stat-row" id="perfStatRow"></div>
+        <div class="grid-row">
+            <div class="card wide-card">
+                <div class="card-hdr"><span class="ctitle">📊 CPU Utilization (%)</span></div>
+                <canvas id="cpuLineCanvas" width="680" height="200"></canvas>
+            </div>
+            <div class="card">
+                <div class="card-hdr"><span class="ctitle">💾 Memory Usage (%)</span></div>
+                <canvas id="memLineCanvas" width="320" height="200"></canvas>
+            </div>
+        </div>
+        <div class="grid-row">
+            <div class="card">
+                <div class="card-hdr"><span class="ctitle">🌐 Interface IN (Mbps)</span></div>
+                <canvas id="ifInCanvas" width="340" height="180"></canvas>
+            </div>
+            <div class="card">
+                <div class="card-hdr"><span class="ctitle">🌐 Interface OUT (Mbps)</span></div>
+                <canvas id="ifOutCanvas" width="340" height="180"></canvas>
+            </div>
+            <div class="card">
+                <div class="card-hdr"><span class="ctitle">📦 Packet Loss (%)</span></div>
+                <canvas id="pktLossCanvas" width="340" height="180"></canvas>
+            </div>
+        </div>
+        <div class="grid-row">
+            <div class="card full-card">
+                <div class="card-hdr"><span class="ctitle">🖧 Interface Status Table</span></div>
+                <div class="tbl-wrap">
+                    <table class="dtbl"><thead><tr>
+                        <th>Interface</th><th>Speed</th><th>IN (Mbps)</th><th>OUT (Mbps)</th>
+                        <th>Errors</th><th>Discards</th><th>Utilization</th><th>Status</th>
+                    </tr></thead><tbody id="ifTableBody"></tbody></table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- ════ PAGE: FAULT MANAGEMENT ════ -->
+    <main class="page hidden" id="pageFaults">
+        <div class="pg-head"><span>🚨 Fault Management – Events & Alarms</span>
+            <div class="pg-actions">
+                <button class="pbtn" id="ackAllBtn">✔ Ack All</button>
+                <button class="pbtn" id="exportFaultsBtn">⬇ Export</button>
+            </div>
+        </div>
+        <div class="fault-summary-row" id="faultSummaryRow"></div>
+        <div class="filter-bar">
+            <select class="fselect" id="faultSevFilter"><option value="all">All Severity</option>
+                <option value="critical">Critical</option><option value="major">Major</option>
+                <option value="minor">Minor</option><option value="warning">Warning</option>
+                <option value="info">Info</option>
+            </select>
+            <select class="fselect" id="faultStatusFilter"><option value="all">All</option>
+                <option value="active">Active</option><option value="acknowledged">Acknowledged</option><option value="cleared">Cleared</option>
+            </select>
+            <input type="text" class="finput" id="faultSearch" placeholder="🔍 Filter by device or description…"/>
+            <button class="pbtn primary" id="applyFaultFilter">Apply</button>
+        </div>
+        <div class="card full-card">
+            <div class="tbl-wrap">
+                <table class="dtbl"><thead><tr>
+                    <th>Alarm ID</th><th>Time</th><th>Device</th><th>IP</th>
+                    <th>Severity</th><th>Category</th><th>Description</th>
+                    <th>Root Cause</th><th>Status</th><th>Action</th>
+                </tr></thead><tbody id="faultTableBody"></tbody></table>
+            </div>
+        </div>
+        <!-- Root Cause Analysis -->
+        <div class="grid-row" style="margin-top:14px">
+            <div class="card">
+                <div class="card-hdr"><span class="ctitle">🔍 Root Cause Analysis</span></div>
+                <canvas id="rcaBarCanvas" width="340" height="200"></canvas>
+            </div>
+            <div class="card wide-card">
+                <div class="card-hdr"><span class="ctitle">📊 Fault Trend (Last 7 Days)</span></div>
+                <canvas id="faultTrendCanvas" width="680" height="200"></canvas>
+            </div>
+        </div>
+    </main>
+
+    <!-- ════ PAGE: TRAFFIC FLOW ════ -->
+    <main class="page hidden" id="pageTraffic">
+        <div class="pg-head"><span>🌊 Traffic Flow Analyser – NetFlow / JFlow / IPFIX</span></div>
+        <div class="stat-row" id="trafficStatRow"></div>
+        <div class="grid-row">
+            <div class="card wide-card">
+                <div class="card-hdr"><span class="ctitle">📈 Bandwidth Utilization (Mbps)</span></div>
+                <canvas id="bwFullCanvas" width="700" height="220"></canvas>
+            </div>
+            <div class="card">
+                <div class="card-hdr"><span class="ctitle">🗂️ Protocol Distribution</span></div>
+                <canvas id="protoDonutCanvas" width="280" height="220"></canvas>
+                <div id="protoDonutLegend" class="donut-leg"></div>
+            </div>
+        </div>
+        <div class="grid-row">
+            <div class="card">
+                <div class="card-hdr"><span class="ctitle">🏆 Top Talkers</span></div>
+                <div class="tbl-wrap">
+                    <table class="dtbl"><thead><tr><th>Source IP</th><th>Dest IP</th><th>Protocol</th><th>Bytes</th><th>Packets</th></tr></thead>
+                        <tbody id="topTalkersBody"></tbody></table>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-hdr"><span class="ctitle">📊 Top Applications</span></div>
+                <canvas id="appTrafficBar" width="340" height="200"></canvas>
+            </div>
+        </div>
+    </main>
+
+    <!-- ════ PAGE: APP & DB MONITOR ════ -->
+    <main class="page hidden" id="pageAppmon">
+        <div class="pg-head"><span>🖥️ Application & Database Monitoring</span></div>
+        <div class="grid-row">
+            <div class="card full-card">
+                <div class="card-hdr"><span class="ctitle">🌐 Application Servers (Apache · Tomcat · JBoss)</span></div>
+                <div class="app-grid" id="appServerGrid"></div>
+            </div>
+        </div>
+        <div class="grid-row">
+            <div class="card full-card">
+                <div class="card-hdr"><span class="ctitle">🗄️ Database Servers (PostgreSQL · MySQL)</span></div>
+                <div class="app-grid" id="dbServerGrid"></div>
+            </div>
+        </div>
+        <div class="grid-row">
+            <div class="card wide-card">
+                <div class="card-hdr"><span class="ctitle">📊 Application Response Time (ms)</span></div>
+                <canvas id="appRespCanvas" width="680" height="200"></canvas>
+            </div>
+            <div class="card">
+                <div class="card-hdr"><span class="ctitle">💾 DB Query Performance</span></div>
+                <canvas id="dbPerfCanvas" width="320" height="200"></canvas>
+            </div>
+        </div>
+    </main>
+
+    <!-- ════ PAGE: SELF-CONFIGURATION ════ -->
+    <main class="page hidden" id="pageSelfconfig">
+        <div class="pg-head"><span>⚙️ Self-Configuration – Autonomic Management</span></div>
+        <div class="chop-hero cfg-hero">
+            <div class="chop-icon">⚙️</div>
+            <div class="chop-title">Self-Configuration Active</div>
+            <div class="chop-desc">Automatically configures network devices based on predefined policies. Detects new devices and applies configuration templates.</div>
+            <div class="chop-toggle-row">
+                <label class="toggle-label">Auto-Config Engine:</label>
+                <div class="toggle-switch active" id="cfgToggle">ON</div>
+            </div>
+        </div>
+        <div class="grid-row">
+            <div class="card wide-card">
+                <div class="card-hdr"><span class="ctitle">📋 Configuration Policies</span>
+                    <button class="pbtn primary" id="addPolicyBtn">➕ New Policy</button>
+                </div>
+                <div class="tbl-wrap">
+                    <table class="dtbl"><thead><tr>
+                        <th>Policy ID</th><th>Name</th><th>Device Type</th><th>Template</th>
+                        <th>Trigger</th><th>Last Applied</th><th>Status</th><th>Action</th>
+                    </tr></thead><tbody id="cfgPolicyBody"></tbody></table>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-hdr"><span class="ctitle">📊 Config Events (7 Days)</span></div>
+                <canvas id="cfgEventCanvas" width="300" height="200"></canvas>
+            </div>
+        </div>
+        <div class="grid-row">
+            <div class="card full-card">
+                <div class="card-hdr"><span class="ctitle">🕐 Auto-Configuration Log</span></div>
+                <div class="tbl-wrap">
+                    <table class="dtbl"><thead><tr>
+                        <th>Time</th><th>Device</th><th>Policy Applied</th>
+                        <th>Changes</th><th>Result</th><th>Operator</th>
+                    </tr></thead><tbody id="cfgLogBody"></tbody></table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- ════ PAGE: SELF-HEALING ════ -->
+    <main class="page hidden" id="pageSelfheal">
+        <div class="pg-head"><span>💊 Self-Healing – Fault Detection & Recovery</span></div>
+        <div class="chop-hero heal-hero">
+            <div class="chop-icon">💊</div>
+            <div class="chop-title">Self-Healing Active</div>
+            <div class="chop-desc">Continuously monitors network health. Automatically detects failures and triggers recovery actions to restore services.</div>
+            <div class="chop-toggle-row">
+                <label class="toggle-label">Auto-Heal Engine:</label>
+                <div class="toggle-switch active" id="healToggle">ON</div>
+            </div>
+        </div>
+        <div class="grid-row">
+            <div class="card wide-card">
+                <div class="card-hdr"><span class="ctitle">🔄 Healing Events</span></div>
+                <div class="tbl-wrap">
+                    <table class="dtbl"><thead><tr>
+                        <th>Time</th><th>Device</th><th>Fault Detected</th>
+                        <th>Action Taken</th><th>Recovery Time</th><th>Result</th>
+                    </tr></thead><tbody id="healTableBody"></tbody></table>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-hdr"><span class="ctitle">📊 Recovery Rate</span></div>
+                <canvas id="healGaugeCanvas" width="280" height="200"></canvas>
+                <div class="gauge-lbl" id="healGaugeLbl"></div>
+            </div>
+        </div>
+    </main>
+
+    <!-- ════ PAGE: SELF-OPTIMISATION ════ -->
+    <main class="page hidden" id="pageSelfopt">
+        <div class="pg-head"><span>🔧 Self-Optimisation – Performance Tuning</span></div>
+        <div class="chop-hero opt-hero">
+            <div class="chop-icon">🔧</div>
+            <div class="chop-title">Self-Optimisation Active</div>
+            <div class="chop-desc">Analyses network performance trends and auto-tunes parameters like QoS, routing, and bandwidth allocation for optimal efficiency.</div>
+        </div>
+        <div class="grid-row">
+            <div class="card wide-card">
+                <div class="card-hdr"><span class="ctitle">📊 Optimisation Actions (Last 30 Days)</span></div>
+                <canvas id="optBarCanvas" width="680" height="200"></canvas>
+            </div>
+            <div class="card">
+                <div class="card-hdr"><span class="ctitle">🎯 Optimisation Scores</span></div>
+                <div class="opt-scores" id="optScores"></div>
+            </div>
+        </div>
+        <div class="grid-row">
+            <div class="card full-card">
+                <div class="card-hdr"><span class="ctitle">🔧 Optimisation Log</span></div>
+                <div class="tbl-wrap">
+                    <table class="dtbl"><thead><tr>
+                        <th>Time</th><th>Device</th><th>Parameter</th>
+                        <th>Before</th><th>After</th><th>Impact</th><th>Status</th>
+                    </tr></thead><tbody id="optLogBody"></tbody></table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- ════ PAGE: SELF-PROTECTION ════ -->
+    <main class="page hidden" id="pageSelfprot">
+        <div class="pg-head"><span>🛡️ Self-Protection – Threat Detection & Response</span></div>
+        <div class="chop-hero prot-hero">
+            <div class="chop-icon">🛡️</div>
+            <div class="chop-title">Self-Protection Active</div>
+            <div class="chop-desc">Continuously monitors for security threats, anomalies and policy violations. Auto-blocks threats and enforces security policies.</div>
+        </div>
+        <div class="grid-row">
+            <div class="card wide-card">
+                <div class="card-hdr"><span class="ctitle">🚨 Threat Events</span></div>
+                <div class="tbl-wrap">
+                    <table class="dtbl"><thead><tr>
+                        <th>Time</th><th>Source</th><th>Threat Type</th>
+                        <th>Target</th><th>Severity</th><th>Action Taken</th><th>Status</th>
+                    </tr></thead><tbody id="threatTableBody"></tbody></table>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-hdr"><span class="ctitle">🔒 Threat Distribution</span></div>
+                <canvas id="threatDonutCanvas" width="280" height="220"></canvas>
+                <div id="threatDonutLegend" class="donut-leg"></div>
+            </div>
+        </div>
+    </main>
+
+    <!-- ════ PAGE: CLOUD MANAGEMENT ════ -->
+    <main class="page hidden" id="pageCloud">
+        <div class="pg-head"><span>☁️ Heterogeneous Cloud Management</span></div>
+        <div class="cloud-platforms" id="cloudPlatforms"></div>
+        <div class="grid-row" style="margin-top:14px">
+            <div class="card wide-card">
+                <div class="card-hdr"><span class="ctitle">🖥️ Virtual Machine Inventory</span></div>
+                <div class="tbl-wrap">
+                    <table class="dtbl"><thead><tr>
+                        <th>VM Name</th><th>Platform</th><th>Host</th><th>vCPU</th>
+                        <th>RAM (GB)</th><th>Disk (GB)</th><th>IP</th><th>Status</th><th>Action</th>
+                    </tr></thead><tbody id="vmTableBody"></tbody></table>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-hdr"><span class="ctitle">📊 Resource Utilization</span></div>
+                <canvas id="cloudResCanvas" width="300" height="220"></canvas>
+                <div id="cloudResLegend" class="donut-leg"></div>
+            </div>
+        </div>
+    </main>
+
+    <!-- ════ PAGE: MPLS ════ -->
+    <main class="page hidden" id="pageMpls">
+        <div class="pg-head"><span>🔀 MPLS Network Management</span></div>
+        <div class="stat-row" id="mplsStatRow"></div>
+        <div class="grid-row">
+            <div class="card full-card">
+                <div class="card-hdr"><span class="ctitle">🗺️ MPLS Topology (PE/CE/P Routers)</span></div>
+                <canvas id="mplsTopoCanvas" width="1060" height="300"></canvas>
+            </div>
+        </div>
+        <div class="grid-row">
+            <div class="card wide-card">
+                <div class="card-hdr"><span class="ctitle">📋 VPN Table (L3 VPN / L2 VPN)</span></div>
+                <div class="tbl-wrap">
+                    <table class="dtbl"><thead><tr>
+                        <th>VPN Name</th><th>Type</th><th>Provider</th><th>PE Router</th>
+                        <th>CE Router</th><th>VRF</th><th>Bandwidth</th><th>Status</th>
+                    </tr></thead><tbody id="vpnTableBody"></tbody></table>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-hdr"><span class="ctitle">📊 LSP Status</span></div>
+                <canvas id="lspBarCanvas" width="300" height="200"></canvas>
+            </div>
+        </div>
+    </main>
+
+    <!-- ════ PAGE: CONFIGURATION MANAGEMENT ════ -->
+    <main class="page hidden" id="pageConfig">
+        <div class="pg-head"><span>📋 Configuration Management – Backup & Restore</span>
+            <div class="pg-actions">
+                <button class="pbtn primary" id="backupAllBtn">💾 Backup All</button>
+                <button class="pbtn" id="compareBtn">⚖ Compare Versions</button>
+            </div>
+        </div>
+        <div class="stat-row" id="configStatRow"></div>
+        <div class="grid-row">
+            <div class="card full-card">
+                <div class="card-hdr"><span class="ctitle">📦 Configuration Repository</span></div>
+                <div class="tbl-wrap">
+                    <table class="dtbl"><thead><tr>
+                        <th>Device</th><th>IP</th><th>Version</th><th>Backup Date</th>
+                        <th>Size</th><th>Changed By</th><th>Changes</th><th>Status</th><th>Action</th>
+                    </tr></thead><tbody id="configTableBody"></tbody></table>
+                </div>
+            </div>
+        </div>
+        <div class="grid-row">
+            <div class="card wide-card">
+                <div class="card-hdr"><span class="ctitle">📊 Config Change History</span></div>
+                <canvas id="configChangeCanvas" width="680" height="180"></canvas>
+            </div>
+            <div class="card">
+                <div class="card-hdr"><span class="ctitle">📋 Change Log</span></div>
+                <div class="chg-log" id="configChangeLog"></div>
+            </div>
+        </div>
+    </main>
+
+    <!-- ════ PAGE: SLA MANAGEMENT ════ -->
+    <main class="page hidden" id="pageSla">
+        <div class="pg-head"><span>⏱️ SLA Management – Compliance & Violations</span></div>
+        <div class="stat-row" id="slaStatRow"></div>
+        <div class="grid-row">
+            <div class="card">
+                <div class="card-hdr"><span class="ctitle">🎯 SLA Compliance Gauge</span></div>
+                <canvas id="slaGaugeCanvas" width="300" height="200"></canvas>
+                <div class="gauge-lbl" id="slaGaugeLbl"></div>
+            </div>
+            <div class="card wide-card">
+                <div class="card-hdr"><span class="ctitle">📈 SLA Trend (Monthly)</span></div>
+                <canvas id="slaTrendCanvas" width="680" height="200"></canvas>
+            </div>
+        </div>
+        <div class="grid-row">
+            <div class="card full-card">
+                <div class="card-hdr"><span class="ctitle">📋 SLA Contracts & Violations</span></div>
+                <div class="tbl-wrap">
+                    <table class="dtbl"><thead><tr>
+                        <th>SLA ID</th><th>Service</th><th>Customer</th><th>Metric</th>
+                        <th>Target</th><th>Current</th><th>Compliance</th><th>Violations</th><th>Status</th>
+                    </tr></thead><tbody id="slaTableBody"></tbody></table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- ════ PAGE: SECURITY MANAGEMENT ════ -->
+    <main class="page hidden" id="pageSecurity">
+        <div class="pg-head"><span>🔒 Security Management – Profiles & Audit</span></div>
+        <div class="stat-row" id="secStatRow"></div>
+        <div class="grid-row">
+            <div class="card full-card">
+                <div class="card-hdr"><span class="ctitle">👤 User Security Profiles</span>
+                    <button class="pbtn primary" id="addSecUserBtn">➕ Add Profile</button>
+                </div>
+                <div class="tbl-wrap">
+                    <table class="dtbl"><thead><tr>
+                        <th>User</th><th>Role</th><th>Allowed Devices</th><th>Permissions</th>
+                        <th>Last Login</th><th>IP Restriction</th><th>2FA</th><th>Status</th><th>Action</th>
+                    </tr></thead><tbody id="secUserBody"></tbody></table>
+                </div>
+            </div>
+        </div>
+        <div class="grid-row">
+            <div class="card wide-card">
+                <div class="card-hdr"><span class="ctitle">📝 Activity Audit Log</span></div>
+                <div class="tbl-wrap">
+                    <table class="dtbl"><thead><tr>
+                        <th>Time</th><th>User</th><th>Action</th><th>Resource</th>
+                        <th>IP</th><th>Result</th>
+                    </tr></thead><tbody id="secAuditBody"></tbody></table>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-hdr"><span class="ctitle">🔐 Security Events</span></div>
+                <canvas id="secEventCanvas" width="300" height="200"></canvas>
+            </div>
+        </div>
+    </main>
+
+    <!-- ════ PAGE: LOG MANAGEMENT ════ -->
+    <main class="page hidden" id="pageLogs">
+        <div class="pg-head"><span>📝 Log Collector & Analyser (Syslog / Windows Event)</span>
+            <div class="pg-actions">
+                <button class="pbtn" id="exportLogBtn">⬇ Export</button>
+                <button class="pbtn primary" id="searchLogBtn">🔍 Search Logs</button>
+            </div>
+        </div>
+        <div class="stat-row" id="logStatRow"></div>
+        <div class="filter-bar">
+            <input type="text" class="finput" id="logSearch" placeholder="🔍 Search logs…"/>
+            <select class="fselect" id="logLevelFilter"><option value="all">All Levels</option>
+                <option value="emergency">Emergency</option><option value="alert">Alert</option>
+                <option value="critical">Critical</option><option value="error">Error</option>
+                <option value="warning">Warning</option><option value="info">Info</option>
+                <option value="debug">Debug</option>
+            </select>
+            <select class="fselect" id="logSourceFilter"><option value="all">All Sources</option>
+                <option>Syslog</option><option>Windows Event</option><option>SNMP Trap</option>
+                <option>NetFlow</option><option>Application</option>
+            </select>
+            <button class="pbtn primary" id="applyLogFilter">Apply</button>
+        </div>
+        <div class="grid-row">
+            <div class="card wide-card">
+                <div class="card-hdr"><span class="ctitle">📋 Log Entries</span></div>
+                <div class="log-viewer" id="logViewer"></div>
+            </div>
+            <div class="card">
+                <div class="card-hdr"><span class="ctitle">📊 Log Level Distribution</span></div>
+                <canvas id="logDonutCanvas" width="280" height="220"></canvas>
+                <div id="logDonutLegend" class="donut-leg"></div>
+            </div>
+        </div>
+        <div class="grid-row">
+            <div class="card full-card">
+                <div class="card-hdr"><span class="ctitle">📈 Log Volume (Last 24h)</span></div>
+                <canvas id="logVolumeCanvas" width="1060" height="160"></canvas>
+            </div>
+        </div>
+    </main>
+
+    <!-- ════ PAGE: HELP DESK ════ -->
+    <main class="page hidden" id="pageHelpdesk">
+        <div class="pg-head"><span>🎧 Help Desk – Fault & Service Management</span>
+            <button class="pbtn primary" id="newTicketBtn">➕ New Ticket</button>
+        </div>
+        <div class="stat-row" id="hdStatRow"></div>
+        <div class="grid-row">
+            <div class="card full-card">
+                <div class="card-hdr"><span class="ctitle">🎫 Service Tickets</span>
+                    <div style="display:flex;gap:6px">
+                        <select class="fselect" id="hdPrioFilter"><option value="all">All Priority</option>
+                            <option value="critical">Critical</option><option value="high">High</option>
+                            <option value="medium">Medium</option><option value="low">Low</option>
+                        </select>
+                        <select class="fselect" id="hdStatusFilter"><option value="all">All Status</option>
+                            <option value="open">Open</option><option value="in progress">In Progress</option>
+                            <option value="resolved">Resolved</option><option value="closed">Closed</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="tbl-wrap">
+                    <table class="dtbl"><thead><tr>
+                        <th>Ticket ID</th><th>Title</th><th>Device</th><th>Category</th>
+                        <th>Priority</th><th>Assignee</th><th>Created</th><th>SLA Due</th>
+                        <th>Status</th><th>Action</th>
+                    </tr></thead><tbody id="hdTableBody"></tbody></table>
+                </div>
+            </div>
+        </div>
+        <div class="grid-row">
+            <div class="card">
+                <div class="card-hdr"><span class="ctitle">📊 Ticket Status</span></div>
+                <canvas id="hdStatusCanvas" width="300" height="200"></canvas>
+                <div id="hdStatusLegend" class="donut-leg"></div>
+            </div>
+            <div class="card wide-card">
+                <div class="card-hdr"><span class="ctitle">📈 Ticket Volume (Last 30 Days)</span></div>
+                <canvas id="hdVolumeCanvas" width="680" height="200"></canvas>
+            </div>
+        </div>
+    </main>
+
+    <!-- ════ PAGE: REPORTS ════ -->
+    <main class="page hidden" id="pageReports">
+        <div class="pg-head"><span>📑 Reports – Real-Time & Historical (HTML/CSV/XLS)</span></div>
+        <div class="report-cats" id="reportCats"></div>
+        <div class="grid-row" style="margin-top:14px">
+            <div class="card full-card">
+                <div class="card-hdr"><span class="ctitle">📋 Available Reports</span></div>
+                <div class="report-grid" id="reportGrid"></div>
+            </div>
+        </div>
+    </main>
+
+    <!-- ════ PAGE: SETTINGS ════ -->
+    <main class="page hidden" id="pageSettings">
+        <div class="pg-head"><span>⚙️ System Settings – SNMP / Protocols / Discovery</span></div>
+        <div class="settings-grid" id="settingsGrid"></div>
+    </main>
+
+</div><!-- /main-wrap -->
+
+<div class="toast-wrap" id="toastWrap"></div>
+
+<div class="modal-overlay hidden" id="modalOverlay">
+    <div class="modal-box">
+        <div class="modal-hdr" id="modalHdr"></div>
+        <div class="modal-bdy" id="modalBdy"></div>
+        <div class="modal-ftr"><button class="pbtn primary" id="modalClose">Close</button></div>
+    </div>
+</div>
+
+<script src="DARPAN_S3_data.js"></script>
+<script src="DARPAN_S3_charts.js"></script>
+<script src="DARPAN_S3_dashboard.js"></script>
+</body>
+</html>
