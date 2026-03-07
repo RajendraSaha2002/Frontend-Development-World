@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>AEGIS – Tactical Map</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  :root{
+    --bg:#0a0e1a;--panel:#0f1628;--border:#1e2d50;
+    --accent:#00d4ff;--danger:#ff2244;--warn:#ffaa00;
+    --green:#00ff88;--text:#c8d8f0;--dim:#4a6080
+  }
+  body{background:var(--bg);color:var(--text);font-family:'Courier New',monospace;height:100vh;overflow:hidden;display:flex;flex-direction:column}
+  header{background:var(--panel);border-bottom:1px solid var(--border);padding:8px 20px;display:flex;align-items:center;justify-content:space-between}
+  .logo{font-size:1.3rem;font-weight:bold;color:var(--accent);letter-spacing:4px}
+  .logo span{color:var(--warn);font-size:.75rem;margin-left:10px;letter-spacing:2px}
+  .status-bar{display:flex;gap:16px;font-size:.7rem}
+  .dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:5px}
+  .dot.green{background:var(--green);box-shadow:0 0 6px var(--green)}
+  .dot.red{background:var(--danger);animation:blink 1s infinite}
+  .dot.yellow{background:var(--warn)}
+  @keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+
+  .main{display:flex;flex:1;overflow:hidden}
+
+  /* Sidebar */
+  .sidebar{width:260px;background:var(--panel);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden}
+  .sidebar-section{border-bottom:1px solid var(--border);padding:10px}
+  .sidebar-section h3{font-size:.65rem;color:var(--accent);letter-spacing:2px;margin-bottom:8px}
+  .asset-list{overflow-y:auto;flex:1}
+  .asset-item{padding:8px 10px;border-bottom:1px solid #111d33;cursor:pointer;transition:background .2s;font-size:.72rem}
+  .asset-item:hover{background:#162040}
+  .asset-item.selected{background:#0d2244;border-left:3px solid var(--accent)}
+  .asset-item.breach{background:#2a0010;border-left:3px solid var(--danger);animation:flashBg 1s infinite}
+  @keyframes flashBg{0%,100%{background:#2a0010}50%{background:#4a0020}}
+  .asset-name{font-weight:bold;color:#fff}
+  .asset-type{color:var(--dim);font-size:.65rem}
+  .asset-coords{color:var(--accent);font-size:.68rem;margin-top:2px}
+  .asset-status{font-size:.6rem;margin-top:2px}
+  .tag{padding:1px 6px;border-radius:3px;font-size:.6rem;font-weight:bold}
+  .tag.safe{background:#003320;color:var(--green)}
+  .tag.danger{background:#330010;color:var(--danger)}
+  .tag.warn{background:#332200;color:var(--warn)}
+
+  /* Canvas area */
+  .canvas-wrap{flex:1;position:relative;overflow:hidden}
+  canvas{display:block}
+  .overlay-controls{position:absolute;top:12px;right:12px;display:flex;flex-direction:column;gap:6px}
+  .btn{background:var(--panel);border:1px solid var(--border);color:var(--text);padding:6px 12px;font-family:inherit;font-size:.68rem;cursor:pointer;letter-spacing:1px;transition:all .2s}
+  .btn:hover{border-color:var(--accent);color:var(--accent)}
+  .btn.active{border-color:var(--accent);background:#0a1e3a;color:var(--accent)}
+
+  /* Alert banner */
+  #alertBanner{display:none;position:absolute;top:0;left:0;right:0;background:var(--danger);color:#fff;text-align:center;padding:6px;font-size:.75rem;font-weight:bold;letter-spacing:2px;animation:flashBanner 1s infinite;z-index:10}
+  @keyframes flashBanner{0%,100%{opacity:1}50%{opacity:.6}}
+
+  /* Info panel */
+  .info-panel{width:220px;background:var(--panel);border-left:1px solid var(--border);padding:12px;font-size:.7rem;overflow-y:auto}
+  .info-panel h3{color:var(--accent);letter-spacing:2px;font-size:.65rem;margin-bottom:10px}
+  .info-row{display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid #111d33}
+  .info-label{color:var(--dim)}
+  .info-val{color:#fff;font-weight:bold}
+  .proximity-list{margin-top:8px}
+  .prox-item{padding:4px;background:#060e1e;margin-bottom:4px;border-left:2px solid var(--warn);font-size:.66rem}
+
+  .geofence-toggle{display:flex;align-items:center;gap:8px;padding:8px 10px;font-size:.7rem}
+  .toggle{width:36px;height:18px;background:#1e2d50;border-radius:9px;position:relative;cursor:pointer;transition:background .3s}
+  .toggle.on{background:var(--accent)}
+  .toggle::after{content:'';width:14px;height:14px;background:#fff;border-radius:50%;position:absolute;top:2px;left:2px;transition:left .3s}
+  .toggle.on::after{left:20px}
+
+  footer{background:var(--panel);border-top:1px solid var(--border);padding:4px 16px;font-size:.62rem;color:var(--dim);display:flex;justify-content:space-between}
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <span class="logo">⬡ AEGIS<span>TACTICAL MAPPING v1.0</span></span>
+  </div>
+  <div class="status-bar">
+    <span><span class="dot green"></span>SYSTEM ONLINE</span>
+    <span><span class="dot" id="gfDot" style="background:var(--green);box-shadow:0 0 6px var(--green)"></span>GEOFENCE ACTIVE</span>
+    <span id="timeDisplay"></span>
+  </div>
+</header>
+
+<div class="main">
+
+  <!-- Sidebar: asset list -->
+  <div class="sidebar">
+    <div class="sidebar-section">
+      <h3>⬛ ASSET ROSTER</h3>
+      <div style="font-size:.65rem;color:var(--dim)">TOTAL: <span id="totalAssets" style="color:#fff">0</span> &nbsp;|&nbsp; BREACH: <span id="breachCount" style="color:var(--danger)">0</span></div>
+    </div>
+    <div class="asset-list" id="assetList"></div>
+    <div class="sidebar-section">
+      <h3>⚙ CONTROLS</h3>
+      <div class="geofence-toggle">
+        <div class="toggle on" id="gfToggle" onclick="toggleGeofence()"></div>
+        <span>Geofence Alerts</span>
+      </div>
+      <div class="geofence-toggle">
+        <div class="toggle on" id="animToggle" onclick="toggleAnimation()"></div>
+        <span>Live Animation</span>
+      </div>
+      <div style="padding:0 10px 8px">
+        <button class="btn" style="width:100%;margin-top:4px" onclick="addRandomAsset()">+ DEPLOY ASSET</button>
+        <button class="btn" style="width:100%;margin-top:4px" onclick="resetAssets()">↺ RESET MAP</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Canvas -->
+  <div class="canvas-wrap" id="canvasWrap">
+    <div id="alertBanner">⚠ GEOFENCE BREACH DETECTED — ASSET OUT OF BOUNDS</div>
+    <canvas id="tacticalCanvas"></canvas>
+    <div class="overlay-controls">
+      <button class="btn" onclick="zoomIn()">＋ ZOOM</button>
+      <button class="btn" onclick="zoomOut()">－ ZOOM</button>
+      <button class="btn" onclick="resetView()">⊞ FIT</button>
+      <button class="btn active" id="showGridBtn" onclick="toggleGrid()">⊞ GRID</button>
+      <button class="btn active" id="showLabelsBtn" onclick="toggleLabels()">🏷 LABELS</button>
+    </div>
+  </div>
+
+  <!-- Info panel -->
+  <div class="info-panel">
+    <h3>◈ SELECTED ASSET</h3>
+    <div id="infoContent">
+      <div style="color:var(--dim);font-size:.68rem;margin-top:20px;text-align:center">Click an asset<br>to inspect</div>
+    </div>
+    <div style="margin-top:16px">
+      <h3>⚡ PROXIMITY ALERTS</h3>
+      <div class="proximity-list" id="proximityList"></div>
+    </div>
+    <div style="margin-top:16px">
+      <h3>◼ KINEMATICS LOG</h3>
+      <div id="kinematicsLog" style="font-size:.62rem;color:var(--dim);max-height:120px;overflow-y:auto"></div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <span>AEGIS TACTICAL MAP — LOCAL COORD SYSTEM (X,Y)</span>
+  <span id="mouseCoords">X: — Y: —</span>
+  <span>DANGER RADIUS: 15 UNITS &nbsp;|&nbsp; GEOFENCE: 0,0 → 100,100</span>
+</footer>
+
+<script>
+// ============================================================
+// AEGIS FRONTEND ENGINE
+// ============================================================
+const canvas = document.getElementById('tacticalCanvas');
+const ctx = canvas.getContext('2d');
+
+// --- State ---
+let assets = [];
+let selectedId = null;
+let showGrid = true, showLabels = true;
+let geofenceEnabled = true, animEnabled = true;
+let scale = 6; // pixels per unit
+let offsetX = 40, offsetY = 40;
+let kinLog = [];
+
+// Geofence polygon (in world units)
+const GEOFENCE = [{x:5,y:5},{x:95,y:5},{x:95,y:95},{x:5,y:95}];
+const DANGER_RADIUS = 15;
+const WORLD_SIZE = 100;
+
+// Asset type icons (emoji mapped to canvas text)
+const TYPE_ICON = {tank:'🪖', drone:'✈', laptop:'💻', soldier:'🧍', vehicle:'🚗'};
+const TYPE_COLOR = {tank:'#ffaa00', drone:'#00d4ff', laptop:'#00ff88', soldier:'#ff88aa', vehicle:'#cc88ff'};
+
+// --- Initial assets ---
+function initAssets(){
+  assets = [
+    {id:1, name:'ALPHA-1', type:'tank',    x:20, y:30, vx:.04, vy:.03, speed:0},
+    {id:2, name:'BRAVO-2', type:'drone',   x:60, y:20, vx:-.05,vy:.06, speed:0},
+    {id:3, name:'CHARLIE', type:'soldier', x:50, y:50, vx:.03, vy:-.04,speed:0},
+    {id:4, name:'DELTA-4', type:'laptop',  x:80, y:70, vx:-.02,vy:-.05,speed:0},
+    {id:5, name:'ECHO-5',  type:'vehicle', x:30, y:80, vx:.05, vy:.02, speed:0},
+  ];
+}
+initAssets();
+
+// ============================================================
+// KINEMATICS ENGINE (Pythagorean distance)
+// ============================================================
+function distance(a, b){
+  return Math.sqrt((b.x - a.x)**2 + (b.y - a.y)**2);
+}
+
+function isDangerouslyClose(a, b, threshold=DANGER_RADIUS){
+  return distance(a, b) < threshold;
+}
+
+function pointInPolygon(px, py, poly){
+  let inside = false;
+  for(let i=0, j=poly.length-1; i<poly.length; j=i++){
+    const xi=poly[i].x, yi=poly[i].y, xj=poly[j].x, yj=poly[j].y;
+    if(((yi>py)!==(yj>py)) && (px < (xj-xi)*(py-yi)/(yj-yi)+xi)) inside=!inside;
+  }
+  return inside;
+}
+
+function isInGeofence(asset){
+  return pointInPolygon(asset.x, asset.y, GEOFENCE);
+}
+
+function getPairAlerts(){
+  const alerts=[];
+  for(let i=0;i<assets.length;i++)
+    for(let j=i+1;j<assets.length;j++)
+      if(isDangerouslyClose(assets[i],assets[j]))
+        alerts.push({a:assets[i], b:assets[j], dist:distance(assets[i],assets[j]).toFixed(1)});
+  return alerts;
+}
+
+// ============================================================
+// ANIMATION ENGINE
+// ============================================================
+function updatePositions(){
+  if(!animEnabled) return;
+  assets.forEach(a=>{
+    const px=a.x, py=a.y;
+    a.x += a.vx; a.y += a.vy;
+    a.speed = Math.sqrt(a.vx**2+a.vy**2);
+    if(a.x<0||a.x>WORLD_SIZE){a.vx*=-1; a.x=Math.max(0,Math.min(WORLD_SIZE,a.x))}
+    if(a.y<0||a.y>WORLD_SIZE){a.vy*=-1; a.y=Math.max(0,Math.min(WORLD_SIZE,a.y))}
+    // log kinematics occasionally
+    if(Math.random()<.005) logKinematics(a, px, py);
+  });
+}
+
+function logKinematics(a, px, py){
+  const d = Math.sqrt((a.x-px)**2+(a.y-py)**2).toFixed(3);
+  kinLog.unshift(`[${timestamp()}] ${a.name}: Δd=${d} | (${a.x.toFixed(1)},${a.y.toFixed(1)})`);
+  if(kinLog.length>30) kinLog.pop();
+  document.getElementById('kinematicsLog').innerHTML = kinLog.join('<br>');
+}
+
+// ============================================================
+// COORDINATE TRANSFORM
+// ============================================================
+function worldToCanvas(wx, wy){
+  return {cx: offsetX + wx*scale, cy: offsetY + wy*scale};
+}
+function canvasToWorld(cx, cy){
+  return {wx:(cx-offsetX)/scale, wy:(cy-offsetY)/scale};
+}
+
+// ============================================================
+// RENDER ENGINE
+// ============================================================
+function resize(){
+  const wrap = document.getElementById('canvasWrap');
+  canvas.width = wrap.clientWidth;
+  canvas.height = wrap.clientHeight;
+}
+
+function drawGrid(){
+  if(!showGrid) return;
+  ctx.strokeStyle='#0d1e38'; ctx.lineWidth=1;
+  for(let x=0;x<=WORLD_SIZE;x+=10){
+    const {cx,cy}=worldToCanvas(x,0), {cx:cx2,cy:cy2}=worldToCanvas(x,WORLD_SIZE);
+    ctx.beginPath(); ctx.moveTo(cx,cy); ctx.lineTo(cx2,cy2); ctx.stroke();
+  }
+  for(let y=0;y<=WORLD_SIZE;y+=10){
+    const {cx,cy}=worldToCanvas(0,y), {cx:cx2,cy:cy2}=worldToCanvas(WORLD_SIZE,y);
+    ctx.beginPath(); ctx.moveTo(cx,cy); ctx.lineTo(cx2,cy2); ctx.stroke();
+  }
+  // axis labels
+  ctx.fillStyle='#2a4060'; ctx.font='10px Courier New';
+  for(let x=0;x<=WORLD_SIZE;x+=10){
+    const {cx,cy}=worldToCanvas(x,WORLD_SIZE);
+    ctx.fillText(x, cx-8, cy+14);
+  }
+  for(let y=0;y<=WORLD_SIZE;y+=10){
+    const {cx,cy}=worldToCanvas(0,y);
+    ctx.fillText(y, offsetX-28, cy+4);
+  }
+}
+
+function drawGeofence(){
+  ctx.save();
+  ctx.setLineDash([6,4]);
+  ctx.strokeStyle = geofenceEnabled ? '#00aaff' : '#333';
+  ctx.lineWidth=1.5;
+  ctx.beginPath();
+  GEOFENCE.forEach((p,i)=>{
+    const {cx,cy}=worldToCanvas(p.x,p.y);
+    i===0 ? ctx.moveTo(cx,cy) : ctx.lineTo(cx,cy);
+  });
+  ctx.closePath(); ctx.stroke();
+  ctx.fillStyle='rgba(0,100,200,0.04)'; ctx.fill();
+  ctx.setLineDash([]);
+  // label
+  ctx.fillStyle='#1a5080'; ctx.font='11px Courier New';
+  const {cx,cy}=worldToCanvas(5,3);
+  ctx.fillText('GEOFENCE PERIMETER',cx,cy);
+  ctx.restore();
+}
+
+function drawDangerCircles(alerts){
+  alerts.forEach(({a,b})=>{
+    const mx=(a.x+b.x)/2, my=(a.y+b.y)/2;
+    const {cx,cy}=worldToCanvas(mx,my);
+    ctx.save();
+    ctx.beginPath();
+    ctx.arc(cx,cy, DANGER_RADIUS*scale/2, 0, Math.PI*2);
+    ctx.strokeStyle='rgba(255,30,60,0.5)';
+    ctx.lineWidth=1.5;
+    ctx.setLineDash([4,4]);
+    ctx.stroke(); ctx.setLineDash([]);
+    ctx.fillStyle='rgba(255,30,60,0.07)'; ctx.fill();
+    ctx.restore();
+  });
+}
+
+function drawAsset(a){
+  const {cx,cy}=worldToCanvas(a.x,a.y);
+  const inFence = isInGeofence(a);
+  const isSel = a.id===selectedId;
+  const col = TYPE_COLOR[a.type]||'#aaa';
+
+  // breach flash ring
+  if(!inFence && geofenceEnabled){
+    const t=Date.now()/400;
+    ctx.save();
+    ctx.beginPath(); ctx.arc(cx,cy,16+Math.sin(t)*4,0,Math.PI*2);
+    ctx.strokeStyle=`rgba(255,30,60,${0.5+Math.sin(t)*0.5})`;
+    ctx.lineWidth=2; ctx.stroke(); ctx.restore();
+  }
+
+  // selection ring
+  if(isSel){
+    ctx.save(); ctx.beginPath(); ctx.arc(cx,cy,18,0,Math.PI*2);
+    ctx.strokeStyle=col; ctx.lineWidth=1.5; ctx.setLineDash([3,3]);
+    ctx.stroke(); ctx.setLineDash([]); ctx.restore();
+  }
+
+  // glow
+  ctx.save();
+  ctx.shadowColor=col; ctx.shadowBlur=12;
+  ctx.beginPath(); ctx.arc(cx,cy,8,0,Math.PI*2);
+  ctx.fillStyle= !inFence && geofenceEnabled ? '#ff2244' : col;
+  ctx.fill(); ctx.restore();
+
+  // icon
+  ctx.font='12px serif';
+  ctx.fillText(TYPE_ICON[a.type]||'◆', cx-7, cy+5);
+
+  // label
+  if(showLabels){
+    ctx.fillStyle='#fff'; ctx.font='bold 10px Courier New';
+    ctx.fillText(a.name, cx+12, cy-4);
+    ctx.fillStyle='#4a7090'; ctx.font='9px Courier New';
+    ctx.fillText(`(${a.x.toFixed(0)},${a.y.toFixed(0)})`, cx+12, cy+8);
+  }
+}
+
+function drawProximityLines(alerts){
+  alerts.forEach(({a,b,dist})=>{
+    const p1=worldToCanvas(a.x,a.y), p2=worldToCanvas(b.x,b.y);
+    ctx.save(); ctx.beginPath();
+    ctx.moveTo(p1.cx,p1.cy); ctx.lineTo(p2.cx,p2.cy);
+    ctx.strokeStyle='rgba(255,50,80,0.6)'; ctx.lineWidth=1; ctx.setLineDash([3,3]);
+    ctx.stroke(); ctx.setLineDash([]);
+    const mx=(p1.cx+p2.cx)/2, my=(p1.cy+p2.cy)/2;
+    ctx.fillStyle='#ff4060'; ctx.font='9px Courier New';
+    ctx.fillText(`d=${dist}`,mx,my); ctx.restore();
+  });
+}
+
+function render(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  // bg
+  ctx.fillStyle='#080c18'; ctx.fillRect(0,0,canvas.width,canvas.height);
+
+  drawGrid();
+  drawGeofence();
+
+  const alerts = getPairAlerts();
+  drawDangerCircles(alerts);
+  drawProximityLines(alerts);
+  assets.forEach(drawAsset);
+
+  updateSidebar(alerts);
+  updateAlertBanner();
+  updateInfoPanel();
+}
+
+// ============================================================
+// UI UPDATES
+// ============================================================
+function updateSidebar(alerts){
+  const list = document.getElementById('assetList');
+  const breaches = assets.filter(a=> !isInGeofence(a) && geofenceEnabled);
+  document.getElementById('totalAssets').textContent=assets.length;
+  document.getElementById('breachCount').textContent=breaches.length;
+
+  list.innerHTML = assets.map(a=>{
+    const inFence=isInGeofence(a);
+    const close=alerts.some(al=>al.a.id===a.id||al.b.id===a.id);
+    const statusTag = !inFence && geofenceEnabled
+      ? '<span class="tag danger">BREACH</span>'
+      : close ? '<span class="tag warn">PROXIM</span>'
+      : '<span class="tag safe">SECURE</span>';
+    return `<div class="asset-item${a.id===selectedId?' selected':''}${!inFence&&geofenceEnabled?' breach':''}" onclick="selectAsset(${a.id})">
+      <div class="asset-name">${TYPE_ICON[a.type]} ${a.name}</div>
+      <div class="asset-type">${a.type.toUpperCase()}</div>
+      <div class="asset-coords">X:${a.x.toFixed(1)} &nbsp; Y:${a.y.toFixed(1)}</div>
+      <div class="asset-status">${statusTag}</div>
+    </div>`;
+  }).join('');
+}
+
+function updateAlertBanner(){
+  const banner=document.getElementById('alertBanner');
+  const breaches=assets.filter(a=>!isInGeofence(a)&&geofenceEnabled);
+  banner.style.display=breaches.length>0?'block':'none';
+  if(breaches.length>0) banner.textContent=`⚠ GEOFENCE BREACH: ${breaches.map(a=>a.name).join(', ')} — OUT OF BOUNDS`;
+}
+
+function updateInfoPanel(){
+  const sel=assets.find(a=>a.id===selectedId);
+  const ic=document.getElementById('infoContent');
+  if(!sel){ic.innerHTML='<div style="color:var(--dim);font-size:.68rem;margin-top:20px;text-align:center">Click an asset<br>to inspect</div>';return;}
+  const inFence=isInGeofence(sel);
+  const nearPairs=getPairAlerts().filter(al=>al.a.id===sel.id||al.b.id===sel.id);
+  ic.innerHTML=`
+    <div class="info-row"><span class="info-label">NAME</span><span class="info-val">${sel.name}</span></div>
+    <div class="info-row"><span class="info-label">TYPE</span><span class="info-val">${sel.type.toUpperCase()}</span></div>
+    <div class="info-row"><span class="info-label">X</span><span class="info-val">${sel.x.toFixed(2)}</span></div>
+    <div class="info-row"><span class="info-label">Y</span><span class="info-val">${sel.y.toFixed(2)}</span></div>
+    <div class="info-row"><span class="info-label">SPEED</span><span class="info-val">${(Math.sqrt(sel.vx**2+sel.vy**2)).toFixed(3)} u/f</span></div>
+    <div class="info-row"><span class="info-label">VECTOR</span><span class="info-val">(${sel.vx.toFixed(2)},${sel.vy.toFixed(2)})</span></div>
+    <div class="info-row"><span class="info-label">GEOFENCE</span><span class="info-val" style="color:${inFence?'var(--green)':'var(--danger)'}">${inFence?'INSIDE':'BREACH'}</span></div>
+    <div class="info-row"><span class="info-label">PROXIMITY</span><span class="info-val" style="color:${nearPairs.length?'var(--warn)':'var(--green)'}">${nearPairs.length?'WARNING':'CLEAR'}</span></div>`;
+
+  const pl=document.getElementById('proximityList');
+  const allAlerts=getPairAlerts();
+  pl.innerHTML = allAlerts.length===0
+    ? '<div style="color:var(--green);font-size:.66rem">NO PROXIMITY ALERTS</div>'
+    : allAlerts.map(al=>`<div class="prox-item">⚠ ${al.a.name} ↔ ${al.b.name}<br><span style="color:var(--dim)">dist=${al.dist} units</span></div>`).join('');
+}
+
+// ============================================================
+// CONTROLS
+// ============================================================
+function selectAsset(id){ selectedId = selectedId===id?null:id; }
+function toggleGeofence(){
+  geofenceEnabled=!geofenceEnabled;
+  const t=document.getElementById('gfToggle'); t.classList.toggle('on',geofenceEnabled);
+  document.getElementById('gfDot').style.background=geofenceEnabled?'var(--green)':'var(--danger)';
+}
+function toggleAnimation(){
+  animEnabled=!animEnabled;
+  document.getElementById('animToggle').classList.toggle('on',animEnabled);
+}
+function toggleGrid(){
+  showGrid=!showGrid;
+  document.getElementById('showGridBtn').classList.toggle('active',showGrid);
+}
+function toggleLabels(){
+  showLabels=!showLabels;
+  document.getElementById('showLabelsBtn').classList.toggle('active',showLabels);
+}
+function zoomIn(){ scale=Math.min(scale*1.2,20); }
+function zoomOut(){ scale=Math.max(scale/1.2,2); }
+function resetView(){ scale=6; offsetX=40; offsetY=40; }
+
+let assetCounter=6;
+const types=['tank','drone','soldier','laptop','vehicle'];
+const names=['FOXTROT','GOLF','HOTEL','INDIA','JULIET','KILO','LIMA'];
+function addRandomAsset(){
+  const t=types[Math.floor(Math.random()*types.length)];
+  const n=names[(assetCounter-6)%names.length]+'-'+assetCounter;
+  assets.push({id:assetCounter++,name:n,type:t,
+    x:Math.random()*90+5, y:Math.random()*90+5,
+    vx:(Math.random()-.5)*.1, vy:(Math.random()-.5)*.1, speed:0});
+}
+function resetAssets(){ selectedId=null; assetCounter=6; initAssets(); }
+
+// Mouse coords
+canvas.addEventListener('mousemove',e=>{
+  const r=canvas.getBoundingClientRect();
+  const {wx,wy}=canvasToWorld(e.clientX-r.left, e.clientY-r.top);
+  document.getElementById('mouseCoords').textContent=`X:${wx.toFixed(1)} Y:${wy.toFixed(1)}`;
+});
+canvas.addEventListener('click',e=>{
+  const r=canvas.getBoundingClientRect();
+  const {wx,wy}=canvasToWorld(e.clientX-r.left, e.clientY-r.top);
+  let closest=null, minD=12;
+  assets.forEach(a=>{
+    const d=Math.sqrt((a.x-wx)**2+(a.y-wy)**2);
+    if(d<minD){minD=d;closest=a;}
+  });
+  if(closest) selectAsset(closest.id);
+});
+
+// Time display
+function timestamp(){ return new Date().toTimeString().slice(0,8); }
+function updateClock(){ document.getElementById('timeDisplay').textContent=timestamp()+' UTC'; }
+setInterval(updateClock,1000); updateClock();
+
+// Main loop
+function loop(){
+  updatePositions();
+  render();
+  requestAnimationFrame(loop);
+}
+window.addEventListener('resize',()=>{ resize(); });
+resize();
+loop();
+</script>
+</body>
+</html>
