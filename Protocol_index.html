@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Protocol | RBAC Front-End</title>
+    <style>
+        /* Modern, minimal, neutral UI */
+        :root {
+            --bg-dark: #0f172a; --panel-dark: #1e293b; --text-light: #f8fafc;
+            --primary: #3b82f6; --danger: #ef4444; --border: #334155;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--bg-dark); color: var(--text-light);
+            margin: 0; padding: 0; display: flex; justify-content: center;
+            align-items: center; min-height: 100vh;
+        }
+
+        .container {
+            width: 100%; max-width: 800px; padding: 20px;
+        }
+
+        /* Views configuration (all hidden by default until router decides) */
+        .view { display: none; }
+        .view.active { display: block; animation: fadeIn 0.3s ease-out; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Components */
+        .card { background: var(--panel-dark); border: 1px solid var(--border); border-radius: 8px; padding: 30px; }
+        h2 { margin-top: 0; font-weight: 500; font-size: 1.5rem; }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; margin-bottom: 5px; font-size: 0.9rem; color: #94a3b8; }
+        input { width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 4px; background: var(--bg-dark); color: white; box-sizing: border-box;}
+        button { background: var(--primary); color: white; border: none; padding: 10px 15px; border-radius: 4px; cursor: pointer; width: 100%; font-weight: 600; }
+        button:hover { filter: brightness(1.1); }
+        .btn-danger { background: var(--danger); width: auto; }
+        .header-bar { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 15px; margin-bottom: 20px;}
+
+        /* Grid setup for dashboard layout */
+        .dashboard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }
+        .panel { background: #273549; padding: 20px; border-radius: 6px; border-left: 4px solid var(--primary); }
+        .panel.admin-panel { border-left-color: var(--danger); }
+
+        #error-msg { color: var(--danger); font-size: 0.9rem; margin-top: 10px; display: none;}
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- LOGIN VIEW -->
+    <div id="view-login" class="view">
+        <div class="card" style="max-width: 400px; margin: 0 auto;">
+            <h2>Protocol Gateway</h2>
+            <div class="form-group">
+                <label>Username (admin_alice, editor_bob, viewer_charlie)</label>
+                <input type="text" id="login-user" value="admin_alice">
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" id="login-pass" value="pass123">
+            </div>
+            <button onclick="handleLogin()">Authenticate</button>
+            <div id="error-msg">Invalid credentials.</div>
+        </div>
+    </div>
+
+    <!-- DASHBOARD VIEW -->
+    <div id="view-dashboard" class="view">
+        <div class="card">
+            <div class="header-bar">
+                <h2>Secure Interface</h2>
+                <button onclick="logout()" style="width: auto; background: var(--border);">Logout</button>
+            </div>
+
+            <p>Welcome to the dashboard. Your UI has been constructed based on your database permissions.</p>
+
+            <div class="dashboard-grid">
+                <!-- Base Panel: Everyone with view_dashboard sees this -->
+                <div class="panel" data-permission="view_dashboard">
+                    <h3>Basic Analytics</h3>
+                    <p>Standard data viewing module.</p>
+                </div>
+
+                <!-- Editor Panel -->
+                <div class="panel" data-permission="edit_content">
+                    <h3>Content Editor</h3>
+                    <p>Module to modify existing entries.</p>
+                    <button style="margin-top: 10px;">Edit Records</button>
+                </div>
+
+                <!-- Admin Panel - This element is physically deleted if user lacks 'admin_view' -->
+                <div class="panel admin-panel" data-permission="admin_view">
+                    <h3>God Mode Controls</h3>
+                    <p>Deep system configuration and user management.</p>
+                    <button class="btn-danger" style="margin-top: 10px;">Purge Database</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    const API_URL = 'http://localhost:8000/api';
+
+    // ==========================================
+    // 1. Core State & Utility
+    // ==========================================
+    const state = {
+        token: localStorage.getItem('protocol_token'),
+        permissions: []
+    };
+
+    // ==========================================
+    // 2. Custom Router & Security Stripper
+    // ==========================================
+    async function route() {
+        // Hide all views first
+        document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+
+        if (!state.token) {
+            // Unauthenticated -> Show Login
+            document.getElementById('view-login').classList.add('active');
+            return;
+        }
+
+        // Authenticated -> Fetch specific permissions from Python backend
+        try {
+            const res = await fetch(`${API_URL}/permissions`, {
+                headers: { 'Authorization': `Bearer ${state.token}` }
+            });
+
+            if (!res.ok) throw new Error('Session Expired');
+
+            const data = await res.json();
+            state.permissions = data.permissions; // Store granted permissions
+
+            // === THE CRITICAL SECURITY STEP ===
+            // Before rendering the dashboard, we scan the DOM for elements with 'data-permission'
+            // If the user's fetched permissions do not include the required permission,
+            // we physically remove the element from the DOM. It cannot be un-hidden in dev tools.
+            document.querySelectorAll('[data-permission]').forEach(el => {
+                const requiredPerm = el.getAttribute('data-permission');
+                if (!state.permissions.includes(requiredPerm)) {
+                    el.remove(); // Physically strip from DOM tree
+                }
+            });
+
+            // If the user doesn't even have base dashboard access, log them out.
+            if (!state.permissions.includes('view_dashboard')) {
+                throw new Error('Access Denied');
+            }
+
+            // Safe to render dashboard
+            document.getElementById('view-dashboard').classList.add('active');
+
+        } catch (err) {
+            console.error(err);
+            logout();
+        }
+    }
+
+    // ==========================================
+    // 3. Auth Actions
+    // ==========================================
+    async function handleLogin() {
+        const user = document.getElementById('login-user').value;
+        const pass = document.getElementById('login-pass').value;
+        const errorMsg = document.getElementById('error-msg');
+        errorMsg.style.display = 'none';
+
+        try {
+            const res = await fetch(`${API_URL}/login`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username: user, password: pass })
+            });
+
+            const data = await res.json();
+
+            if (data.success) {
+                state.token = data.token;
+                localStorage.setItem('protocol_token', data.token); // Store session token
+
+                // Important: Since we physically stripped elements previously,
+                // we should hard reload to reset the DOM tree with the new token.
+                window.location.reload();
+            } else {
+                errorMsg.style.display = 'block';
+            }
+        } catch (err) {
+            errorMsg.innerText = "Cannot connect to Backend Server";
+            errorMsg.style.display = 'block';
+        }
+    }
+
+    function logout() {
+        state.token = null;
+        state.permissions = [];
+        localStorage.removeItem('protocol_token');
+        window.location.reload();
+    }
+
+    // Init Router on page load
+    route();
+
+</script>
+</body>
+</html>
