@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIGINT & Cryptography Suite</title>
+    <!-- Multiple CSS Files -->
+    <link rel="stylesheet" href="Signal_Intelligence_base.css">
+    <link rel="stylesheet" href="Signal_Intelligence_noise.css">
+    <link rel="stylesheet" href="Signal_Intelligence_terminal.css">
+    <link rel="stylesheet" href="Signal_Intelligence_charts.css">
+</head>
+<body>
+<!-- CRT TV Noise Effects -->
+<div class="crt-overlay"></div>
+<div class="scanlines"></div>
+
+<div class="dashboard">
+    <header>
+        <h1>SIGINT Terminal v1.0</h1>
+        <p class="status">STATUS: <span id="conn-status" class="blink">AWAITING SIGNAL</span></p>
+    </header>
+
+    <main class="grid-layout">
+        <!-- Left Column: Audio & Analysis -->
+        <section class="panel">
+            <h2>Live Frequency Spectrum</h2>
+            <div class="canvas-container">
+                <canvas id="audioVisualizer"></canvas>
+            </div>
+            <button id="btn-start-audio" class="btn">Intercept Radio Signal (Audio)</button>
+            <button id="btn-stop-audio" class="btn btn-danger">Cut Signal</button>
+
+            <h2 style="margin-top: 20px;">Character Frequency Analysis</h2>
+            <div id="freq-chart" class="chart-container">
+                <!-- Bars injected via JS -->
+            </div>
+        </section>
+
+        <!-- Right Column: Cipher Terminal -->
+        <section class="panel">
+            <h2>Cipher Terminal</h2>
+
+            <label for="raw-input">Raw Intercept / Transmission:</label>
+            <textarea id="raw-input" placeholder="Enter text to encrypt/decrypt..."></textarea>
+
+            <div class="controls">
+                <label for="shift-key">Rotor Shift Key (1-25):</label>
+                <input type="number" id="shift-key" value="7" min="1" max="25">
+            </div>
+
+            <div class="button-group">
+                <button id="btn-encrypt" class="btn">Encrypt (REGEX Format)</button>
+                <button id="btn-decrypt" class="btn">Decrypt</button>
+                <button id="btn-analyze" class="btn btn-alt">Analyze Output Frequency</button>
+            </div>
+
+            <label for="crypto-output">Processed Output:</label>
+            <textarea id="crypto-output" readonly></textarea>
+        </section>
+    </main>
+</div>
+
+<!-- Multiple JS Files -->
+<script src="Signal_Intelligence_crypto.js"></script>
+<script src="Signal_Intelligence_frequency.js"></script>
+<script src="Signal_Intelligence_audio.js"></script>
+<script src="Signal_Intelligence_main.js"></script>
+</body>
+</html>

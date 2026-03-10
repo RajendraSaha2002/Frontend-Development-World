@@ -1,0 +1,39 @@
+.canvas-container {
+    width: 100%;
+    height: 150px;
+    border: 1px solid var(--phosphor-dark);
+    background: #000;
+    margin-bottom: 15px;
+}
+
+canvas { width: 100%; height: 100%; }
+
+.chart-container {
+    flex: 1;
+    border: 1px solid var(--phosphor-dark);
+    background: #000;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-around;
+    padding: 10px 5px 0 5px;
+    gap: 4px;
+}
+
+.bar {
+    flex: 1;
+    background: var(--phosphor-green);
+    min-height: 1px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    transition: height 0.3s ease;
+    box-shadow: 0 0 5px var(--phosphor-green);
+}
+
+.bar span {
+    color: #000;
+    font-weight: bold;
+    font-size: 0.8rem;
+    margin-bottom: 2px;
+}
