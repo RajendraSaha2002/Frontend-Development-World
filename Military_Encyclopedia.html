@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Digital Armory — Military Equipment & Inventory Encyclopedia" />
+    <title>DIGITAL ARMORY | Military Encyclopedia</title>
+
+    <!-- CSS Load Order -->
+    <link rel="stylesheet" href="Military_Encyclopedia_reset.css" />
+    <link rel="stylesheet" href="Military_Encyclopedia_layout.css" />
+    <link rel="stylesheet" href="Military_Encyclopedia_components.css" />
+    <link rel="stylesheet" href="Military_Encyclopedia_responsive.css" />
+</head>
+
+<body data-theme="dark" data-category="all">
+
+<!-- ══ SPLASH SCREEN ══════════════════════════════════════════ -->
+<div id="splash">
+    <div class="splash-inner">
+        <div class="splash-emblem">
+            <div class="emblem-ring r1"></div>
+            <div class="emblem-ring r2"></div>
+            <div class="emblem-ring r3"></div>
+            <span class="emblem-icon">✦</span>
+        </div>
+        <div class="splash-title">DIGITAL ARMORY</div>
+        <div class="splash-sub">MILITARY EQUIPMENT ENCYCLOPEDIA</div>
+        <div class="splash-progress-wrap"><div class="splash-progress" id="splash-bar"></div></div>
+        <div class="splash-status" id="splash-status">Initialising database…</div>
+        <div class="splash-classification">UNCLASSIFIED // FOR REFERENCE USE ONLY</div>
+    </div>
+</div>
+
+<!-- ══ APP SHELL ══════════════════════════════════════════════ -->
+<div class="app-shell" id="app">
+
+    <!-- ── TOP BAR ─────────────────────────────────────────────── -->
+    <header class="topbar" id="topbar">
+        <div class="topbar-left">
+            <button class="btn-hamburger" id="btn-sidebar-toggle" aria-label="Toggle sidebar">
+                <span></span><span></span><span></span>
+            </button>
+            <div class="topbar-brand">
+                <span class="brand-icon">✦</span>
+                <div class="brand-text">
+                    <span class="brand-name">DIGITAL ARMORY</span>
+                    <span class="brand-sub">MILITARY ENCYCLOPEDIA</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="topbar-center">
+            <div class="search-wrap">
+                <span class="search-icon">⌕</span>
+                <input type="text" id="search-input"
+                       class="search-input"
+                       placeholder="Search equipment, country, era…"
+                       autocomplete="off" />
+                <button class="search-clear hidden" id="search-clear" aria-label="Clear search">✕</button>
+            </div>
+        </div>
+
+        <div class="topbar-right">
+            <button class="btn-compare-toggle" id="btn-compare-mode" title="Compare Mode">
+                <span class="compare-icon">⇌</span>
+                <span class="compare-label">Compare</span>
+                <span class="compare-badge hidden" id="compare-count">0</span>
+            </button>
+            <button class="btn-icon" id="btn-theme" title="Toggle theme">◑</button>
+            <div class="result-count" id="result-count">— items</div>
+        </div>
+    </header>
+
+    <!-- ── MAIN BODY ────────────────────────────────────────────── -->
+    <div class="main-body">
+
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-section">
+                <div class="sidebar-section-title">CATEGORIES</div>
+                <nav class="cat-nav" id="cat-nav">
+                    <button class="cat-item active" data-cat="all">
+                        <span class="cat-icon">⬡</span>
+                        <span class="cat-label">All Forces</span>
+                        <span class="cat-count" id="cnt-all">0</span>
+                    </button>
+                    <button class="cat-item" data-cat="land">
+                        <span class="cat-icon">◼</span>
+                        <span class="cat-label">Land Forces</span>
+                        <span class="cat-count" id="cnt-land">0</span>
+                    </button>
+                    <button class="cat-item" data-cat="air">
+                        <span class="cat-icon">△</span>
+                        <span class="cat-label">Air Forces</span>
+                        <span class="cat-count" id="cnt-air">0</span>
+                    </button>
+                    <button class="cat-item" data-cat="sea">
+                        <span class="cat-icon">◈</span>
+                        <span class="cat-label">Naval Forces</span>
+                        <span class="cat-count" id="cnt-sea">0</span>
+                    </button>
+                </nav>
+            </div>
+
+            <div class="sidebar-section">
+                <div class="sidebar-section-title">ERA FILTER</div>
+                <div class="era-filters" id="era-filters">
+                    <!-- Injected by ui.js -->
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <div class="sidebar-section-title">ORIGIN FILTER</div>
+                <div class="origin-filters" id="origin-filters">
+                    <!-- Injected by ui.js -->
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <div class="sidebar-section-title">SORT BY</div>
+                <div class="sort-options" id="sort-options">
+                    <button class="sort-btn active" data-sort="name">Name</button>
+                    <button class="sort-btn" data-sort="speed">Speed</button>
+                    <button class="sort-btn" data-sort="range">Range</button>
+                    <button class="sort-btn" data-sort="year">Year</button>
+                </div>
+            </div>
+
+            <div class="sidebar-footer">
+                <div class="sidebar-stat"><span id="sf-total">0</span> total entries</div>
+                <div class="sidebar-stat"><span id="sf-compare">0</span> in compare queue</div>
+                <div class="classification-badge">UNCLASSIFIED</div>
+            </div>
+        </aside>
+
+        <!-- Content Area -->
+        <main class="content-area" id="content-area">
+
+            <!-- Active filters bar -->
+            <div class="filter-bar hidden" id="filter-bar">
+                <span class="filter-bar-label">Active:</span>
+                <div class="filter-chips" id="filter-chips"></div>
+                <button class="btn-clear-all" id="btn-clear-all">Clear All</button>
+            </div>
+
+            <!-- Grid -->
+            <div class="equipment-grid" id="equipment-grid">
+                <!-- Cards injected by ui.js -->
+            </div>
+
+            <!-- Empty state -->
+            <div class="empty-state hidden" id="empty-state">
+                <div class="empty-icon">◌</div>
+                <h3>No Equipment Found</h3>
+                <p>Try adjusting your search or filters.</p>
+                <button class="btn-primary" id="btn-reset-search">Reset Filters</button>
+            </div>
+
+        </main>
+    </div><!-- /.main-body -->
+
+</div><!-- /#app -->
+
+<!-- ══ DETAIL MODAL ══════════════════════════════════════════════ -->
+<div class="modal-overlay hidden" id="modal-overlay">
+    <div class="modal" id="modal" role="dialog" aria-modal="true">
+        <button class="modal-close" id="modal-close" aria-label="Close">✕</button>
+        <div class="modal-content" id="modal-content"><!-- injected --></div>
+    </div>
+</div>
+
+<!-- ══ COMPARE PANEL ════════════════════════════════════════════ -->
+<div class="compare-panel hidden" id="compare-panel">
+    <div class="compare-panel-header">
+        <span class="compare-panel-title">⇌ COMPARE MODE</span>
+        <span class="compare-hint" id="compare-hint">Select up to 2 items from the grid</span>
+        <div class="compare-panel-actions">
+            <button class="btn-primary" id="btn-run-compare" disabled>Run Comparison</button>
+            <button class="btn-outline" id="btn-clear-compare">Clear</button>
+            <button class="btn-icon" id="btn-close-compare">✕</button>
+        </div>
+    </div>
+    <div class="compare-slots" id="compare-slots">
+        <div class="compare-slot empty" id="slot-0"><span>Select Item 1</span></div>
+        <div class="compare-vs">VS</div>
+        <div class="compare-slot empty" id="slot-1"><span>Select Item 2</span></div>
+    </div>
+</div>
+
+<!-- ══ COMPARE RESULT MODAL ═════════════════════════════════════ -->
+<div class="modal-overlay hidden" id="compare-overlay">
+    <div class="modal modal-wide" id="compare-modal" role="dialog" aria-modal="true">
+        <button class="modal-close" id="compare-modal-close" aria-label="Close">✕</button>
+        <div class="modal-content" id="compare-modal-content"><!-- injected --></div>
+    </div>
+</div>
+
+<!-- Sidebar overlay for mobile -->
+<div class="sidebar-overlay hidden" id="sidebar-overlay"></div>
+
+<!-- Scripts — load order matters -->
+<script src="Military_Encyclopedia_data.js"></script>
+<script src="Military_Encyclopedia_ui.js"></script>
+<script src="Military_Encyclopedia_app.js"></script>
+
+</body>
+</html>

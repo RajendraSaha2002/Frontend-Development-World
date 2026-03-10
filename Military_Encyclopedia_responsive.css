@@ -1,0 +1,170 @@
+/* ═══════════════════════════════════════════════════════════════
+   responsive.css — Digital Armory
+   Responsive breakpoints for tablet and mobile.
+   Base (desktop-first) styles are in layout.css + components.css
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── Large Desktop: 3-column minimum ───────────────────────── */
+@media (min-width: 1400px) {
+    .equipment-grid {
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    }
+}
+
+/* ── Medium Desktop ─────────────────────────────────────────── */
+@media (max-width: 1200px) {
+    .equipment-grid {
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    }
+}
+
+/* ── Tablet Landscape (≤1024px) ─────────────────────────────── */
+@media (max-width: 1024px) {
+    :root { --sidebar-width: 210px; }
+
+    .topbar-center { max-width: 340px; }
+    .compare-label { display: none; }
+    .result-count  { display: none; }
+
+    .equipment-grid {
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        gap: 12px;
+    }
+
+    .compare-panel { left: var(--sidebar-width); }
+}
+
+/* ── Tablet Portrait (≤768px) ───────────────────────────────── */
+@media (max-width: 768px) {
+    :root {
+        --sidebar-width   : 260px;
+        --topbar-height   : 54px;
+    }
+
+    /* Sidebar becomes a drawer */
+    .sidebar {
+        position  : fixed;
+        left      : 0;
+        top       : var(--topbar-height);
+        height    : calc(100vh - var(--topbar-height));
+        z-index   : 160;
+        transform : translateX(-100%);
+        transition: transform 0.28s ease;
+        box-shadow: var(--shadow-lg);
+    }
+
+    .sidebar.open { transform: translateX(0); }
+
+    /* Content area fills full width when sidebar is closed */
+    .content-area { padding: 14px 12px; }
+
+    .equipment-grid {
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 12px;
+    }
+
+    /* Brand — hide sub-text on small screens */
+    .brand-sub { display: none; }
+
+    /* Compare panel stacks */
+    .compare-panel {
+        left   : 0;
+        padding: 10px 12px;
+    }
+
+    .compare-slots {
+        flex-direction: column;
+        gap: 8px;
+    }
+    .compare-vs { display: none; }
+
+    /* Modal full-screen on mobile */
+    .modal-overlay { padding: 8px; }
+    .modal         { max-height: 92vh; }
+
+    .modal-specs-grid { grid-template-columns: 1fr; }
+
+    /* Compare result table scrolls */
+    .compare-items-header,
+    .cmp-row {
+        grid-template-columns: 110px 1fr 40px 1fr;
+    }
+}
+
+/* ── Mobile (≤480px) ────────────────────────────────────────── */
+@media (max-width: 480px) {
+
+    .topbar { padding: 0 10px; gap: 8px; }
+
+    .brand-name   { font-size: 0.78rem; letter-spacing: 1px; }
+    .brand-icon   { display: none; }
+    .search-input { font-size: 0.78rem; }
+
+    .equipment-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    .card-visual { height: 120px; }
+    .card-silhouette { font-size: 4rem; }
+
+    /* KPI area inside compare panel */
+    .compare-panel-header { flex-wrap: wrap; gap: 8px; }
+    .compare-hint         { display: none; }
+    .compare-panel-actions{ width: 100%; justify-content: flex-end; }
+
+    /* Modal adjustments */
+    .modal-hero { height: 150px; }
+    .modal-hero-silhouette { font-size: 5rem; }
+    .modal-body { padding: 14px; }
+    .modal-title { font-size: 1rem; }
+
+    .compare-items-header,
+    .cmp-row {
+        grid-template-columns: 90px 1fr 30px 1fr;
+        font-size: 0.72rem;
+    }
+
+    .cmp-item-sil { font-size: 1.6rem; }
+    .cmp-item-name{ font-size: 0.72rem; }
+
+    /* Topbar right — compact */
+    .btn-compare-toggle { padding: 5px 8px; }
+    .btn-icon           { width: 30px; height: 30px; }
+
+    /* Sidebar nav text stays readable */
+    .cat-item   { padding: 8px 10px; }
+    .cat-label  { font-size: 0.76rem; }
+
+    /* Cards: tighten padding */
+    .card-body   { padding: 10px; }
+    .card-footer { padding: 8px 10px; }
+}
+
+/* ── Very Small (≤360px) ────────────────────────────────────── */
+@media (max-width: 360px) {
+    .topbar-right .btn-icon { display: none; }   /* hide theme toggle */
+    .card-meta { display: none; }                /* hide meta items in card */
+}
+
+/* ── Print (reference sheet) ────────────────────────────────── */
+@media print {
+    #splash, .topbar, .sidebar, .compare-panel,
+    .modal-overlay, .btn-compare-toggle,
+    .card-compare-btn, .btn-icon { display: none !important; }
+
+    body, .app-shell { background: #fff !important; color: #000 !important; }
+
+    .equipment-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+    }
+
+    .eq-card {
+        border: 1px solid #ccc;
+        box-shadow: none;
+        page-break-inside: avoid;
+    }
+
+    .card-visual { height: 80px; }
+}
