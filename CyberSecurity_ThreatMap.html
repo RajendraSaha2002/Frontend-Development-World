@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Global Cyber-Threat Monitor</title>
+    <link rel="stylesheet" href="CyberSecurity_ThreatMap.css">
+</head>
+<body class="normal-ops">
+<div class="glass-overlay"></div>
+
+<header>
+    <div class="logo">STRATCOM // THREAT MONITOR</div>
+    <div class="system-time" id="clock">00:00:00 UTC</div>
+</header>
+
+<main class="dashboard">
+    <div class="map-container">
+        <svg id="world-map" viewBox="0 0 1000 500">
+            <rect width="1000" height="500" fill="transparent"/>
+            <g id="map-nodes"></g>
+            <g id="attack-lines"></g>
+        </svg>
+    </div>
+
+    <aside class="terminal">
+        <div class="terminal-header">LIVE INTERCEPT LOGS</div>
+        <div id="log-stream" class="log-stream"></div>
+    </aside>
+</main>
+
+<footer>
+    <div class="stat-box">THREAT LEVEL: <span id="threat-lvl">LOW</span></div>
+    <div class="controls">
+        <button id="firewall-btn" onclick="toggleFirewall()">ACTIVATE FIREWALL</button>
+        <button id="isolate-btn" onclick="toggleEmergency()">ISOLATE SERVERS</button>
+    </div>
+    <div class="stat-box">ACTIVE BREACHES: <span id="breach-count">0</span></div>
+</footer>
+
+<script src="CyberSecurity_ThreatMap.js"></script>
+</body>
+</html>
