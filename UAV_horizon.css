@@ -1,0 +1,43 @@
+/* The 3D World Container */
+.world {
+    position: absolute;
+    top: -50vh; left: -50vw; /* Make it massive so it covers the screen when rotated */
+    width: 200vw; height: 200vh;
+    transform-style: preserve-3d;
+    transform-origin: center center;
+    transition: transform 0.1s linear; /* Smooth hardware acceleration */
+}
+
+.sky {
+    position: absolute; top: 0; left: 0; width: 100%; height: 50%;
+    background: linear-gradient(to bottom, #001100, #003300);
+    opacity: 0.8;
+}
+
+.ground {
+    position: absolute; bottom: 0; left: 0; width: 100%; height: 50%;
+    background: linear-gradient(to top, #000500, #001a00);
+    border-top: 2px solid var(--hud-green);
+    opacity: 0.8;
+}
+
+.pitch-ladder {
+    position: absolute; top: 50%; left: 50%;
+    width: 400px; height: 2000px;
+    transform: translate(-50%, -50%);
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+}
+
+.ladder-rung {
+    width: 150px; height: 2px;
+    background: var(--hud-green);
+    margin: 50px 0;
+    position: relative;
+    box-shadow: var(--hud-glow);
+}
+
+.ladder-rung::before, .ladder-rung::after {
+    position: absolute; top: -10px; color: var(--hud-green); font-size: 12px;
+}
+.ladder-rung::before { content: attr(data-deg); left: -30px; }
+.ladder-rung::after { content: attr(data-deg); right: -30px; }

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UAV Reaper HUD</title>
+  <link rel="stylesheet" href="UAV_hud.css">
+  <link rel="stylesheet" href="UAV_horizon.css">
+  <link rel="stylesheet" href="UAV_targets.css">
+</head>
+<body>
+<!-- 3D Artificial Horizon Environment -->
+<div class="viewport">
+  <div id="world" class="world">
+    <div class="sky"></div>
+    <div class="ground"></div>
+    <div class="pitch-ladder" id="pitch-ladder">
+      <!-- Generated via JS -->
+    </div>
+  </div>
+
+  <!-- Moving Targets Area -->
+  <div id="target-zone" class="target-zone"></div>
+</div>
+
+<!-- Static HUD Overlay -->
+<div class="hud-overlay">
+  <div class="crosshair-center">
+    <div class="ch-horizontal"></div>
+    <div class="ch-vertical"></div>
+  </div>
+
+  <div id="reticle" class="reticle">
+    <div class="corner tl"></div><div class="corner tr"></div>
+    <div class="corner bl"></div><div class="corner br"></div>
+  </div>
+
+  <!-- Telemetry Sidebar -->
+  <aside class="telemetry">
+    <div class="hud-header">SYS_LOG // UPLINK: SECURE</div>
+    <div id="telemetry-log" class="log-container"></div>
+  </aside>
+
+  <!-- Flight Data Readouts -->
+  <div class="flight-data left-data">
+    <div>SPD <span id="readout-spd">0</span> KTS</div>
+    <div>MACH <span id="readout-mach">0.00</span></div>
+  </div>
+  <div class="flight-data right-data">
+    <div>ALT <span id="readout-alt">25000</span> FT</div>
+    <div>HDG <span id="readout-hdg">360</span></div>
+  </div>
+
+  <div class="controls-hint">
+    CONTROLS: [W] Pitch Down | [S] Pitch Up | [A] Roll Left | [D] Roll Right
+  </div>
+</div>
+
+<!-- Scripts -->
+<script src="UAV_flight.js"></script>
+<script src="UAV_targets.js"></script>
+<script src="UAV_telemetry.js"></script>
+<script src="UAV_main.js"></script>
+</body>
+</html>

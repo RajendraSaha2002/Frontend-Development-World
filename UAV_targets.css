@@ -1,0 +1,40 @@
+.target-zone {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    transform-style: preserve-3d;
+}
+
+.bogie {
+    position: absolute;
+    width: 30px; height: 30px;
+    border: 2px solid var(--hud-amber);
+    transform: translate(-50%, -50%);
+    display: flex; justify-content: center; align-items: center;
+}
+
+.bogie::after {
+    content: 'TRGT'; position: absolute; top: 35px;
+    color: var(--hud-amber); font-size: 10px;
+}
+
+.reticle {
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 80px; height: 80px;
+    transform: translate(-50%, -50%);
+    transition: all 0.1s ease-out; /* Smooth snapping */
+}
+
+.reticle .corner {
+    position: absolute; width: 20px; height: 20px;
+    border: 3px solid var(--hud-green); box-shadow: var(--hud-glow);
+}
+
+.reticle .tl { top: 0; left: 0; border-right: none; border-bottom: none; }
+.reticle .tr { top: 0; right: 0; border-left: none; border-bottom: none; }
+.reticle .bl { bottom: 0; left: 0; border-right: none; border-top: none; }
+.reticle .br { bottom: 0; right: 0; border-left: none; border-top: none; }
+
+.reticle.locked .corner {
+    border-color: var(--hud-red);
+    box-shadow: 0 0 8px rgba(255, 51, 51, 0.7);
+}
