@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PhotoExaminer – Forensic Multimedia Analysis Tool</title>
+  <link rel="stylesheet" href="PhotoExaminer_styles.css" />
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════
+     SIDEBAR NAVIGATION
+════════════════════════════════════════════ -->
+<aside class="sidebar" id="sidebar">
+
+  <div class="sidebar-logo">
+    <div class="logo-icon">PE</div>
+    <div class="logo-text">
+      <span class="logo-main">PhotoExaminer</span>
+      <span class="logo-sub">Forensic Multimedia Tool</span>
+    </div>
+  </div>
+
+  <nav class="sidebar-nav">
+    <div class="nav-section-label">MAIN</div>
+    <a href="#" class="nav-item active" data-panel="dashboard">
+      <span class="nav-icon">⊞</span><span>Dashboard</span>
+    </a>
+
+    <div class="nav-section-label">IMAGE ANALYSIS</div>
+    <a href="#" class="nav-item" data-panel="metadata">
+      <span class="nav-icon">🗂</span><span>Metadata Extractor</span>
+    </a>
+    <a href="#" class="nav-item" data-panel="skintone">
+      <span class="nav-icon">🎨</span><span>Skin Tone Detection</span>
+    </a>
+    <a href="#" class="nav-item" data-panel="classification">
+      <span class="nav-icon">🔖</span><span>Image Classification</span>
+    </a>
+    <a href="#" class="nav-item" data-panel="resolution">
+      <span class="nav-icon">🔍</span><span>Resolution Enhancement</span>
+    </a>
+    <a href="#" class="nav-item" data-panel="darkenhance">
+      <span class="nav-icon">🌙</span><span>Dark Image Enhance</span>
+    </a>
+    <a href="#" class="nav-item" data-panel="ela">
+      <span class="nav-icon">📊</span><span>Error Level Analysis</span>
+    </a>
+    <a href="#" class="nav-item" data-panel="hiddenpixel">
+      <span class="nav-icon">👁</span><span>Hidden Pixel ID</span>
+    </a>
+    <a href="#" class="nav-item" data-panel="thumbnail">
+      <span class="nav-icon">🖼</span><span>Thumbnail Mismatch</span>
+    </a>
+    <a href="#" class="nav-item" data-panel="facefilter">
+      <span class="nav-icon">👤</span><span>Face Image Filter</span>
+    </a>
+
+    <div class="nav-section-label">VIDEO ANALYSIS</div>
+    <a href="#" class="nav-item" data-panel="videosource">
+      <span class="nav-icon">📹</span><span>Video Source Camera</span>
+    </a>
+    <a href="#" class="nav-item" data-panel="videoframes">
+      <span class="nav-icon">🎞</span><span>Video Frame Extraction</span>
+    </a>
+
+    <div class="nav-section-label">UTILITIES</div>
+    <a href="#" class="nav-item" data-panel="hash">
+      <span class="nav-icon">🔐</span><span>Hash Generator</span>
+    </a>
+    <a href="#" class="nav-item" data-panel="datacarving">
+      <span class="nav-icon">🗄</span><span>Data Carving</span>
+    </a>
+    <a href="#" class="nav-item" data-panel="report">
+      <span class="nav-icon">📋</span><span>Customisable Report</span>
+    </a>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="cdac-badge">CDAC · Cyber Security Group</div>
+  </div>
+</aside>
+
+<!-- ═══════════════════════════════════════════
+     MAIN CONTENT AREA
+════════════════════════════════════════════ -->
+<main class="main-content" id="main-content">
+
+  <!-- TOP HEADER -->
+  <header class="top-header">
+    <div class="header-left">
+      <button class="sidebar-toggle" id="sidebarToggle">☰</button>
+      <div class="breadcrumb" id="breadcrumb">Dashboard</div>
+    </div>
+    <div class="header-right">
+      <div class="header-status">
+        <span class="status-dot"></span>
+        <span>System Ready</span>
+      </div>
+      <div class="header-version">v2.1.0</div>
+    </div>
+  </header>
+
+  <!-- ─── PANEL: DASHBOARD ─── -->
+  <section class="panel active" id="panel-dashboard">
+    <div class="panel-header">
+      <h1>Forensic Analysis Dashboard</h1>
+      <p>Windows-based cyber forensic tool for classifying, enhancing, analysing and reporting image & video evidence.</p>
+    </div>
+
+    <!-- STAT CARDS -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon">🖼</div>
+        <div class="stat-info">
+          <div class="stat-value" id="stat-files">0</div>
+          <div class="stat-label">Files Loaded</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">✅</div>
+        <div class="stat-info">
+          <div class="stat-value" id="stat-analysed">0</div>
+          <div class="stat-label">Analysed</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">⚠️</div>
+        <div class="stat-info">
+          <div class="stat-value" id="stat-flagged">0</div>
+          <div class="stat-label">Flagged Items</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">📋</div>
+        <div class="stat-info">
+          <div class="stat-value" id="stat-reports">0</div>
+          <div class="stat-label">Reports Generated</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FEATURE GRID -->
+    <div class="feature-section-title">Available Analysis Modules</div>
+    <div class="feature-grid">
+      <div class="feature-card" data-panel="metadata">
+        <div class="feature-card-icon">🗂</div>
+        <div class="feature-card-title">Metadata Extractor</div>
+        <div class="feature-card-desc">Extract EXIF/metadata from images and videos</div>
+      </div>
+      <div class="feature-card" data-panel="skintone">
+        <div class="feature-card-icon">🎨</div>
+        <div class="feature-card-title">Skin Tone Detection</div>
+        <div class="feature-card-desc">Detect and classify skin tone regions in images</div>
+      </div>
+      <div class="feature-card" data-panel="classification">
+        <div class="feature-card-icon">🔖</div>
+        <div class="feature-card-title">Image Classification</div>
+        <div class="feature-card-desc">Auto-classify images using forensic filters</div>
+      </div>
+      <div class="feature-card" data-panel="resolution">
+        <div class="feature-card-icon">🔍</div>
+        <div class="feature-card-title">Resolution Enhancement</div>
+        <div class="feature-card-desc">Upscale thumbnails and small images</div>
+      </div>
+      <div class="feature-card" data-panel="darkenhance">
+        <div class="feature-card-icon">🌙</div>
+        <div class="feature-card-title">Dark Image Enhance</div>
+        <div class="feature-card-desc">Brighten and correct colour tone of dark images</div>
+      </div>
+      <div class="feature-card" data-panel="ela">
+        <div class="feature-card-icon">📊</div>
+        <div class="feature-card-title">Error Level Analysis</div>
+        <div class="feature-card-desc">Detect tampered or edited regions in images</div>
+      </div>
+      <div class="feature-card" data-panel="hiddenpixel">
+        <div class="feature-card-icon">👁</div>
+        <div class="feature-card-title">Hidden Pixel ID</div>
+        <div class="feature-card-desc">Identify concealed steganographic data</div>
+      </div>
+      <div class="feature-card" data-panel="thumbnail">
+        <div class="feature-card-icon">🖼</div>
+        <div class="feature-card-title">Thumbnail Mismatch</div>
+        <div class="feature-card-desc">Detect inconsistencies between thumb & full image</div>
+      </div>
+      <div class="feature-card" data-panel="facefilter">
+        <div class="feature-card-icon">👤</div>
+        <div class="feature-card-title">Face Image Filter</div>
+        <div class="feature-card-desc">Filter and identify images containing faces</div>
+      </div>
+      <div class="feature-card" data-panel="videosource">
+        <div class="feature-card-icon">📹</div>
+        <div class="feature-card-title">Video Source Camera</div>
+        <div class="feature-card-desc">Identify source camera from video fingerprint</div>
+      </div>
+      <div class="feature-card" data-panel="videoframes">
+        <div class="feature-card-icon">🎞</div>
+        <div class="feature-card-title">Frame Extraction</div>
+        <div class="feature-card-desc">Extract and analyse individual video frames</div>
+      </div>
+      <div class="feature-card" data-panel="hash">
+        <div class="feature-card-icon">🔐</div>
+        <div class="feature-card-title">Hash Generator</div>
+        <div class="feature-card-desc">Generate MD5/SHA hash for multimedia files</div>
+      </div>
+      <div class="feature-card" data-panel="datacarving">
+        <div class="feature-card-icon">🗄</div>
+        <div class="feature-card-title">Data Carving</div>
+        <div class="feature-card-desc">Recover deleted or hidden image/video files</div>
+      </div>
+      <div class="feature-card" data-panel="report">
+        <div class="feature-card-icon">📋</div>
+        <div class="feature-card-title">Customisable Report</div>
+        <div class="feature-card-desc">Generate and export forensic analysis reports</div>
+      </div>
+    </div>
+
+    <!-- FORMAT SUPPORT BANNER -->
+    <div class="format-banner">
+      <span class="format-label">Supported Formats:</span>
+      <span class="format-tag">MOV</span>
+      <span class="format-tag">MP4</span>
+      <span class="format-tag">AVI</span>
+      <span class="format-tag">JPEG</span>
+      <span class="format-tag">JPG</span>
+      <span class="format-tag">PNG</span>
+      <span class="format-tag">BMP</span>
+      <span class="format-tag">TIFF</span>
+    </div>
+  </section>
+
+  <!-- ─── PANEL: METADATA EXTRACTOR ─── -->
+  <section class="panel" id="panel-metadata">
+    <div class="panel-header">
+      <h1>🗂 Metadata Extractor</h1>
+      <p>Extract EXIF and technical metadata from image and video evidence files.</p>
+    </div>
+    <div class="upload-zone" id="metadata-upload">
+      <div class="upload-icon">📁</div>
+      <div class="upload-text">Drag & Drop or Click to Load Evidence File</div>
+      <div class="upload-hint">Supports: JPEG, JPG, PNG, BMP, TIFF, MOV, MP4, AVI</div>
+      <input type="file" id="metadata-file-input" accept="image/*,video/*" hidden />
+    </div>
+    <div class="result-box" id="metadata-results" style="display:none;">
+      <div class="result-title">Extracted Metadata</div>
+      <div class="metadata-table-wrap">
+        <table class="metadata-table" id="metadata-table">
+          <thead><tr><th>Property</th><th>Value</th></tr></thead>
+          <tbody id="metadata-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── PANEL: SKIN TONE DETECTION ─── -->
+  <section class="panel" id="panel-skintone">
+    <div class="panel-header">
+      <h1>🎨 Skin Tone Detection</h1>
+      <p>Detect and highlight skin tone regions within forensic image evidence.</p>
+    </div>
+    <div class="upload-zone" id="skintone-upload">
+      <div class="upload-icon">📁</div>
+      <div class="upload-text">Load Image for Skin Tone Analysis</div>
+      <input type="file" id="skintone-file-input" accept="image/*" hidden />
+    </div>
+    <div class="canvas-row" id="skintone-canvas-row" style="display:none;">
+      <div class="canvas-block">
+        <div class="canvas-label">Original Image</div>
+        <canvas id="skintone-original"></canvas>
+      </div>
+      <div class="canvas-block">
+        <div class="canvas-label">Skin Tone Regions Highlighted</div>
+        <canvas id="skintone-result"></canvas>
+      </div>
+    </div>
+    <div class="result-box" id="skintone-stats" style="display:none;">
+      <div class="result-title">Detection Result</div>
+      <div id="skintone-output"></div>
+    </div>
+  </section>
+
+  <!-- ─── PANEL: IMAGE CLASSIFICATION ─── -->
+  <section class="panel" id="panel-classification">
+    <div class="panel-header">
+      <h1>🔖 Image Classification</h1>
+      <p>Classify images using forensic filters and category tags.</p>
+    </div>
+    <div class="upload-zone" id="classification-upload">
+      <div class="upload-icon">📁</div>
+      <div class="upload-text">Load Image to Classify</div>
+      <input type="file" id="classification-file-input" accept="image/*" hidden />
+    </div>
+    <div class="filter-bar" id="classification-filters" style="display:none;">
+      <button class="filter-btn active" data-filter="all">All</button>
+      <button class="filter-btn" data-filter="faces">Faces</button>
+      <button class="filter-btn" data-filter="documents">Documents</button>
+      <button class="filter-btn" data-filter="outdoor">Outdoor</button>
+      <button class="filter-btn" data-filter="vehicles">Vehicles</button>
+      <button class="filter-btn" data-filter="text">Text/Signage</button>
+    </div>
+    <div class="canvas-row" id="classification-canvas-row" style="display:none;">
+      <div class="canvas-block">
+        <div class="canvas-label">Loaded Image</div>
+        <canvas id="classification-canvas"></canvas>
+      </div>
+      <div class="result-box" style="flex:1; margin:0;">
+        <div class="result-title">Classification Tags</div>
+        <div id="classification-tags"></div>
+        <div class="result-title" style="margin-top:16px;">Image Properties</div>
+        <div id="classification-props"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── PANEL: RESOLUTION ENHANCEMENT ─── -->
+  <section class="panel" id="panel-resolution">
+    <div class="panel-header">
+      <h1>🔍 Resolution Enhancement</h1>
+      <p>Increase resolution of thumbnails and low-resolution evidence images.</p>
+    </div>
+    <div class="upload-zone" id="resolution-upload">
+      <div class="upload-icon">📁</div>
+      <div class="upload-text">Load Low-Resolution Image</div>
+      <input type="file" id="resolution-file-input" accept="image/*" hidden />
+    </div>
+    <div class="controls-row" id="resolution-controls" style="display:none;">
+      <label>Scale Factor:
+        <select id="scale-factor">
+          <option value="2">2x</option>
+          <option value="4">4x</option>
+          <option value="8">8x</option>
+        </select>
+      </label>
+      <label>Method:
+        <select id="interp-method">
+          <option value="nearest">Nearest Neighbour</option>
+          <option value="bilinear">Bilinear</option>
+          <option value="bicubic">Bicubic (Sharpen)</option>
+        </select>
+      </label>
+      <button class="btn-primary" id="enhance-res-btn">▶ Enhance</button>
+    </div>
+    <div class="canvas-row" id="resolution-canvas-row" style="display:none;">
+      <div class="canvas-block">
+        <div class="canvas-label">Original <span id="orig-dim"></span></div>
+        <canvas id="resolution-original"></canvas>
+      </div>
+      <div class="canvas-block">
+        <div class="canvas-label">Enhanced <span id="enh-dim"></span></div>
+        <canvas id="resolution-result"></canvas>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── PANEL: DARK IMAGE ENHANCEMENT ─── -->
+  <section class="panel" id="panel-darkenhance">
+    <div class="panel-header">
+      <h1>🌙 Dark Image Enhancement</h1>
+      <p>Brighten dark images and apply colour tone correction for analysis.</p>
+    </div>
+    <div class="upload-zone" id="dark-upload">
+      <div class="upload-icon">📁</div>
+      <div class="upload-text">Load Dark/Underexposed Image</div>
+      <input type="file" id="dark-file-input" accept="image/*" hidden />
+    </div>
+    <div class="controls-row" id="dark-controls" style="display:none;">
+      <label>Brightness: <input type="range" id="bright-slider" min="-100" max="200" value="80" /> <span id="bright-val">80</span></label>
+      <label>Contrast:   <input type="range" id="contrast-slider" min="-100" max="100" value="30" /> <span id="contrast-val">30</span></label>
+      <label>Gamma:      <input type="range" id="gamma-slider" min="10" max="300" value="150" /> <span id="gamma-val">1.5</span></label>
+      <button class="btn-primary" id="apply-dark-btn">▶ Apply Enhancement</button>
+      <button class="btn-secondary" id="reset-dark-btn">↩ Reset</button>
+    </div>
+    <div class="canvas-row" id="dark-canvas-row" style="display:none;">
+      <div class="canvas-block">
+        <div class="canvas-label">Original</div>
+        <canvas id="dark-original"></canvas>
+      </div>
+      <div class="canvas-block">
+        <div class="canvas-label">Enhanced</div>
+        <canvas id="dark-result"></canvas>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── PANEL: ERROR LEVEL ANALYSIS ─── -->
+  <section class="panel" id="panel-ela">
+    <div class="panel-header">
+      <h1>📊 Error Level Analysis</h1>
+      <p>Detect manipulated or spliced regions in JPEG images through compression error analysis.</p>
+    </div>
+    <div class="upload-zone" id="ela-upload">
+      <div class="upload-icon">📁</div>
+      <div class="upload-text">Load JPEG Image for ELA</div>
+      <input type="file" id="ela-file-input" accept="image/*" hidden />
+    </div>
+    <div class="controls-row" id="ela-controls" style="display:none;">
+      <label>ELA Scale: <input type="range" id="ela-scale" min="1" max="20" value="10" /> <span id="ela-scale-val">10</span></label>
+      <button class="btn-primary" id="run-ela-btn">▶ Run ELA</button>
+    </div>
+    <div class="canvas-row" id="ela-canvas-row" style="display:none;">
+      <div class="canvas-block">
+        <div class="canvas-label">Original Image</div>
+        <canvas id="ela-original"></canvas>
+      </div>
+      <div class="canvas-block">
+        <div class="canvas-label">ELA Result (Bright = Possibly Tampered)</div>
+        <canvas id="ela-result"></canvas>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── PANEL: HIDDEN PIXEL IDENTIFICATION ─── -->
+  <section class="panel" id="panel-hiddenpixel">
+    <div class="panel-header">
+      <h1>👁 Hidden Pixel Identification</h1>
+      <p>Reveal hidden or steganographically embedded data within pixel channels.</p>
+    </div>
+    <div class="upload-zone" id="hidden-upload">
+      <div class="upload-icon">📁</div>
+      <div class="upload-text">Load Image for Hidden Pixel Analysis</div>
+      <input type="file" id="hidden-file-input" accept="image/*" hidden />
+    </div>
+    <div class="controls-row" id="hidden-controls" style="display:none;">
+      <label>Channel:
+        <select id="hidden-channel">
+          <option value="lsb">LSB (Least Significant Bit)</option>
+          <option value="red">Red Channel</option>
+          <option value="green">Green Channel</option>
+          <option value="blue">Blue Channel</option>
+          <option value="alpha">Alpha Channel</option>
+        </select>
+      </label>
+      <label>Amplify: <input type="range" id="hidden-amplify" min="1" max="64" value="16" /> <span id="hidden-amplify-val">16x</span></label>
+      <button class="btn-primary" id="run-hidden-btn">▶ Analyse</button>
+    </div>
+    <div class="canvas-row" id="hidden-canvas-row" style="display:none;">
+      <div class="canvas-block">
+        <div class="canvas-label">Original</div>
+        <canvas id="hidden-original"></canvas>
+      </div>
+      <div class="canvas-block">
+        <div class="canvas-label">Hidden Data Visualised</div>
+        <canvas id="hidden-result"></canvas>
+      </div>
+    </div>
+    <div class="result-box" id="hidden-report" style="display:none;">
+      <div class="result-title">Analysis Report</div>
+      <div id="hidden-report-text"></div>
+    </div>
+  </section>
+
+  <!-- ─── PANEL: THUMBNAIL MISMATCH ─── -->
+  <section class="panel" id="panel-thumbnail">
+    <div class="panel-header">
+      <h1>🖼 Thumbnail Mismatch Identification</h1>
+      <p>Compare embedded EXIF thumbnails against the full image to detect inconsistencies.</p>
+    </div>
+    <div class="upload-zone" id="thumb-upload">
+      <div class="upload-icon">📁</div>
+      <div class="upload-text">Load JPEG Image to Check Thumbnail</div>
+      <input type="file" id="thumb-file-input" accept="image/*" hidden />
+    </div>
+    <div class="canvas-row" id="thumb-canvas-row" style="display:none;">
+      <div class="canvas-block">
+        <div class="canvas-label">Full Image (Loaded)</div>
+        <canvas id="thumb-full"></canvas>
+      </div>
+      <div class="canvas-block">
+        <div class="canvas-label">Simulated Embedded Thumbnail</div>
+        <canvas id="thumb-embedded"></canvas>
+      </div>
+    </div>
+    <div class="result-box" id="thumb-result" style="display:none;">
+      <div class="result-title">Mismatch Analysis</div>
+      <div id="thumb-output"></div>
+    </div>
+  </section>
+
+  <!-- ─── PANEL: FACE IMAGE FILTER ─── -->
+  <section class="panel" id="panel-facefilter">
+    <div class="panel-header">
+      <h1>👤 Face Image Filter</h1>
+      <p>Filter and identify images containing human faces for forensic review.</p>
+    </div>
+    <div class="upload-zone" id="face-upload">
+      <div class="upload-icon">📁</div>
+      <div class="upload-text">Load Image for Face Detection</div>
+      <input type="file" id="face-file-input" accept="image/*" hidden />
+    </div>
+    <div class="canvas-row" id="face-canvas-row" style="display:none;">
+      <div class="canvas-block">
+        <div class="canvas-label">Analysed Image</div>
+        <canvas id="face-canvas"></canvas>
+      </div>
+      <div class="result-box" style="flex:1; margin:0;">
+        <div class="result-title">Detection Summary</div>
+        <div id="face-report"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── PANEL: VIDEO SOURCE CAMERA ─── -->
+  <section class="panel" id="panel-videosource">
+    <div class="panel-header">
+      <h1>📹 Video Source Camera Identification</h1>
+      <p>Identify the originating camera device from video file fingerprint analysis.</p>
+    </div>
+    <div class="upload-zone" id="videosrc-upload">
+      <div class="upload-icon">📁</div>
+      <div class="upload-text">Load Video File for Camera Identification</div>
+      <input type="file" id="videosrc-file-input" accept="video/*" hidden />
+    </div>
+    <div class="result-box" id="videosrc-results" style="display:none;">
+      <div class="result-title">Camera Identification Report</div>
+      <div class="metadata-table-wrap">
+        <table class="metadata-table">
+          <thead><tr><th>Property</th><th>Value</th></tr></thead>
+          <tbody id="videosrc-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── PANEL: VIDEO FRAME EXTRACTION ─── -->
+  <section class="panel" id="panel-videoframes">
+    <div class="panel-header">
+      <h1>🎞 Video Frame Extraction</h1>
+      <p>Extract and save individual frames from video evidence files.</p>
+    </div>
+    <div class="upload-zone" id="frames-upload">
+      <div class="upload-icon">📁</div>
+      <div class="upload-text">Load Video File for Frame Extraction</div>
+      <input type="file" id="frames-file-input" accept="video/*" hidden />
+    </div>
+    <div id="frames-player-section" style="display:none;">
+      <video id="frames-video" controls style="max-width:100%; border-radius:8px; margin:12px 0;"></video>
+      <div class="controls-row">
+        <label>Extract Every: <input type="number" id="frame-interval" value="1" min="1" max="60" style="width:60px;"> second(s)</label>
+        <button class="btn-primary" id="extract-frames-btn">▶ Extract Frames</button>
+      </div>
+      <div class="progress-wrap" id="frames-progress" style="display:none;">
+        <div class="progress-bar"><div class="progress-fill" id="frames-fill"></div></div>
+        <span id="frames-count">0 frames</span>
+      </div>
+    </div>
+    <div class="frames-grid" id="frames-grid"></div>
+  </section>
+
+  <!-- ─── PANEL: HASH GENERATOR ─── -->
+  <section class="panel" id="panel-hash">
+    <div class="panel-header">
+      <h1>🔐 Hash Generator</h1>
+      <p>Generate cryptographic hash values for multimedia evidence files (MD5, SHA-1, SHA-256).</p>
+    </div>
+    <div class="upload-zone" id="hash-upload">
+      <div class="upload-icon">📁</div>
+      <div class="upload-text">Load File to Generate Hash</div>
+      <div class="upload-hint">Any multimedia file supported</div>
+      <input type="file" id="hash-file-input" hidden />
+    </div>
+    <div class="result-box" id="hash-results" style="display:none;">
+      <div class="result-title">Hash Values</div>
+      <div id="hash-progress-text">Computing hashes...</div>
+      <table class="metadata-table" id="hash-table">
+        <thead><tr><th>Algorithm</th><th>Hash Value</th><th>Status</th></tr></thead>
+        <tbody id="hash-tbody"></tbody>
+      </table>
+      <div class="result-title" style="margin-top:16px;">File Integrity</div>
+      <div id="hash-integrity"></div>
+    </div>
+  </section>
+
+  <!-- ─── PANEL: DATA CARVING ─── -->
+  <section class="panel" id="panel-datacarving">
+    <div class="panel-header">
+      <h1>🗄 Data Carving</h1>
+      <p>Recover deleted or hidden image and video files from raw forensic disk images.</p>
+    </div>
+    <div class="upload-zone" id="carve-upload">
+      <div class="upload-icon">📁</div>
+      <div class="upload-text">Load Raw File / Disk Image for Carving</div>
+      <div class="upload-hint">Simulates carving by scanning file signatures</div>
+      <input type="file" id="carve-file-input" hidden />
+    </div>
+    <div id="carve-progress-section" style="display:none;">
+      <div class="progress-wrap">
+        <div class="progress-bar"><div class="progress-fill" id="carve-fill"></div></div>
+        <span id="carve-status">Scanning...</span>
+      </div>
+    </div>
+    <div class="result-box" id="carve-results" style="display:none;">
+      <div class="result-title">Recovered Files</div>
+      <table class="metadata-table">
+        <thead><tr><th>#</th><th>Type</th><th>Offset</th><th>Size</th><th>Signature</th><th>Status</th></tr></thead>
+        <tbody id="carve-tbody"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ─── PANEL: REPORT ─── -->
+  <section class="panel" id="panel-report">
+    <div class="panel-header">
+      <h1>📋 Customisable Report</h1>
+      <p>Generate and export forensic analysis reports with custom branding and sections.</p>
+    </div>
+    <div class="report-builder">
+      <div class="report-config">
+        <div class="form-group">
+          <label>Case Number</label>
+          <input type="text" id="rpt-case" placeholder="e.g. CASE-2024-001" />
+        </div>
+        <div class="form-group">
+          <label>Investigator Name</label>
+          <input type="text" id="rpt-investigator" placeholder="Enter investigator name" />
+        </div>
+        <div class="form-group">
+          <label>Organisation</label>
+          <input type="text" id="rpt-org" placeholder="e.g. Cyber Security Group, CDAC" />
+        </div>
+        <div class="form-group">
+          <label>Report Date</label>
+          <input type="date" id="rpt-date" />
+        </div>
+        <div class="form-group">
+          <label>Evidence Description</label>
+          <textarea id="rpt-desc" placeholder="Describe the evidence and investigation..."></textarea>
+        </div>
+        <div class="form-group">
+          <label>Include Sections</label>
+          <div class="checkbox-group">
+            <label><input type="checkbox" id="chk-meta" checked /> Metadata Analysis</label>
+            <label><input type="checkbox" id="chk-ela" checked /> Error Level Analysis</label>
+            <label><input type="checkbox" id="chk-hash" checked /> Hash Verification</label>
+            <label><input type="checkbox" id="chk-skin" /> Skin Tone Detection</label>
+            <label><input type="checkbox" id="chk-face" /> Face Detection</label>
+            <label><input type="checkbox" id="chk-carve" /> Data Carving</label>
+          </div>
+        </div>
+        <button class="btn-primary" id="generate-report-btn" style="width:100%;">📋 Generate Report</button>
+      </div>
+      <div class="report-preview" id="report-preview-box">
+        <div class="report-placeholder">Configure report settings and click Generate</div>
+      </div>
+    </div>
+    <div style="text-align:right; margin-top:12px; display:none;" id="export-btns">
+      <button class="btn-secondary" id="print-report-btn">🖨 Print / Export PDF</button>
+    </div>
+  </section>
+
+</main><!-- /.main-content -->
+
+<script src="PhotoExaminer_app.js"></script>
+</body>
+</html>
