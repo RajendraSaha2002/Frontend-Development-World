@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Strategic Mission Commander</title>
+  <link rel="stylesheet" href="Strategic_Commander_main.css">
+  <link rel="stylesheet" href="Strategic_Commander_grid.css">
+</head>
+<body>
+<div class="layout">
+  <!-- Sidebar Controls -->
+  <aside class="controls">
+    <h1>Mission Control</h1>
+    <p class="subtitle">A* Pathfinding & Web Workers</p>
+
+    <div class="tools">
+      <h3>Select Tool:</h3>
+      <button class="tool-btn active" data-tool="wall">🏔️ Place Mountains (Wall)</button>
+      <button class="tool-btn" data-tool="start">🟢 Set Start Point</button>
+      <button class="tool-btn" data-tool="end">🔴 Set Target (End)</button>
+      <button class="tool-btn" data-tool="erase">🧹 Eraser</button>
+    </div>
+
+    <div class="actions">
+      <button id="btn-find-path" class="action-btn primary">🚀 Calculate Path</button>
+      <button id="btn-clear-path" class="action-btn">Clear Path</button>
+      <button id="btn-clear-board" class="action-btn danger">Reset Map</button>
+    </div>
+
+    <div class="math-panel">
+      <h3>Heuristic Logic</h3>
+      <p>Euclidean Distance Calculation:</p>
+      <!-- Simulated LaTeX using pure HTML/CSS -->
+      <div class="formula">
+        <i>d</i> = &radic;<span class="sqrt-inner">(<i>x</i><sub>2</sub> - <i>x</i><sub>1</sub>)<sup>2</sup> + (<i>y</i><sub>2</sub> - <i>y</i><sub>1</sub>)<sup>2</sup></span>
+      </div>
+    </div>
+
+    <div id="status" class="status-box">Status: Ready. Waiting for orders.</div>
+  </aside>
+
+  <!-- Main Map Area -->
+  <main class="map-container">
+    <div id="grid" class="tactical-grid"></div>
+  </main>
+</div>
+
+<script src="Strategic_Commander_app.js"></script>
+</body>
+</html>
