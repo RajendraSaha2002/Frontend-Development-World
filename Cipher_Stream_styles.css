@@ -1,0 +1,25 @@
+body{
+background:#0b0f14;
+color:#00ffcc;
+font-family:monospace;
+}
+
+.login-box{
+width:300px;
+margin:auto;
+margin-top:150px;
+padding:30px;
+background:#111;
+border:1px solid #00ffcc;
+}
+
+.reader{
+padding:40px;
+}
+
+button{
+background:#00ffcc;
+border:none;
+padding:10px;
+cursor:pointer;
+}
