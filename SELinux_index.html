@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SELinux Overwatch Dashboard</title>
+    <!-- Multiple CSS Files -->
+    <link rel="stylesheet" href="SELinux_theme.css">
+    <link rel="stylesheet" href="SELinux_layout.css">
+    <link rel="stylesheet" href="SELinux_components.css">
+</head>
+<body>
+    <div class="dashboard-grid">
+
+        <!-- Header -->
+        <header class="top-bar">
+            <div class="logo">NSA // MAC ARCHITECTURE OVERWATCH</div>
+            <div class="system-status" id="sys-status-badge">FETCHING STATUS...</div>
+        </header>
+
+        <!-- Sidebar Config -->
+        <aside class="sidebar panel">
+            <h2>Kernel Settings</h2>
+            <div class="config-item">
+                <span class="label">MAC Policy:</span>
+                <span class="value" id="policy-type">...</span>
+            </div>
+            <div class="config-item">
+                <span class="label">SELinuxfs Mount:</span>
+                <span class="value">/sys/fs/selinux</span>
+            </div>
+            <div class="config-item">
+                <span class="label">Default Action:</span>
+                <span class="value text-danger">DENY</span>
+            </div>
+        </aside>
+
+        <!-- Main Analytics Area -->
+        <main class="analytics panel">
+            <h2>AVC Denial Threat Vectors</h2>
+            <!-- Vanilla Canvas Chart -->
+            <div class="canvas-container">
+                <canvas id="threatChart"></canvas>
+            </div>
+        </main>
+
+        <!-- Terminal Output -->
+        <section class="terminal panel">
+            <div class="terminal-header">root@server:~# tail -f /var/log/audit/audit.log</div>
+            <div id="log-output" class="terminal-body"></div>
+        </section>
+
+    </div>
+
+    <!-- Multiple JS Files -->
+    <script src="SELinux_charts.js"></script>
+    <script src="SELinux_terminal.js"></script>
+    <script src="SELinux_app.js"></script>
+</body>
+</html>
