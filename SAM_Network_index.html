@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Integrated Air Defense System</title>
+    <link rel="stylesheet" href="SAM_Network_tactical.css">
+</head>
+<body>
+    <div class="ui-grid">
+        <!-- Sidebar: Status -->
+        <aside class="panel">
+            <h2>BATTERY READINESS</h2>
+            <div id="battery-list">Loading...</div>
+
+            <div class="logs-panel">
+                <h3>ENGAGEMENT LOGS</h3>
+                <ul id="event-logs"></ul>
+            </div>
+        </aside>
+
+        <!-- Main Map -->
+        <main class="map-container">
+            <div class="overlay-text">SECTOR: NORTH-ALPHA // RADAR: ACTIVE</div>
+            <canvas id="tacticalMap"></canvas>
+        </main>
+    </div>
+
+    <script src="SAM_Network_map.js"></script>
+    <script src="SAM_Network_dashboard.js"></script>
+    <script src="SAM_Network_main.js"></script>
+</body>
+</html>
