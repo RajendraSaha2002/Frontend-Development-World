@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Global Command</title>
+    <link rel="stylesheet" href="Early_Warning_Satellite_command.css">
+</head>
+<body>
+    <div class="hud">
+        <header>
+            <div>SATELLITE: <span id="sat-id">SEARCHING...</span></div>
+            <div>LINK STATUS: <span id="link-status">OFFLINE</span></div>
+            <div>LATENCY: <span id="latency">0ms</span></div>
+        </header>
+
+        <main class="map-view">
+            <!-- Simple World Map Background (CSS generated) -->
+            <div class="world-map">
+                <div id="satellite-icon" class="sat-icon">🛰️</div>
+                <div class="ground-station" style="top: 38%; left: 20%;">📡 NORAD</div>
+            </div>
+        </main>
+
+        <footer class="telemetry-feed">
+            <h3>DECRYPTED TELEMETRY STREAM</h3>
+            <div id="feed-log">Waiting for uplink...</div>
+        </footer>
+    </div>
+    <script src="Early_Warning_Satellite_orbit_map.js"></script>
+</body>
+</html>

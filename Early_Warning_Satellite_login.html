@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Secure Uplink Login</title>
+    <link rel="stylesheet" href="Early_Warning_Satellite_command.css">
+</head>
+<body class="login-bg">
+    <div class="login-panel">
+        <div class="logo">WARNING: CLASSIFIED SYSTEM</div>
+        <div id="mfa-stage-1">
+            <input type="password" id="access-code" placeholder="ENTER AUTH CODE (Hint: DEFCON1)">
+            <button onclick="authenticate()">VERIFY IDENTITY</button>
+        </div>
+        <div id="loading" class="hidden">ESTABLISHING SECURE HANDSHAKE...</div>
+        <div id="error-msg"></div>
+    </div>
+    <script src="Early_Warning_Satellite_auth.js"></script>
+</body>
+</html>
