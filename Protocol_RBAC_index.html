@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PROTOCOL — Secure Login</title>
+  <link rel="stylesheet" href="Protocol_RBAC_style.css" />
+</head>
+<body class="auth-body" data-theme="dark">
+
+  <div class="auth-shell">
+
+    <!-- Brand -->
+    <div class="auth-brand">
+      <div class="auth-logo">P</div>
+      <h1>PROTOCOL</h1>
+      <p>Custom Role-Based Access Control System</p>
+    </div>
+
+    <!-- Login card -->
+    <div class="auth-card">
+      <div class="auth-card-header">Authenticate</div>
+
+      <div id="err" class="alert alert-danger hidden"></div>
+
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input type="text"     id="username" class="input"
+               placeholder="username" autocomplete="username" autofocus />
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" class="input"
+               placeholder="password" autocomplete="current-password" />
+      </div>
+
+      <button class="btn btn-primary btn-full" id="btn-login">
+        <span class="spinner hidden" id="spin"></span>
+        <span id="btn-txt">Sign In →</span>
+      </button>
+
+      <!-- Demo account quick-fill -->
+      <div class="auth-demo-accounts">
+        <div class="demo-title">Demo Accounts  (password: password123)</div>
+        <div class="demo-grid">
+          <div class="demo-item" data-u="alice"   >alice   → super_admin (all 19 perms)</div>
+          <div class="demo-item" data-u="bob"     >bob     → admin       (15 perms)</div>
+          <div class="demo-item" data-u="charlie" >charlie → manager     (10 perms)</div>
+          <div class="demo-item" data-u="diana"   >diana   → analyst     (4 perms)</div>
+          <div class="demo-item" data-u="eve"     >eve     → viewer      (2 perms)</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Architecture note -->
+    <p style="font-size:.65rem;color:var();text-align:center;line-height:1.6;max-width:360px">
+      Token stored in <code>sessionStorage</code> →
+      sent as <code>X-Auth-Token</code> header →
+      Python validates against <code>sessions</code> table →
+      PostgreSQL recursive CTE resolves inherited permissions →
+      JS removes DOM elements you lack permission for.
+    </p>
+
+  </div>
+
+  <script src="Protocol_RBAC_auth.js"></script>
+  <script>
+    'use strict';
+
+    // Quick-fill demo accounts on click
+    document.querySelectorAll('.demo-item[data-u]').forEach(el => {
+      el.addEventListener('click', () => {
+        document.getElementById('username').value = el.dataset.u;
+        document.getElementById('password').value = 'password123';
+        document.getElementById('password').focus();
+      });
+    });
+
+    // Login submit
+    const btnLogin = document.getElementById('btn-login');
+    btnLogin.addEventListener('click', doLogin);
+    document.getElementById('password').addEventListener('keydown', e => {
+      if (e.key === 'Enter') doLogin();
+    });
+
+    async function doLogin() {
+      const u   = document.getElementById('username').value.trim();
+      const p   = document.getElementById('password').value;
+      const err = document.getElementById('err');
+      const spin= document.getElementById('spin');
+      const txt = document.getElementById('btn-txt');
+
+      err.classList.add('hidden');
+      spin.classList.remove('hidden');
+      txt.style.opacity = '0';
+      btnLogin.disabled = true;
+
+      const { ok, data } = await Auth.login(u, p);
+
+      spin.classList.add('hidden');
+      txt.style.opacity = '1';
+      btnLogin.disabled = false;
+
+      if (ok) {
+        window.location.href = '/dashboard';
+      } else {
+        err.textContent = data.error || 'Login failed. Check credentials.';
+        err.classList.remove('hidden');
+      }
+    }
+
+    // Already logged in? Skip to dashboard
+    if (Auth.isLoggedIn()) window.location.href = '/dashboard';
+  </script>
+
+</body>
+</html>

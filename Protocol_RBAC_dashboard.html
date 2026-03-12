@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PROTOCOL — Dashboard</title>
+  <link rel="stylesheet" href="Protocol_RBAC_style.css" />
+</head>
+<body data-theme="dark">
+
+  <!--
+    dashboard.html — Application Shell
+    All page content is rendered dynamically by router.js.
+    The sidebar nav is built at runtime based on the user's permissions.
+    Elements marked data-require-perm="X" are physically removed by
+    _enforceDOM() in router.js if the user lacks permission X.
+  -->
+
+  <div class="app-shell">
+
+    <!-- ── Sidebar ─────────────────────────────────────────────── -->
+    <aside class="sidebar" id="sidebar">
+
+      <div class="sidebar-brand">
+        <div class="brand-logo">P</div>
+        <div class="brand-text">
+          <span class="brand-name">PROTOCOL</span>
+          <span class="brand-sub">RBAC · v1.0</span>
+        </div>
+      </div>
+
+      <!-- Nav items injected by Router._buildSidebar() -->
+      <nav id="sidebar-nav" class="sidebar-nav">
+        <div class="nav-loading"><span class="spinner"></span></div>
+      </nav>
+
+      <!-- User info + logout -->
+      <div class="sidebar-footer">
+        <div class="user-card">
+          <div class="user-avatar">?</div>
+          <div class="user-info">
+            <span class="user-name" id="user-fullname">Loading…</span>
+            <span class="user-role" id="user-roles">—</span>
+          </div>
+        </div>
+        <button class="btn-logout" id="btn-logout" title="Sign Out">⏻</button>
+      </div>
+    </aside>
+
+    <!-- ── Main Area ───────────────────────────────────────────── -->
+    <div class="main-area">
+
+      <!-- Topbar -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="btn-icon" id="btn-sidebar-toggle" title="Toggle Sidebar">☰</button>
+          <span class="breadcrumb" id="breadcrumb">Dashboard</span>
+        </div>
+        <div class="topbar-right">
+          <div class="session-info">
+            <span class="session-dot"></span>
+            <span id="session-clock">00:00</span>
+          </div>
+          <!-- Partial token preview (cosmetic, never full) -->
+          <div class="token-display" id="token-preview" title="Session token (partial)">…</div>
+          <button class="btn-icon" id="btn-logout-top" title="Sign Out">⏻</button>
+        </div>
+      </header>
+
+      <!-- Page Content — rendered by router.js -->
+      <main class="page-content" id="page-content">
+        <div class="loading">
+          <span class="spinner"></span>
+          <span>Verifying session &amp; loading permissions…</span>
+        </div>
+      </main>
+
+    </div><!-- /.main-area -->
+  </div><!-- /.app-shell -->
+
+  <!-- Load order: auth.js first, then router.js -->
+  <script src="Protocol_RBAC_auth.js"></script>
+  <script src="Protocol_RBAC_router.js"></script>
+  <script>
+    'use strict';
+
+    document.addEventListener('DOMContentLoaded', async () => {
+
+      // Redirect immediately if no token
+      if (!Auth.isLoggedIn()) {
+        window.location.href = '/';
+        return;
+      }
+
+      // ── Session clock ──────────────────────────────────────────
+      const clockEl = document.getElementById('session-clock');
+      const start   = Date.now();
+      setInterval(() => {
+        const s = Math.floor((Date.now() - start) / 1000);
+        const m = String(Math.floor(s / 60)).padStart(2, '0');
+        const sec = String(s % 60).padStart(2, '0');
+        if (clockEl) clockEl.textContent = `${m}:${sec}`;
+      }, 1000);
+
+      // ── Token preview (first 8 + last 4 chars) ─────────────────
+      const tok = Auth.getToken() || '';
+      const previewEl = document.getElementById('token-preview');
+      if (previewEl && tok) {
+        previewEl.textContent = tok.slice(0, 8) + '…' + tok.slice(-4);
+      }
+
+      // ── Sidebar toggle ─────────────────────────────────────────
+      document.getElementById('btn-sidebar-toggle').addEventListener('click', () => {
+        document.getElementById('sidebar').classList.toggle('collapsed');
+      });
+
+      // ── Logout (both buttons) ──────────────────────────────────
+      const doLogout = () => Auth.logout();
+      document.getElementById('btn-logout').addEventListener('click', doLogout);
+      document.getElementById('btn-logout-top').addEventListener('click', doLogout);
+
+      // ── Initialise router ──────────────────────────────────────
+      // This: fetches /api/me + /api/permissions in parallel,
+      //       builds the sidebar (locked items for pages user can't see),
+      //       renders the first page,
+      //       then calls _enforceDOM() to physically strip forbidden elements.
+      await Router.init();
+
+    });
+  </script>
+
+</body>
+</html>
