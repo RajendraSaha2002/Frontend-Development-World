@@ -1,0 +1,69 @@
+/* ============================================================
+   base.css — CSS Variables, Reset, Typography
+   ============================================================ */
+
+:root {
+    --bg-primary: #0a0e1a;
+    --bg-secondary: #0f1623;
+    --bg-card: #141c2e;
+    --bg-hover: #1a2540;
+    --accent-green: #00ff88;
+    --accent-blue: #00b4ff;
+    --accent-red: #ff3366;
+    --accent-yellow: #ffcc00;
+    --accent-purple: #9b59b6;
+    --text-primary: #e0e6f0;
+    --text-secondary: #7a8ba0;
+    --text-muted: #4a5568;
+    --border: #1e2d45;
+    --shadow: 0 4px 20px rgba(0,0,0,0.5);
+    --font-main: 'Courier New', monospace;
+    --sidebar-width: 220px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body {
+    height: 100%;
+    font-family: var(--font-main);
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    overflow: hidden;
+}
+
+a { color: var(--accent-blue); text-decoration: none; }
+
+input, select {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    color: var(--text-primary);
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-family: var(--font-main);
+    font-size: 0.85rem;
+    outline: none;
+    transition: border-color 0.2s;
+}
+input:focus, select:focus { border-color: var(--accent-green); }
+
+button {
+    cursor: pointer;
+    font-family: var(--font-main);
+    border: none;
+    border-radius: 4px;
+    padding: 8px 16px;
+    font-size: 0.85rem;
+    transition: all 0.2s;
+}
+
+.btn-primary {
+    background: var(--accent-green);
+    color: var(--bg-primary);
+    font-weight: bold;
+}
+.btn-primary:hover { background: #00cc6a; box-shadow: 0 0 12px var(--accent-green); }
+.btn-sm { background: var(--bg-hover); color: var(--text-primary); padding: 4px 10px; }
+.btn-sm:hover { background: var(--accent-blue); }
+
+.hidden { display: none !important; }
+.error-msg { color: var(--accent-red); font-size: 0.8rem; margin-top: 8px; min-height: 18px; }

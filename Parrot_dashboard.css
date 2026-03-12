@@ -1,0 +1,79 @@
+/* ============================================================
+   dashboard.css — Widget Specifics, Charts, Progress Bars
+   ============================================================ */
+
+/* Alert items */
+.alert-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.78rem;
+    animation: slideIn 0.3s ease;
+}
+.alert-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    margin-top: 4px;
+    flex-shrink: 0;
+}
+.alert-dot.CRITICAL { background: var(--accent-red); box-shadow: 0 0 8px var(--accent-red); }
+.alert-dot.WARNING  { background: var(--accent-yellow); }
+.alert-dot.INFO     { background: var(--accent-blue); }
+.alert-msg { flex: 1; color: var(--text-primary); }
+.alert-time { color: var(--text-muted); font-size: 0.7rem; white-space: nowrap; }
+
+/* Log lines */
+.log-line {
+    display: block;
+    padding: 3px 0;
+    border-bottom: 1px solid rgba(30,45,69,0.5);
+    font-size: 0.73rem;
+    color: var(--text-secondary);
+}
+.log-line.CRITICAL { color: var(--accent-red); }
+.log-line.WARNING  { color: var(--accent-yellow); }
+.log-line.ERROR    { color: #ff6b6b; }
+.log-line.INFO     { color: var(--text-secondary); }
+
+/* Port scan results */
+.port-result {
+    display: flex;
+    gap: 16px;
+    padding: 6px 16px;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.78rem;
+}
+.port-num { color: var(--accent-green); width: 60px; }
+.port-svc { color: var(--accent-blue); }
+
+/* Host item */
+.host-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 16px;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.8rem;
+}
+.host-status { width: 8px; height: 8px; border-radius: 50%; background: var(--accent-green); }
+.host-ip { color: var(--accent-blue); }
+
+/* Progress ring */
+.progress-bar-bg {
+    background: var(--bg-secondary);
+    border-radius: 4px;
+    height: 4px;
+    margin-top: 6px;
+    overflow: hidden;
+}
+.progress-bar-fill {
+    height: 100%;
+    border-radius: 4px;
+    background: linear-gradient(90deg, var(--accent-green), var(--accent-blue));
+    transition: width 0.5s ease;
+}
+
+/* Canvas Charts */
+canvas { display: block; }

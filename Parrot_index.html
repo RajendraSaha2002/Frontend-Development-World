@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>🦜 Parrot Security Dashboard</title>
+    <link rel="stylesheet" href="css/Parrot_base.css" />
+    <link rel="stylesheet" href="css/Parrot_layout.css" />
+    <link rel="stylesheet" href="css/Parrot_dashboard.css" />
+    <link rel="stylesheet" href="css/Parrot_terminal.css" />
+    <link rel="stylesheet" href="css/Parrot_animations.css" />
+</head>
+<body>
+
+<!-- LOGIN SCREEN -->
+<div id="login-screen" class="login-overlay">
+    <div class="login-box">
+        <div class="parrot-logo">🦜</div>
+        <h1>PARROT OS</h1>
+        <p class="login-subtitle">Security Dashboard — Pro Edition</p>
+        <input type="text" id="login-user" placeholder="Username" autocomplete="off"/>
+        <input type="password" id="login-pass" placeholder="Password" />
+        <button id="login-btn">ACCESS SYSTEM</button>
+        <p id="login-error" class="error-msg"></p>
+    </div>
+</div>
+
+<!-- MAIN DASHBOARD -->
+<div id="main-dashboard" class="hidden">
+
+    <!-- SIDEBAR -->
+    <nav class="sidebar">
+        <div class="sidebar-logo">
+            <span class="parrot-icon">🦜</span>
+            <span>ParrotOS</span>
+        </div>
+        <ul class="nav-links">
+            <li class="nav-item active" data-panel="overview">
+                <span class="nav-icon">📊</span> Overview
+            </li>
+            <li class="nav-item" data-panel="system">
+                <span class="nav-icon">🖥️</span> System Monitor
+            </li>
+            <li class="nav-item" data-panel="network">
+                <span class="nav-icon">🌐</span> Network Scanner
+            </li>
+            <li class="nav-item" data-panel="logs">
+                <span class="nav-icon">📋</span> Security Logs
+            </li>
+            <li class="nav-item" data-panel="terminal">
+                <span class="nav-icon">💻</span> Terminal
+            </li>
+            <li class="nav-item" data-panel="alerts">
+                <span class="nav-icon">🚨</span> Alerts
+            </li>
+        </ul>
+        <div class="sidebar-footer">
+            <button id="logout-btn">🔒 Logout</button>
+        </div>
+    </nav>
+
+    <!-- CONTENT AREA -->
+    <main class="main-content">
+
+        <!-- HEADER -->
+        <header class="top-bar">
+            <div class="top-bar-left">
+                <span id="panel-title">Overview</span>
+            </div>
+            <div class="top-bar-right">
+                <span id="current-time" class="time-display"></span>
+                <span id="user-badge" class="user-badge"></span>
+            </div>
+        </header>
+
+        <!-- OVERVIEW PANEL -->
+        <section id="panel-overview" class="panel active">
+            <div class="stats-grid">
+                <div class="stat-card" id="cpu-card">
+                    <div class="stat-icon">⚡</div>
+                    <div class="stat-info">
+                        <span class="stat-label">CPU Usage</span>
+                        <span class="stat-value" id="cpu-val">--</span>
+                    </div>
+                    <canvas id="cpu-chart" width="80" height="40"></canvas>
+                </div>
+                <div class="stat-card" id="ram-card">
+                    <div class="stat-icon">🧠</div>
+                    <div class="stat-info">
+                        <span class="stat-label">RAM Usage</span>
+                        <span class="stat-value" id="ram-val">--</span>
+                    </div>
+                    <canvas id="ram-chart" width="80" height="40"></canvas>
+                </div>
+                <div class="stat-card" id="disk-card">
+                    <div class="stat-icon">💾</div>
+                    <div class="stat-info">
+                        <span class="stat-label">Disk Usage</span>
+                        <span class="stat-value" id="disk-val">--</span>
+                    </div>
+                    <canvas id="disk-chart" width="80" height="40"></canvas>
+                </div>
+                <div class="stat-card" id="net-card">
+                    <div class="stat-icon">📡</div>
+                    <div class="stat-info">
+                        <span class="stat-label">Local IP</span>
+                        <span class="stat-value" id="ip-val">--</span>
+                    </div>
+                </div>
+            </div>
+            <div class="dashboard-grid">
+                <div class="widget" id="process-widget">
+                    <div class="widget-header">Top Processes</div>
+                    <table class="data-table" id="process-table">
+                        <thead><tr><th>User</th><th>PID</th><th>CPU%</th><th>MEM%</th><th>Command</th></tr></thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+                <div class="widget" id="alerts-widget">
+                    <div class="widget-header">Recent Alerts</div>
+                    <div id="alerts-list"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SYSTEM PANEL -->
+        <section id="panel-system" class="panel hidden">
+            <div class="widget full-width">
+                <div class="widget-header">System History (Last 60 snapshots)</div>
+                <canvas id="history-chart" width="800" height="200"></canvas>
+            </div>
+            <div class="widget full-width">
+                <div class="widget-header">System Info</div>
+                <div id="system-details" class="system-details-grid"></div>
+            </div>
+        </section>
+
+        <!-- NETWORK PANEL -->
+        <section id="panel-network" class="panel hidden">
+            <div class="widget">
+                <div class="widget-header">Port Scanner</div>
+                <div class="scan-controls">
+                    <input id="scan-target" type="text" placeholder="Target IP (e.g. 192.168.1.1)" />
+                    <button id="scan-btn" class="btn-primary">Scan Ports</button>
+                </div>
+                <div id="scan-results"></div>
+            </div>
+            <div class="widget">
+                <div class="widget-header">Network Range Discovery</div>
+                <div class="scan-controls">
+                    <input id="range-input" type="text" placeholder="CIDR (e.g. 192.168.1.0/24)" />
+                    <button id="range-btn" class="btn-primary">Discover Hosts</button>
+                </div>
+                <div id="range-results"></div>
+            </div>
+        </section>
+
+        <!-- LOGS PANEL -->
+        <section id="panel-logs" class="panel hidden">
+            <div class="widget full-width">
+                <div class="widget-header">
+                    Security Logs
+                    <select id="log-severity-filter">
+                        <option value="">All</option>
+                        <option value="INFO">INFO</option>
+                        <option value="WARNING">WARNING</option>
+                        <option value="ERROR">ERROR</option>
+                        <option value="CRITICAL">CRITICAL</option>
+                    </select>
+                    <button id="refresh-logs-btn" class="btn-sm">Refresh</button>
+                </div>
+                <div id="logs-container" class="log-container"></div>
+            </div>
+            <div class="widget full-width">
+                <div class="widget-header">System File Logs</div>
+                <div id="sys-logs-container" class="log-container"></div>
+            </div>
+        </section>
+
+        <!-- TERMINAL PANEL -->
+        <section id="panel-terminal" class="panel hidden">
+            <div class="terminal-container" id="terminal-container">
+                <div class="terminal-output" id="terminal-output">
+                    <div class="term-line"><span class="term-prompt">parrot@dashboard:~$</span> <span>Welcome to Parrot OS Dashboard Terminal</span></div>
+                </div>
+                <div class="terminal-input-row">
+                    <span class="term-prompt" id="term-prompt-label">parrot@dashboard:~$</span>
+                    <input type="text" id="terminal-input" class="terminal-input" placeholder="Type command..." autocomplete="off"/>
+                </div>
+            </div>
+        </section>
+
+        <!-- ALERTS PANEL -->
+        <section id="panel-alerts" class="panel hidden">
+            <div class="widget full-width">
+                <div class="widget-header">Active Alerts</div>
+                <div id="full-alerts-list"></div>
+            </div>
+        </section>
+
+    </main>
+</div>
+
+<script src="js/Parrot_api.js"></script>
+<script src="js/Parrot_charts.js"></script>
+<script src="js/Parrot_terminal.js"></script>
+<script src="js/Parrot_network.js"></script>
+<script src="js/Parrot_alerts.js"></script>
+<script src="js/Parrot_main.js"></script>
+</body>
+</html>

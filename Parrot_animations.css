@@ -1,0 +1,52 @@
+/* ============================================================
+   animations.css — Keyframes & Motion Effects
+   ============================================================ */
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideIn {
+    from { opacity: 0; transform: translateX(-10px); }
+    to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes pulse {
+    0%, 100% { box-shadow: 0 0 8px rgba(0,255,136,0.3); }
+    50%       { box-shadow: 0 0 20px rgba(0,255,136,0.7); }
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0; }
+}
+
+@keyframes scanLine {
+    0%   { top: -10px; }
+    100% { top: 100%; }
+}
+
+.pulse-green { animation: pulse 2s infinite; }
+.blink { animation: blink 1s step-end infinite; }
+
+/* Glow effect for stat cards on critical */
+.stat-card.critical { border-color: var(--accent-red); animation: pulse 1.5s infinite; }
+.stat-card.warning  { border-color: var(--accent-yellow); }
+
+/* Scan animation overlay */
+.scanning-overlay {
+    position: relative;
+    overflow: hidden;
+}
+.scanning-overlay::after {
+    content: '';
+    position: absolute;
+    left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--accent-green), transparent);
+    animation: scanLine 2s linear infinite;
+}
+
+/* Fade in for panels */
+.panel.active { animation: fadeIn 0.3s ease; }
