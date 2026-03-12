@@ -1,0 +1,39 @@
+.card {
+    background-color: #0b0c10;
+    border: 1px solid #ff0000;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(255, 0, 0, 0.2);
+}
+
+.card h3 {
+    color: #45a29e;
+    margin-top: 0;
+    font-size: 1.2rem;
+}
+
+.terminal-content {
+    height: 300px;
+    overflow-y: auto;
+    color: #00ff00; /* Classic hacker green */
+    background: #000;
+    padding: 15px;
+    border: 1px dashed #45a29e;
+}
+
+#alerts-table {
+    width: 100%;
+    border-collapse: collapse;
+    color: #ffffff;
+}
+
+#alerts-table th, #alerts-table td {
+    border: 1px solid #333;
+    padding: 12px;
+    text-align: left;
+}
+
+#alerts-table th {
+    background-color: #ff0000;
+    color: #000;
+    font-weight: bold;
+}

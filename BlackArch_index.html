@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BlackArch Terminal Dashboard</title>
+    <link rel="stylesheet" href="BlackArch_main.css">
+    <link rel="stylesheet" href="BlackArch_components.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>[root@blackarch ~]# _</h1>
+        </header>
+        <div class="dashboard-grid">
+            <div class="card terminal-card">
+                <h3>> live_recon_logs.sh</h3>
+                <div id="terminal-output" class="terminal-content"></div>
+            </div>
+            <div class="card alerts-card">
+                <h3>> pgsql_security_alerts</h3>
+                <table id="alerts-table">
+                    <thead>
+                        <tr><th>Timestamp</th><th>Target IP</th><th>Alert Type</th><th>Severity</th></tr>
+                    </thead>
+                    <tbody>
+                        </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script src="BlackArch_main.js"></script>
+    <script src="BlackArch_terminal.js"></script>
+</body>
+</html>
