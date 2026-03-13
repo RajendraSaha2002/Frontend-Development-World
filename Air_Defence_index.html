@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Air Defense Threat Intelligence System</title>
+    <link rel="stylesheet" href="css/Air_Defence_style.css"/>
+</head>
+<body>
+
+<!-- ══ TOP NAV ══════════════════════════════════════════ -->
+<nav class="topnav">
+    <div class="nav-brand">🛡 AIR DEFENSE THREAT INTELLIGENCE</div>
+    <div class="nav-right">
+        <span id="clock" class="clock"></span>
+        <span class="status-dot"></span>
+        <span class="status-label">SYSTEM ACTIVE</span>
+    </div>
+</nav>
+
+<!-- ══ SIDEBAR ══════════════════════════════════════════ -->
+<div class="layout">
+    <aside class="sidebar">
+        <ul>
+            <li class="active" onclick="showView('dashboard')">📊 Dashboard</li>
+            <li onclick="showView('threats')">☢ Threats</li>
+            <li onclick="showView('alerts')">🔔 Alerts</li>
+            <li onclick="showView('report')">📄 Report</li>
+            <li onclick="showView('ingest')">📡 Ingest Intel</li>
+        </ul>
+        <div class="sidebar-stats">
+            <div class="stat-box critical">
+                <div id="s-critical">0</div><small>CRITICAL</small>
+            </div>
+            <div class="stat-box high">
+                <div id="s-high">0</div><small>HIGH</small>
+            </div>
+            <div class="stat-box medium">
+                <div id="s-medium">0</div><small>MEDIUM</small>
+            </div>
+        </div>
+    </aside>
+
+    <!-- ══ MAIN CONTENT ════════════════════════════════════ -->
+    <main class="main">
+
+        <!-- DASHBOARD VIEW -->
+        <div id="view-dashboard" class="view active">
+            <h2>COMMAND OVERVIEW</h2>
+
+            <!-- KPI Cards -->
+            <div class="kpi-row">
+                <div class="kpi-card">
+                    <div class="kpi-value" id="kpi-total">—</div>
+                    <div class="kpi-label">Total Tracked</div>
+                </div>
+                <div class="kpi-card critical-card">
+                    <div class="kpi-value" id="kpi-critical">—</div>
+                    <div class="kpi-label">Critical</div>
+                </div>
+                <div class="kpi-card high-card">
+                    <div class="kpi-value" id="kpi-high">—</div>
+                    <div class="kpi-label">High</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-value" id="kpi-alerts">—</div>
+                    <div class="kpi-label">Active Alerts</div>
+                </div>
+            </div>
+
+            <!-- Tactical Map + Alerts side by side -->
+            <div class="dash-grid">
+                <div class="map-panel">
+                    <div class="panel-title">⬡ TACTICAL MAP</div>
+                    <div class="map-area" id="tactical-map">
+                        <!-- Threat nodes rendered by JS -->
+                    </div>
+                </div>
+
+                <div class="alerts-panel">
+                    <div class="panel-title">⚠ LIVE ALERTS <span id="alert-badge" class="badge">0</span></div>
+                    <div id="live-alerts-list"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- THREATS VIEW -->
+        <div id="view-threats" class="view">
+            <h2>THREAT DATABASE</h2>
+            <table class="data-table" id="threats-table">
+                <thead>
+                <tr>
+                    <th>ID</th><th>Name</th><th>Type</th><th>Units</th>
+                    <th>Sector</th><th>Level</th><th>Speed</th><th>Flags</th><th>Action</th>
+                </tr>
+                </thead>
+                <tbody id="threats-tbody"></tbody>
+            </table>
+        </div>
+
+        <!-- ALERTS VIEW -->
+        <div id="view-alerts" class="view">
+            <h2>ALERT MANAGEMENT</h2>
+            <div id="alerts-full-list"></div>
+        </div>
+
+        <!-- REPORT VIEW -->
+        <div id="view-report" class="view">
+            <h2>INTELLIGENCE REPORT</h2>
+            <div id="report-content" class="report-box"></div>
+            <button class="btn" onclick="loadReport()">🔄 Refresh Report</button>
+        </div>
+
+        <!-- INGEST VIEW -->
+        <div id="view-ingest" class="view">
+            <h2>INGEST INTELLIGENCE DATA</h2>
+            <div class="form-panel">
+                <div class="form-row">
+                    <label>ID</label>
+                    <input type="text" id="f-id" placeholder="e.g. delta-5"/>
+                </div>
+                <div class="form-row">
+                    <label>Name</label>
+                    <input type="text" id="f-name" placeholder="e.g. Delta-5"/>
+                </div>
+                <div class="form-row">
+                    <label>Type</label>
+                    <select id="f-type">
+                        <option>DRONE_SWARM</option>
+                        <option>FIXED_WING</option>
+                        <option>ROTARY</option>
+                        <option>UNKNOWN_AIRCRAFT</option>
+                        <option>CRUISE_MISSILE</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <label>Unit Count</label>
+                    <input type="number" id="f-units" value="1" min="1"/>
+                </div>
+                <div class="form-row">
+                    <label>Sector</label>
+                    <input type="text" id="f-sector" placeholder="e.g. Sector 4-B"/>
+                </div>
+                <div class="form-row">
+                    <label>Speed (knots)</label>
+                    <input type="number" id="f-speed" value="100"/>
+                </div>
+                <div class="form-row">
+                    <label>Behavior Flags</label>
+                    <input type="text" id="f-flags" placeholder="e.g. erratic,jamming_detected"/>
+                </div>
+                <button class="btn btn-primary" onclick="ingestData()">📡 SUBMIT INTELLIGENCE</button>
+                <div id="ingest-result" class="ingest-msg"></div>
+            </div>
+        </div>
+
+    </main>
+</div>
+
+<script src="js/Air_Defence_app.js"></script>
+</body>
+</html>
