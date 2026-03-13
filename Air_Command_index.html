@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Modernized IBS Interface</title>
+    <link rel="stylesheet" href="../static/Air_Command_style.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <header>
+            <h1>Modernized IBS Interface</h1>
+            <nav class="top-nav">
+                <button class="active">Navigation</button>
+                <button>Combat</button>
+                <button>Engineering</button>
+                <button>Communications</button>
+            </nav>
+        </header>
+
+        <main class="grid-layout">
+            <section class="card">
+                <h3>TACTICAL RADAR</h3>
+                <div class="radar-visual">
+                    <div class="sweep"></div>
+                </div>
+                <div class="data-points">
+                    <p>Range: <span id="radar-range">--</span></p>
+                    <p>Contacts: <span id="radar-contacts">--</span></p>
+                    <p>Bearing: <span id="radar-bearing">--</span></p>
+                </div>
+            </section>
+
+            <section class="card">
+                <h3>SHIP STATUS</h3>
+                <div class="status-indicators">
+                    <span class="dot green"></span><span class="dot green"></span><span class="dot green"></span>
+                </div>
+                <p>Engine 1: <span id="eng-1">--</span> ✓</p>
+                <p>Engine 2: <span id="eng-2">--</span> ✓</p>
+                <p>Fuel: <span id="fuel-lvl">--</span> Δ</p>
+                <p class="highlight" id="sys-msg">Initializing...</p>
+            </section>
+
+            <section class="card">
+                <h3>NAVIGATION</h3>
+                <p id="nav-coords">--</p>
+                <p>Course: 285° | Speed: <span id="nav-speed">--</span></p>
+                <p>ETA Mumbai: <span id="nav-eta">--</span></p>
+                <p>Weather: Clear | Sea: 2-3</p>
+            </section>
+
+            <section class="card">
+                <h3>THREAT ASSESSMENT</h3>
+                <div class="status-indicators">
+                    <span class="dot green"></span><span class="dot green"></span>
+                </div>
+                <p>Threat Level: <span id="threat-lvl">--</span></p>
+                <p>Friendly: <span id="threat-f">--</span> vessels</p>
+                <p>Unknown: <span id="threat-u">--</span> merchant</p>
+                <p>ROE: Peacetime</p>
+            </section>
+        </main>
+    </div>
+    <script src="../static/Air_Command_script.js"></script>
+</body>
+</html>
