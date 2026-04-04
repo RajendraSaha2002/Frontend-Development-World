@@ -1,0 +1,23 @@
+.sky {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(#0f2027, #203a43, #2c5364);
+    overflow: hidden;
+}
+
+/* Stars */
+.sky::before {
+    content: "";
+    position: absolute;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(white 1px, transparent 1px);
+    background-size: 50px 50px;
+    animation: moveStars 60s linear infinite;
+}
+
+@keyframes moveStars {
+    from { transform: translateY(0); }
+    to { transform: translateY(-200px); }
+}
