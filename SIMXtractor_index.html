@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>SIMXtractor – SIM Card Imaging & Analysis Tool</title>
+    <link rel="stylesheet" href="css/SIMXtractor_base.css" />
+    <link rel="stylesheet" href="css/SIMXtractor_sidebar.css" />
+    <link rel="stylesheet" href="css/SIMXtractor_dashboard.css" />
+    <link rel="stylesheet" href="css/SIMXtractor_components.css" />
+    <link rel="stylesheet" href="css/SIMXtractor_panels.css" />
+</head>
+<body>
+
+<!-- ══════════════════════════════════════
+     SIDEBAR
+══════════════════════════════════════ -->
+<aside class="sidebar" id="sidebar">
+
+    <div class="sidebar-logo">
+        <div class="logo-icon">SX</div>
+        <div class="logo-text">
+            <span class="logo-main">SIMXtractor</span>
+            <span class="logo-sub">SIM Card Imaging & Analysis</span>
+        </div>
+    </div>
+
+    <nav class="sidebar-nav">
+
+        <div class="nav-label">OVERVIEW</div>
+        <a class="nav-item active" data-panel="dashboard">
+            <span class="nav-icon">⊞</span><span>Dashboard</span>
+        </a>
+
+        <div class="nav-label">SIM CARD READER</div>
+        <a class="nav-item" data-panel="reader-connect">
+            <span class="nav-icon">🔌</span><span>Connect Reader</span>
+        </a>
+        <a class="nav-item" data-panel="reader-info">
+            <span class="nav-icon">ℹ</span><span>Reader Information</span>
+        </a>
+        <a class="nav-item" data-panel="reader-carddetect">
+            <span class="nav-icon">📶</span><span>Card Detection</span>
+        </a>
+
+        <div class="nav-label">SIM IMAGER</div>
+        <a class="nav-item" data-panel="imager-new">
+            <span class="nav-icon">💾</span><span>New Imaging Session</span>
+        </a>
+        <a class="nav-item" data-panel="imager-hash">
+            <span class="nav-icon">🔐</span><span>Hash Generator</span>
+        </a>
+        <a class="nav-item" data-panel="imager-writeblocker">
+            <span class="nav-icon">🛡</span><span>Write Blocker</span>
+        </a>
+        <a class="nav-item" data-panel="imager-report">
+            <span class="nav-icon">📄</span><span>Seize Report</span>
+        </a>
+
+        <div class="nav-label">SIM ANALYSER</div>
+        <a class="nav-item" data-panel="analyser-load">
+            <span class="nav-icon">📂</span><span>Load SIM Image</span>
+        </a>
+        <a class="nav-item" data-panel="analyser-calllogs">
+            <span class="nav-icon">📞</span><span>Call Logs</span>
+        </a>
+        <a class="nav-item" data-panel="analyser-contacts">
+            <span class="nav-icon">👤</span><span>Contacts</span>
+        </a>
+        <a class="nav-item" data-panel="analyser-sms">
+            <span class="nav-icon">💬</span><span>SMS Messages</span>
+        </a>
+        <a class="nav-item" data-panel="analyser-network">
+            <span class="nav-icon">📡</span><span>Network Info</span>
+        </a>
+        <a class="nav-item" data-panel="analyser-deleted">
+            <span class="nav-icon">🗑</span><span>Deleted Recovery</span>
+        </a>
+        <a class="nav-item" data-panel="analyser-search">
+            <span class="nav-icon">🔍</span><span>Search</span>
+        </a>
+        <a class="nav-item" data-panel="analyser-report">
+            <span class="nav-icon">📋</span><span>PDF Report</span>
+        </a>
+
+    </nav>
+
+    <div class="sidebar-footer">
+        <div class="cdac-badge">CDAC · Cyber Security Group · v3.2.1</div>
+    </div>
+</aside>
+
+<!-- ══════════════════════════════════════
+     MAIN CONTENT
+══════════════════════════════════════ -->
+<main class="main-content" id="main-content">
+
+    <!-- TOP HEADER -->
+    <header class="top-header">
+        <div class="header-left">
+            <button class="toggle-btn" id="sidebarToggle">☰</button>
+            <div class="breadcrumb" id="breadcrumb">Dashboard</div>
+        </div>
+        <div class="header-right">
+            <div class="device-status" id="device-status">
+                <span class="dot dot-off" id="status-dot"></span>
+                <span id="status-label">No Device</span>
+            </div>
+            <div class="gsm-badge" id="gsm-badge">GSM/CDMA</div>
+        </div>
+    </header>
+
+    <!-- ════════ PANEL: DASHBOARD ════════ -->
+    <section class="panel active" id="panel-dashboard">
+        <div class="panel-header">
+            <h1>SIMXtractor Dashboard</h1>
+            <p>Forensic solution for imaging and analysing GSM & CDMA SIM cards. Hardware reader, imager, and analyser in one suite.</p>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">📶</div>
+                <div class="stat-info">
+                    <div class="stat-val" id="st-sessions">0</div>
+                    <div class="stat-lbl">Imaging Sessions</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">💬</div>
+                <div class="stat-info">
+                    <div class="stat-val" id="st-sms">0</div>
+                    <div class="stat-lbl">SMS Extracted</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">📞</div>
+                <div class="stat-info">
+                    <div class="stat-val" id="st-calls">0</div>
+                    <div class="stat-lbl">Call Records</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">🗑</div>
+                <div class="stat-info">
+                    <div class="stat-val" id="st-deleted">0</div>
+                    <div class="stat-lbl">Deleted Recovered</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-label">Tool Modules</div>
+        <div class="module-grid">
+            <!-- Reader -->
+            <div class="module-card" data-panel="reader-connect">
+                <div class="module-header reader">SIM Card Reader</div>
+                <div class="module-body">
+                    <div class="module-icon">🔌</div>
+                    <ul class="module-list">
+                        <li>USB 2.0 Support</li>
+                        <li>5V / 3.3V / 1.8V SIM cards</li>
+                        <li>ISO-7816 Standard</li>
+                        <li>PC/SC Compatible</li>
+                        <li>Windows 32/64-bit</li>
+                    </ul>
+                </div>
+                <div class="module-action">Open Reader →</div>
+            </div>
+            <!-- Imager -->
+            <div class="module-card" data-panel="imager-new">
+                <div class="module-header imager">SIM Imager</div>
+                <div class="module-body">
+                    <div class="module-icon">💾</div>
+                    <ul class="module-list">
+                        <li>Generate SIM card image file</li>
+                        <li>MD5, SHA-1, SHA-2 hashing</li>
+                        <li>Per-file & total hash values</li>
+                        <li>Post-seize investigation report</li>
+                        <li>Write Blocking</li>
+                    </ul>
+                </div>
+                <div class="module-action">Start Imaging →</div>
+            </div>
+            <!-- Analyser -->
+            <div class="module-card" data-panel="analyser-load">
+                <div class="module-header analyser">SIM Analyser</div>
+                <div class="module-body">
+                    <div class="module-icon">🔬</div>
+                    <ul class="module-list">
+                        <li>Call logs, Contacts, SMS</li>
+                        <li>Network information</li>
+                        <li>Multi-image load & analyse</li>
+                        <li>Deleted SMS recovery</li>
+                        <li>Custom PDF reports</li>
+                    </ul>
+                </div>
+                <div class="module-action">Open Analyser →</div>
+            </div>
+        </div>
+
+        <!-- Format Support -->
+        <div class="compat-banner">
+            <span class="compat-label">SIM Compatibility:</span>
+            <span class="compat-tag gsm-tag">GSM</span>
+            <span class="compat-tag cdma-tag">CDMA</span>
+            <span class="compat-tag">ISO-7816</span>
+            <span class="compat-tag">PC/SC</span>
+            <span class="compat-tag">USB 2.0</span>
+            <span class="compat-tag">Windows 32-bit</span>
+            <span class="compat-tag">Windows 64-bit</span>
+        </div>
+    </section>
+
+    <!-- ════════ PANEL: READER – CONNECT ════════ -->
+    <section class="panel" id="panel-reader-connect">
+        <div class="panel-header">
+            <h1>🔌 Connect SIM Card Reader</h1>
+            <p>Hardware-based USB SIM Card Reader with ISO-7816 & PC/SC support.</p>
+        </div>
+        <div class="reader-diagram">
+            <div class="usb-device" id="usb-device">
+                <div class="usb-top">USB</div>
+                <div class="usb-body">SIMXtractor<br>Reader</div>
+                <div class="usb-led" id="usb-led"></div>
+            </div>
+            <div class="reader-conn-info" id="reader-conn-info">
+                <p>Insert SIM Card Reader into USB port, then click Detect.</p>
+            </div>
+        </div>
+        <div class="controls-row">
+            <button class="btn-primary" id="detect-reader-btn">🔍 Detect Reader</button>
+            <button class="btn-secondary" id="disconnect-reader-btn">⏏ Disconnect</button>
+        </div>
+        <div class="result-box" id="reader-status-box" style="display:none;">
+            <div class="result-title">Reader Status</div>
+            <table class="data-table" id="reader-status-table">
+                <thead><tr><th>Property</th><th>Value</th></tr></thead>
+                <tbody id="reader-status-tbody"></tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- ════════ PANEL: READER – INFO ════════ -->
+    <section class="panel" id="panel-reader-info">
+        <div class="panel-header">
+            <h1>ℹ Reader Information</h1>
+            <p>Technical specifications and hardware details of the connected SIM Card Reader.</p>
+        </div>
+        <div class="spec-grid">
+            <div class="spec-card">
+                <div class="spec-icon">🔌</div>
+                <div class="spec-title">USB Interface</div>
+                <div class="spec-desc">USB 2.0 Full Speed · Hot-plug capable</div>
+            </div>
+            <div class="spec-card">
+                <div class="spec-icon">⚡</div>
+                <div class="spec-title">Voltage Support</div>
+                <div class="spec-desc">5V · 3.3V · 1.8V SIM card classes</div>
+            </div>
+            <div class="spec-card">
+                <div class="spec-icon">📋</div>
+                <div class="spec-title">Standard</div>
+                <div class="spec-desc">ISO-7816 · PC/SC compatible</div>
+            </div>
+            <div class="spec-card">
+                <div class="spec-icon">💻</div>
+                <div class="spec-title">OS Support</div>
+                <div class="spec-desc">Windows XP/7/8/10/11 (32 & 64-bit)</div>
+            </div>
+            <div class="spec-card">
+                <div class="spec-icon">📶</div>
+                <div class="spec-title">SIM Types</div>
+                <div class="spec-desc">GSM · CDMA · Mini / Micro / Nano SIM</div>
+            </div>
+            <div class="spec-card">
+                <div class="spec-icon">🛡</div>
+                <div class="spec-title">Write Protection</div>
+                <div class="spec-desc">Hardware write-block enforcement</div>
+            </div>
+        </div>
+        <div class="result-box" style="margin-top:20px;">
+            <div class="result-title">Driver & Firmware</div>
+            <table class="data-table">
+                <tbody>
+                <tr><td>Driver Version</td><td>SIMXtractor USB Driver v3.2.1</td></tr>
+                <tr><td>Firmware</td><td>FW-2024.09.15</td></tr>
+                <tr><td>PC/SC Version</td><td>2.01</td></tr>
+                <tr><td>ATR Protocols</td><td>T=0, T=1</td></tr>
+                <tr><td>Max Clock</td><td>4 MHz</td></tr>
+                <tr><td>Manufacturer</td><td>CDAC Cyber Security Group</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- ════════ PANEL: READER – CARD DETECT ════════ -->
+    <section class="panel" id="panel-reader-carddetect">
+        <div class="panel-header">
+            <h1>📶 Card Detection</h1>
+            <p>Detect and identify the inserted SIM card type and basic card data.</p>
+        </div>
+        <div class="upload-zone" id="card-detect-zone">
+            <div class="upload-icon">📶</div>
+            <div class="upload-text">Click to Simulate Card Insertion / Detection</div>
+            <div class="upload-hint">In hardware mode, insert SIM into reader and click Detect</div>
+        </div>
+        <div class="controls-row">
+            <button class="btn-primary" id="detect-card-btn">📶 Detect SIM Card</button>
+            <button class="btn-secondary" id="eject-card-btn">⏏ Eject Card</button>
+        </div>
+        <div class="result-box" id="card-detect-result" style="display:none;">
+            <div class="result-title">Detected Card Information</div>
+            <table class="data-table"><tbody id="card-info-tbody"></tbody></table>
+        </div>
+    </section>
+
+    <!-- ════════ PANEL: IMAGER – NEW SESSION ════════ -->
+    <section class="panel" id="panel-imager-new">
+        <div class="panel-header">
+            <h1>💾 New Imaging Session</h1>
+            <p>Image the complete contents of the SIM card with write-blocking and hash verification.</p>
+        </div>
+        <!-- Step wizard -->
+        <div class="wizard-steps">
+            <div class="wizard-step active" id="ws-1"><span>1</span>Case Info</div>
+            <div class="wizard-sep"></div>
+            <div class="wizard-step" id="ws-2"><span>2</span>Settings</div>
+            <div class="wizard-sep"></div>
+            <div class="wizard-step" id="ws-3"><span>3</span>Imaging</div>
+            <div class="wizard-sep"></div>
+            <div class="wizard-step" id="ws-4"><span>4</span>Verify</div>
+        </div>
+
+        <!-- Step 1: Case Info -->
+        <div class="wizard-panel active" id="wp-1">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Case Number</label>
+                    <input type="text" id="img-case" placeholder="e.g. CASE-2024-001" />
+                </div>
+                <div class="form-group">
+                    <label>Investigator Name</label>
+                    <input type="text" id="img-inv" placeholder="Full name" />
+                </div>
+                <div class="form-group">
+                    <label>Organisation</label>
+                    <input type="text" id="img-org" placeholder="e.g. CDAC CSG" />
+                </div>
+                <div class="form-group">
+                    <label>Date & Time</label>
+                    <input type="datetime-local" id="img-datetime" />
+                </div>
+                <div class="form-group full">
+                    <label>Evidence Description</label>
+                    <textarea id="img-desc" placeholder="Describe the SIM card and seizure details..."></textarea>
+                </div>
+            </div>
+            <button class="btn-primary" id="step1-next">Next: Settings →</button>
+        </div>
+
+        <!-- Step 2: Settings -->
+        <div class="wizard-panel" id="wp-2">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Hashing Algorithm</label>
+                    <select id="img-hash-algo">
+                        <option value="MD5">MD5</option>
+                        <option value="SHA-1">SHA-1</option>
+                        <option value="SHA-256" selected>SHA-256 (Recommended)</option>
+                        <option value="SHA-512">SHA-512</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Image Format</label>
+                    <select id="img-format">
+                        <option value="SIM">SIM Image (.sim)</option>
+                        <option value="BIN">Binary (.bin)</option>
+                        <option value="RAW">Raw Dump (.raw)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Write Blocking</label>
+                    <select id="img-wb">
+                        <option value="on" selected>Enabled (Recommended)</option>
+                        <option value="off">Disabled</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Hash Per File</label>
+                    <select id="img-perfile">
+                        <option value="yes" selected>Yes – individual file hashes</option>
+                        <option value="no">No – total hash only</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Output Directory</label>
+                    <input type="text" id="img-outdir" placeholder="C:\ForensicCase\CASE-001\" />
+                </div>
+                <div class="form-group">
+                    <label>Image Filename</label>
+                    <input type="text" id="img-filename" placeholder="simimage_001" />
+                </div>
+            </div>
+            <div style="display:flex;gap:10px;">
+                <button class="btn-secondary" id="step2-back">← Back</button>
+                <button class="btn-primary"   id="step2-next">Next: Start Imaging →</button>
+            </div>
+        </div>
+
+        <!-- Step 3: Imaging Progress -->
+        <div class="wizard-panel" id="wp-3">
+            <div class="imaging-terminal" id="imaging-terminal">
+                <div class="terminal-line">[ SIMXtractor Imager v3.2.1 ]</div>
+                <div class="terminal-line dim">Waiting to start...</div>
+            </div>
+            <div class="progress-wrap" style="margin-top:16px;">
+                <div class="progress-bar"><div class="progress-fill" id="img-fill"></div></div>
+                <span id="img-pct">0%</span>
+            </div>
+            <div class="progress-meta" id="img-meta">Files: 0 | Time Elapsed: 00:00:00 | Time Remaining: --:--:--</div>
+            <div style="display:flex;gap:10px;margin-top:16px;">
+                <button class="btn-secondary" id="step3-back">← Back</button>
+                <button class="btn-primary"   id="start-imaging-btn">▶ Start Imaging</button>
+                <button class="btn-danger"    id="cancel-imaging-btn" style="display:none;">■ Cancel</button>
+            </div>
+        </div>
+
+        <!-- Step 4: Verify -->
+        <div class="wizard-panel" id="wp-4">
+            <div class="result-box">
+                <div class="result-title">Imaging Complete – Verification</div>
+                <table class="data-table"><tbody id="img-verify-tbody"></tbody></table>
+            </div>
+            <div class="result-box" style="margin-top:12px;">
+                <div class="result-title">Hash Values</div>
+                <table class="data-table"><tbody id="img-hash-tbody"></tbody></table>
+            </div>
+            <div style="display:flex;gap:10px;margin-top:16px;">
+                <button class="btn-primary" id="img-save-report">📄 Save Report</button>
+                <button class="btn-secondary" id="step4-new">+ New Session</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ════════ PANEL: IMAGER – HASH ════════ -->
+    <section class="panel" id="panel-imager-hash">
+        <div class="panel-header">
+            <h1>🔐 Hash Generator</h1>
+            <p>Generate MD5, SHA-1, and SHA-2 hash values for SIM image files and individual extracted files.</p>
+        </div>
+        <div class="upload-zone" id="hash-upload-zone">
+            <div class="upload-icon">📁</div>
+            <div class="upload-text">Drop SIM Image File or Click to Browse</div>
+            <div class="upload-hint">Supports .sim, .bin, .raw and any binary file</div>
+            <input type="file" id="hash-file-input" hidden />
+        </div>
+        <div class="result-box" id="hash-results" style="display:none;">
+            <div class="result-title">Generated Hash Values</div>
+            <div id="hash-progress-msg"></div>
+            <table class="data-table">
+                <thead><tr><th>Algorithm</th><th>Hash Value</th><th>Status</th></tr></thead>
+                <tbody id="hash-tbody"></tbody>
+            </table>
+            <div class="result-title" style="margin-top:14px;">File Information</div>
+            <table class="data-table"><tbody id="hash-fileinfo"></tbody></table>
+        </div>
+    </section>
+
+    <!-- ════════ PANEL: IMAGER – WRITE BLOCKER ════════ -->
+    <section class="panel" id="panel-imager-writeblocker">
+        <div class="panel-header">
+            <h1>🛡 Write Blocker</h1>
+            <p>Hardware and software write blocking ensures SIM card data integrity during forensic imaging.</p>
+        </div>
+        <div class="wb-status-card" id="wb-card">
+            <div class="wb-icon" id="wb-icon">🛡</div>
+            <div class="wb-label" id="wb-label">Write Blocking: OFF</div>
+            <div class="wb-desc">Enable write blocking before inserting evidence SIM card</div>
+        </div>
+        <div class="controls-row" style="margin-top:20px;">
+            <button class="btn-primary" id="wb-enable-btn">🛡 Enable Write Blocking</button>
+            <button class="btn-danger"  id="wb-disable-btn">⚠ Disable Write Blocking</button>
+        </div>
+        <div class="result-box" style="margin-top:20px;">
+            <div class="result-title">Write Block Log</div>
+            <div class="log-terminal" id="wb-log">
+                <div class="log-line dim">No activity logged.</div>
+            </div>
+        </div>
+        <div class="result-box" style="margin-top:16px;">
+            <div class="result-title">Protection Rules</div>
+            <table class="data-table">
+                <tbody>
+                <tr><td>Read Operations</td><td><span class="badge badge-ok">Allowed</span></td></tr>
+                <tr><td>Write Operations</td><td><span class="badge badge-danger" id="wb-write-status">Blocked</span></td></tr>
+                <tr><td>Delete Operations</td><td><span class="badge badge-danger">Blocked</span></td></tr>
+                <tr><td>Format Operations</td><td><span class="badge badge-danger">Blocked</span></td></tr>
+                <tr><td>SIM PIN Attempts</td><td><span class="badge badge-warn">Logged</span></td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- ════════ PANEL: IMAGER – SEIZE REPORT ════════ -->
+    <section class="panel" id="panel-imager-report">
+        <div class="panel-header">
+            <h1>📄 Seize Report Generator</h1>
+            <p>Generate a post-imaging seizure report with investigation details.</p>
+        </div>
+        <div class="report-layout">
+            <div class="report-form">
+                <div class="form-group"><label>Case Number</label><input type="text" id="sr-case" placeholder="CASE-2024-001" /></div>
+                <div class="form-group"><label>Investigator</label><input type="text" id="sr-inv"  placeholder="Name" /></div>
+                <div class="form-group"><label>Organisation</label><input type="text" id="sr-org"  placeholder="Agency / Unit" /></div>
+                <div class="form-group"><label>Date of Seizure</label><input type="date" id="sr-date" /></div>
+                <div class="form-group"><label>Location of Seizure</label><input type="text" id="sr-loc" placeholder="Address / GPS" /></div>
+                <div class="form-group"><label>SIM Card ICCID</label><input type="text" id="sr-iccid" placeholder="89XX..." /></div>
+                <div class="form-group"><label>SIM Card Type</label>
+                    <select id="sr-type"><option>GSM</option><option>CDMA</option><option>Unknown</option></select>
+                </div>
+                <div class="form-group"><label>Hashing Method Used</label>
+                    <select id="sr-hash"><option>SHA-256</option><option>SHA-1</option><option>MD5</option><option>SHA-512</option></select>
+                </div>
+                <div class="form-group"><label>Write Block Status</label>
+                    <select id="sr-wb"><option>Enabled</option><option>Disabled</option></select>
+                </div>
+                <div class="form-group"><label>Notes</label>
+                    <textarea id="sr-notes" placeholder="Additional seizure notes..."></textarea>
+                </div>
+                <button class="btn-primary" id="gen-seize-report" style="width:100%;">📄 Generate Report</button>
+            </div>
+            <div class="report-preview" id="seize-preview">
+                <div class="report-placeholder">Fill in details and click Generate</div>
+            </div>
+        </div>
+        <div id="seize-export-btns" style="display:none;text-align:right;margin-top:10px;">
+            <button class="btn-secondary" id="print-seize-btn">🖨 Print / Export PDF</button>
+        </div>
+    </section>
+
+    <!-- ════════ PANEL: ANALYSER – LOAD ════════ -->
+    <section class="panel" id="panel-analyser-load">
+        <div class="panel-header">
+            <h1>📂 Load SIM Image</h1>
+            <p>Load one or multiple SIM card image files for analysis. Supports .sim, .bin, .raw formats.</p>
+        </div>
+        <div class="upload-zone" id="analyser-upload-zone">
+            <div class="upload-icon">📂</div>
+            <div class="upload-text">Drop SIM Image File(s) or Click to Browse</div>
+            <div class="upload-hint">Multiple files supported – hold Ctrl to select multiple</div>
+            <input type="file" id="analyser-file-input" multiple hidden />
+        </div>
+        <div class="result-box" id="loaded-images-box" style="display:none;">
+            <div class="result-title">Loaded Images</div>
+            <table class="data-table">
+                <thead><tr><th>#</th><th>Filename</th><th>Size</th><th>Loaded At</th><th>Status</th></tr></thead>
+                <tbody id="loaded-images-tbody"></tbody>
+            </table>
+            <div style="margin-top:12px;display:flex;gap:10px;">
+                <button class="btn-primary" id="analyse-all-btn">▶ Analyse All</button>
+                <button class="btn-secondary" id="clear-images-btn">🗑 Clear</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ════════ PANEL: ANALYSER – CALL LOGS ════════ -->
+    <section class="panel" id="panel-analyser-calllogs">
+        <div class="panel-header">
+            <h1>📞 Call Logs</h1>
+            <p>Extracted call records from the SIM card image – incoming, outgoing, and missed calls.</p>
+        </div>
+        <div class="controls-row">
+            <label>Filter:
+                <select id="call-filter">
+                    <option value="all">All Calls</option>
+                    <option value="incoming">Incoming</option>
+                    <option value="outgoing">Outgoing</option>
+                    <option value="missed">Missed</option>
+                </select>
+            </label>
+            <button class="btn-primary" id="load-calls-btn">📞 Load Call Records</button>
+            <button class="btn-secondary" id="export-calls-btn">⬇ Export CSV</button>
+        </div>
+        <div class="result-box" id="calllogs-box">
+            <div class="result-title">Call Log Records</div>
+            <table class="data-table" id="calls-table">
+                <thead><tr><th>#</th><th>Number</th><th>Type</th><th>Duration</th><th>Date / Time</th><th>Status</th></tr></thead>
+                <tbody id="calls-tbody"></tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- ════════ PANEL: ANALYSER – CONTACTS ════════ -->
+    <section class="panel" id="panel-analyser-contacts">
+        <div class="panel-header">
+            <h1>👤 Contacts</h1>
+            <p>Phonebook entries stored on the SIM card (ADN – Abbreviated Dialling Numbers).</p>
+        </div>
+        <div class="controls-row">
+            <input type="text" id="contact-search" placeholder="Search contacts..." style="flex:1;" />
+            <button class="btn-primary" id="load-contacts-btn">👤 Load Contacts</button>
+            <button class="btn-secondary" id="export-contacts-btn">⬇ Export CSV</button>
+        </div>
+        <div class="result-box" id="contacts-box">
+            <div class="result-title">SIM Phonebook (ADN)</div>
+            <table class="data-table" id="contacts-table">
+                <thead><tr><th>#</th><th>Name</th><th>Number</th><th>Type</th><th>Slot</th><th>Flags</th></tr></thead>
+                <tbody id="contacts-tbody"></tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- ════════ PANEL: ANALYSER – SMS ════════ -->
+    <section class="panel" id="panel-analyser-sms">
+        <div class="panel-header">
+            <h1>💬 SMS Messages</h1>
+            <p>Incoming, outgoing, and draft SMS messages stored in SIM memory.</p>
+        </div>
+        <div class="controls-row">
+            <label>Filter:
+                <select id="sms-filter">
+                    <option value="all">All Messages</option>
+                    <option value="inbox">Inbox</option>
+                    <option value="sent">Sent</option>
+                    <option value="draft">Draft</option>
+                </select>
+            </label>
+            <button class="btn-primary" id="load-sms-btn">💬 Load Messages</button>
+            <button class="btn-secondary" id="export-sms-btn">⬇ Export CSV</button>
+        </div>
+        <div class="sms-layout">
+            <div class="sms-list-col" id="sms-list-col">
+                <div class="sms-placeholder">Load messages to view</div>
+            </div>
+            <div class="sms-detail-col" id="sms-detail-col">
+                <div class="sms-placeholder">Select a message to view details</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ════════ PANEL: ANALYSER – NETWORK ════════ -->
+    <section class="panel" id="panel-analyser-network">
+        <div class="panel-header">
+            <h1>📡 Network Information</h1>
+            <p>Network-related data stored on the SIM – IMSI, ICCID, MSISDN, PLMN, and more.</p>
+        </div>
+        <div class="controls-row">
+            <button class="btn-primary" id="load-network-btn">📡 Extract Network Data</button>
+        </div>
+        <div class="network-grid" id="network-grid" style="display:none;">
+            <div class="net-card">
+                <div class="net-label">ICCID</div>
+                <div class="net-val" id="net-iccid">—</div>
+                <div class="net-sub">SIM Serial Number</div>
+            </div>
+            <div class="net-card">
+                <div class="net-label">IMSI</div>
+                <div class="net-val" id="net-imsi">—</div>
+                <div class="net-sub">International Mobile Subscriber ID</div>
+            </div>
+            <div class="net-card">
+                <div class="net-label">MSISDN</div>
+                <div class="net-val" id="net-msisdn">—</div>
+                <div class="net-sub">Mobile Number</div>
+            </div>
+            <div class="net-card">
+                <div class="net-label">PLMN</div>
+                <div class="net-val" id="net-plmn">—</div>
+                <div class="net-sub">Home Network Operator</div>
+            </div>
+            <div class="net-card">
+                <div class="net-label">MCC</div>
+                <div class="net-val" id="net-mcc">—</div>
+                <div class="net-sub">Mobile Country Code</div>
+            </div>
+            <div class="net-card">
+                <div class="net-label">MNC</div>
+                <div class="net-val" id="net-mnc">—</div>
+                <div class="net-sub">Mobile Network Code</div>
+            </div>
+            <div class="net-card">
+                <div class="net-label">SPN</div>
+                <div class="net-val" id="net-spn">—</div>
+                <div class="net-sub">Service Provider Name</div>
+            </div>
+            <div class="net-card">
+                <div class="net-label">SIM Type</div>
+                <div class="net-val" id="net-type">—</div>
+                <div class="net-sub">GSM / CDMA / USIM</div>
+            </div>
+        </div>
+        <div class="result-box" id="network-detail" style="display:none;margin-top:16px;">
+            <div class="result-title">Extended Network Records</div>
+            <table class="data-table"><tbody id="network-tbody"></tbody></table>
+        </div>
+    </section>
+
+    <!-- ════════ PANEL: ANALYSER – DELETED ════════ -->
+    <section class="panel" id="panel-analyser-deleted">
+        <div class="panel-header">
+            <h1>🗑 Deleted Data Recovery</h1>
+            <p>Recover deleted SMS messages and incoming/outgoing records from SIM memory.</p>
+        </div>
+        <div class="controls-row">
+            <label>Scan Type:
+                <select id="del-scan-type">
+                    <option value="sms">Deleted SMS</option>
+                    <option value="calls">Deleted Call Records</option>
+                    <option value="contacts">Deleted Contacts</option>
+                    <option value="all">All</option>
+                </select>
+            </label>
+            <button class="btn-primary"   id="start-recovery-btn">🔄 Start Recovery Scan</button>
+            <button class="btn-secondary" id="export-deleted-btn">⬇ Export</button>
+        </div>
+        <div class="progress-wrap" id="del-progress" style="display:none;">
+            <div class="progress-bar"><div class="progress-fill" id="del-fill"></div></div>
+            <span id="del-status">Scanning...</span>
+        </div>
+        <div class="result-box" id="deleted-box" style="display:none;">
+            <div class="result-title">Recovered Items</div>
+            <table class="data-table">
+                <thead><tr><th>#</th><th>Type</th><th>Content / Number</th><th>Date</th><th>Confidence</th><th>Status</th></tr></thead>
+                <tbody id="deleted-tbody"></tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- ════════ PANEL: ANALYSER – SEARCH ════════ -->
+    <section class="panel" id="panel-analyser-search">
+        <div class="panel-header">
+            <h1>🔍 Search</h1>
+            <p>Search across all extracted SIM data – contacts, SMS, call logs, and network records.</p>
+        </div>
+        <div class="search-bar-wrap">
+            <input type="text" id="global-search-input" placeholder="Enter search term (number, name, keyword, date)..." />
+            <select id="search-scope">
+                <option value="all">All Data</option>
+                <option value="contacts">Contacts</option>
+                <option value="sms">SMS</option>
+                <option value="calls">Call Logs</option>
+                <option value="network">Network</option>
+            </select>
+            <button class="btn-primary" id="global-search-btn">🔍 Search</button>
+        </div>
+        <div class="result-box" id="search-results-box" style="display:none;">
+            <div class="result-title">Search Results <span id="search-count"></span></div>
+            <table class="data-table">
+                <thead><tr><th>#</th><th>Source</th><th>Match</th><th>Value</th><th>Date</th></tr></thead>
+                <tbody id="search-tbody"></tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- ════════ PANEL: ANALYSER – REPORT ════════ -->
+    <section class="panel" id="panel-analyser-report">
+        <div class="panel-header">
+            <h1>📋 Custom PDF Report</h1>
+            <p>Generate a comprehensive forensic analysis report with all extracted SIM data.</p>
+        </div>
+        <div class="report-layout">
+            <div class="report-form">
+                <div class="form-group"><label>Case Number</label><input type="text" id="ar-case" placeholder="CASE-2024-001" /></div>
+                <div class="form-group"><label>Investigator</label><input type="text" id="ar-inv" placeholder="Name" /></div>
+                <div class="form-group"><label>Organisation</label><input type="text" id="ar-org" placeholder="Agency" /></div>
+                <div class="form-group"><label>Date</label><input type="date" id="ar-date" /></div>
+                <div class="form-group"><label>Classification</label>
+                    <select id="ar-class">
+                        <option>CONFIDENTIAL</option>
+                        <option>RESTRICTED</option>
+                        <option>OFFICIAL</option>
+                        <option>UNCLASSIFIED</option>
+                    </select>
+                </div>
+                <div class="form-group"><label>Include Sections</label>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" id="rc-net"  checked /> Network Information</label>
+                        <label><input type="checkbox" id="rc-contacts" checked /> Contacts</label>
+                        <label><input type="checkbox" id="rc-sms" checked /> SMS Messages</label>
+                        <label><input type="checkbox" id="rc-calls" checked /> Call Logs</label>
+                        <label><input type="checkbox" id="rc-deleted" /> Deleted Recovery</label>
+                        <label><input type="checkbox" id="rc-hash" checked /> Hash Verification</label>
+                    </div>
+                </div>
+                <div class="form-group"><label>Summary Notes</label>
+                    <textarea id="ar-notes" placeholder="Investigation summary..."></textarea>
+                </div>
+                <button class="btn-primary" id="gen-analysis-report" style="width:100%;">📋 Generate Report</button>
+            </div>
+            <div class="report-preview" id="analysis-preview">
+                <div class="report-placeholder">Configure and click Generate</div>
+            </div>
+        </div>
+        <div id="ar-export-btns" style="display:none;text-align:right;margin-top:10px;">
+            <button class="btn-secondary" id="print-analysis-btn">🖨 Print / Export PDF</button>
+        </div>
+    </section>
+
+</main>
+
+<script src="js/SIMXtractor_core.js"></script>
+<script src="js/SIMXtractor_sim_reader.js"></script>
+<script src="js/SIMXtractor_sim_imager.js"></script>
+<script src="js/SIMXtractor_sim_analyzer.js"></script>
+</body>
+</html>

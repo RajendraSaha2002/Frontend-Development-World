@@ -1,0 +1,225 @@
+/* ═══════════════════════════════════════════════════
+   SIMXtractor | components.css
+   Wizard · USB Diagram · Spec Cards · Network Grid
+   Write Blocker · SMS Layout · Search Bar
+   ═══════════════════════════════════════════════════ */
+
+/* ════════ WIZARD ════════ */
+.wizard-steps {
+    display: flex; align-items: center;
+    margin-bottom: 24px; background: var(--bg-card);
+    border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 14px 20px;
+}
+.wizard-step {
+    display: flex; flex-direction: column; align-items: center; gap: 4px;
+    font-size: 11px; color: var(--text-muted); font-weight: 600;
+    min-width: 80px; text-align: center;
+}
+.wizard-step span {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: var(--bg-hover); border: 2px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 700;
+    transition: all var(--transition);
+}
+.wizard-step.active { color: var(--accent); }
+.wizard-step.active span { background: var(--accent); color: #111; border-color: var(--accent); }
+.wizard-step.done span   { background: var(--green);  color: #fff;  border-color: var(--green); }
+.wizard-sep {
+    flex: 1; height: 2px;
+    background: var(--border); border-radius: 2px; margin: 0 6px;
+}
+.wizard-panel       { display: none; }
+.wizard-panel.active{ display: block; }
+
+/* ════════ IMAGING TERMINAL ════════ */
+.imaging-terminal {
+    background: #070c12; border: 1px solid var(--border);
+    border-radius: var(--radius-sm); padding: 14px 16px;
+    font-family: 'Consolas','Courier New',monospace; font-size: 12px;
+    height: 220px; overflow-y: auto;
+    display: flex; flex-direction: column; gap: 3px;
+}
+.terminal-line     { color: var(--text-secondary); }
+.terminal-line.ok  { color: var(--green); }
+.terminal-line.err { color: var(--red); }
+.terminal-line.acc { color: var(--accent); font-weight: 600; }
+.terminal-line.dim { color: var(--text-muted); }
+.progress-meta     { font-size: 12px; color: var(--text-secondary); margin-top: 4px; }
+
+/* ════════ USB READER DIAGRAM ════════ */
+.reader-diagram {
+    display: flex; align-items: center; gap: 32px;
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 28px 32px;
+    margin-bottom: 18px;
+}
+.usb-device {
+    display: flex; flex-direction: column; align-items: center;
+    gap: 0; cursor: pointer; user-select: none;
+}
+.usb-top {
+    width: 48px; height: 22px; background: #c8a000;
+    border-radius: 4px 4px 0 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px; font-weight: 700; color: #111;
+}
+.usb-body {
+    width: 90px; height: 64px; border-radius: 0 0 8px 8px;
+    background: linear-gradient(135deg, #d4a800, #a87e00);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px; font-weight: 700; color: #111; text-align: center;
+    box-shadow: var(--shadow);
+}
+.usb-led {
+    width: 10px; height: 10px; border-radius: 50%; margin-top: 6px;
+    background: var(--text-muted); transition: all 0.4s;
+}
+.usb-led.on  { background: var(--green); box-shadow: 0 0 8px var(--green); animation: blink 1.5s infinite; }
+.usb-led.off { background: var(--red); }
+
+.reader-conn-info { font-size: 13px; color: var(--text-secondary); max-width: 360px; line-height: 1.7; }
+.reader-conn-info strong { color: var(--accent); }
+
+/* ════════ SPEC CARDS (Reader Info) ════════ */
+.spec-grid {
+    display: grid; grid-template-columns: repeat(3,1fr);
+    gap: 14px; margin-bottom: 18px;
+}
+.spec-card {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 18px 16px;
+    transition: border-color var(--transition);
+}
+.spec-card:hover { border-color: var(--accent); }
+.spec-icon  { font-size: 28px; margin-bottom: 10px; }
+.spec-title { font-size: 13px; font-weight: 700; color: var(--text-primary); margin-bottom: 5px; }
+.spec-desc  { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+
+/* ════════ WRITE BLOCKER STATUS ════════ */
+.wb-status-card {
+    background: var(--bg-card); border: 2px solid var(--border);
+    border-radius: var(--radius); padding: 28px 32px;
+    text-align: center; transition: all 0.4s;
+}
+.wb-status-card.active {
+    border-color: var(--green);
+    box-shadow: 0 0 0 3px rgba(56,161,105,0.12);
+}
+.wb-status-card.inactive { border-color: var(--red); box-shadow: 0 0 0 3px rgba(229,62,62,0.12); }
+.wb-icon  { font-size: 48px; margin-bottom: 10px; }
+.wb-label { font-size: 18px; font-weight: 700; color: var(--text-primary); margin-bottom: 6px; }
+.wb-desc  { font-size: 13px; color: var(--text-secondary); }
+
+/* ════════ NETWORK GRID ════════ */
+.network-grid {
+    display: grid; grid-template-columns: repeat(4,1fr);
+    gap: 14px; margin-bottom: 18px;
+}
+.net-card {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 16px 14px;
+    transition: border-color var(--transition);
+}
+.net-card:hover { border-color: var(--accent); }
+.net-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin-bottom: 6px; }
+.net-val   { font-size: 16px; font-weight: 700; color: var(--accent); font-family: 'Consolas',monospace; word-break: break-all; margin-bottom: 4px; }
+.net-sub   { font-size: 11px; color: var(--text-secondary); }
+
+/* ════════ SMS LAYOUT ════════ */
+.sms-layout {
+    display: grid; grid-template-columns: 320px 1fr;
+    gap: 16px; margin-top: 4px;
+}
+.sms-list-col, .sms-detail-col {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: var(--radius); overflow: hidden;
+}
+.sms-placeholder {
+    height: 200px; display: flex; align-items: center;
+    justify-content: center; color: var(--text-muted); font-size: 13px;
+}
+.sms-item {
+    padding: 12px 14px; border-bottom: 1px solid var(--border-light);
+    cursor: pointer; transition: background var(--transition);
+}
+.sms-item:hover, .sms-item.active { background: var(--bg-hover); }
+.sms-item-header { display: flex; justify-content: space-between; margin-bottom: 4px; }
+.sms-from   { font-weight: 600; font-size: 13px; color: var(--text-primary); }
+.sms-time   { font-size: 11px; color: var(--text-muted); }
+.sms-preview{ font-size: 12px; color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sms-type-chip {
+    display: inline-block; font-size: 10px; font-weight: 700;
+    padding: 2px 7px; border-radius: 10px; margin-right: 6px;
+}
+.sms-inbox  { background: rgba(66,153,225,0.15); color: var(--blue); }
+.sms-sent   { background: rgba(56,161,105,0.15); color: var(--green); }
+.sms-draft  { background: rgba(214,158,46,0.15); color: var(--yellow); }
+.sms-deleted{ background: rgba(229,62,62,0.15);  color: var(--red); }
+
+.sms-detail-body { padding: 18px; }
+.sms-detail-meta { margin-bottom: 14px; }
+.sms-detail-msg  {
+    background: var(--bg-hover); border: 1px solid var(--border);
+    border-radius: var(--radius-sm); padding: 14px 16px;
+    font-size: 14px; color: var(--text-primary); line-height: 1.7;
+    white-space: pre-wrap;
+}
+.sms-hex {
+    margin-top: 12px; background: var(--bg-primary);
+    border: 1px solid var(--border); border-radius: var(--radius-sm);
+    padding: 10px 12px; font-family: 'Consolas',monospace;
+    font-size: 11px; color: var(--text-muted); word-break: break-all;
+}
+
+/* ════════ SEARCH BAR ════════ */
+.search-bar-wrap {
+    display: flex; gap: 10px; margin-bottom: 18px;
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 12px 16px;
+}
+.search-bar-wrap input { flex: 1; }
+.search-bar-wrap select { width: 140px; flex-shrink: 0; }
+
+/* ════════ REPORT HTML CONTENT ════════ */
+.rpt-wrap        { font-size: 13px; line-height: 1.6; }
+.rpt-head        { border-bottom: 3px solid var(--accent); padding-bottom: 14px; margin-bottom: 18px; }
+.rpt-logo-row    { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+.rpt-logo-badge  {
+    width: 44px; height: 44px;
+    background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+    border-radius: 8px; display: flex; align-items: center;
+    justify-content: center; font-weight: 900; color: #111; font-size: 14px;
+}
+.rpt-title       { font-size: 18px; font-weight: 700; color: var(--text-primary); }
+.rpt-subtitle    { font-size: 11px; color: var(--text-secondary); }
+.rpt-class-stamp {
+    display: inline-block; font-size: 11px; font-weight: 700;
+    padding: 3px 12px; border-radius: 4px; margin-top: 6px;
+    border: 2px solid var(--red); color: var(--red);
+    letter-spacing: 2px;
+}
+.rpt-meta-grid   { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 12px; }
+.rpt-meta-item   { background: var(--bg-hover); padding: 7px 10px; border-radius: 5px; }
+.rpt-meta-key    { color: var(--text-secondary); font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
+.rpt-meta-val    { color: var(--text-primary); font-weight: 600; }
+.rpt-section     { margin: 16px 0; }
+.rpt-sec-title   {
+    font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 1px; color: var(--accent);
+    border-left: 3px solid var(--accent); padding-left: 8px; margin-bottom: 8px;
+}
+.rpt-footer      {
+    margin-top: 20px; padding-top: 12px;
+    border-top: 1px solid var(--border);
+    font-size: 10px; color: var(--text-muted); text-align: center;
+}
+
+/* ════════ RESPONSIVE ════════ */
+@media (max-width: 900px) {
+    .spec-grid    { grid-template-columns: repeat(2,1fr); }
+    .network-grid { grid-template-columns: repeat(2,1fr); }
+    .sms-layout   { grid-template-columns: 1fr; }
+    .wizard-steps { flex-wrap: wrap; gap: 8px; }
+}
