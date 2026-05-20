@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NetForce Suite Pro | Cyber Security Group</title>
+    <link rel="stylesheet" href="css/NetForce_Suite_theme.css">
+    <link rel="stylesheet" href="css/NetForce_Suite_layout.css">
+    <link rel="stylesheet" href="css/NetForce_Suite_modules.css">
+</head>
+<body>
+<div class="dashboard-wrapper">
+    <aside class="sidebar glass-panel">
+        <div class="brand">
+            <div class="brand-shield">CSG</div>
+            <div class="brand-text">
+                <h1>NetForce Suite</h1>
+                <span>Advanced Forensics Grid</span>
+            </div>
+        </div>
+        <nav class="nav-tree">
+            <button class="nav-item active" data-view="nesa">
+                <span class="indicator"></span> NeSA (Packet Analysis)
+            </button>
+            <button class="nav-item" data-view="investigator">
+                <span class="indicator"></span> CyberInvestigator
+            </button>
+            <button class="nav-item" data-view="tracer">
+                <span class="indicator"></span> EmailTracer
+            </button>
+        </nav>
+        <div class="system-status">
+            <div class="status-indicator online"></div>
+            <span>Grid Status: SECURE</span>
+        </div>
+    </aside>
+
+    <main class="workspace">
+
+        <section id="nesa" class="view-module active">
+            <header class="module-header glass-panel">
+                <h2>NeSA: Live Network Traffic Analysis</h2>
+                <div class="controls">
+                    <button id="toggle-capture" class="btn primary">Start Capture</button>
+                    <button class="btn secondary">Export PCAP</button>
+                </div>
+            </header>
+
+            <div class="grid-layout nesa-grid">
+                <div class="card glass-panel col-span-2 row-span-2">
+                    <div class="card-header">
+                        <h3>Packet Stream</h3>
+                        <input type="text" id="nesa-filter" class="search-input" placeholder="Regex filter (e.g., ^192\.168\..*|TCP)">
+                    </div>
+                    <div class="terminal-container" id="packet-stream">
+                    </div>
+                </div>
+
+                <div class="card glass-panel">
+                    <h3>Traffic Analytics</h3>
+                    <div class="stats-grid" id="nesa-stats">
+                        <div class="stat-box"><span class="label">Total Packets</span><span class="value" id="stat-total">0</span></div>
+                        <div class="stat-box"><span class="label">TCP Sessions</span><span class="value" id="stat-tcp">0</span></div>
+                        <div class="stat-box"><span class="label">PostgreSQL Drops</span><span class="value critical" id="stat-sql">0</span></div>
+                    </div>
+                </div>
+
+                <div class="card glass-panel">
+                    <h3>Protocol Distribution</h3>
+                    <div class="meter-wrapper">
+                        <div class="meter"><div class="meter-fill" id="meter-tcp" style="width: 0%"></div></div>
+                        <span class="meter-label">TCP</span>
+                    </div>
+                    <div class="meter-wrapper">
+                        <div class="meter"><div class="meter-fill" id="meter-udp" style="width: 0%"></div></div>
+                        <span class="meter-label">UDP</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="investigator" class="view-module hidden">
+            <header class="module-header glass-panel">
+                <h2>CyberInvestigator: Log Correlation Engine</h2>
+                <div class="controls">
+                    <select class="dropdown" id="log-source">
+                        <option value="syslog">/var/log/syslog</option>
+                        <option value="auth">/var/log/auth.log</option>
+                        <option value="iis">IIS W3SVC</option>
+                    </select>
+                    <button class="btn primary" id="parse-logs">Analyze Core Logs</button>
+                </div>
+            </header>
+
+            <div class="grid-layout ci-grid">
+                <div class="card glass-panel col-span-1 alert-pane">
+                    <h3>Critical Threat Intel</h3>
+                    <ul class="threat-list" id="threat-feed">
+                    </ul>
+                </div>
+                <div class="card glass-panel col-span-2 code-pane">
+                    <div class="card-header">
+                        <h3>Raw Log Dump</h3>
+                        <input type="text" id="log-search" class="search-input" placeholder="Grep syntax search...">
+                    </div>
+                    <pre class="terminal-code" id="log-viewer">Awaiting log ingestion...</pre>
+                </div>
+            </div>
+        </section>
+
+        <section id="tracer" class="view-module hidden">
+            <header class="module-header glass-panel">
+                <h2>EmailTracer: Forensic Header Extraction</h2>
+                <button class="btn primary" id="analyze-header">Process Header</button>
+            </header>
+
+            <div class="grid-layout tracer-grid">
+                <div class="card glass-panel col-span-2">
+                    <h3>Raw RFC 2822 Header</h3>
+                    <textarea class="code-textarea" id="header-input" placeholder="Paste full email headers here..."></textarea>
+                </div>
+
+                <div class="card glass-panel extracted-data">
+                    <h3>Extracted Metadata</h3>
+                    <div id="metadata-results">
+                        <p class="muted">Awaiting analysis...</p>
+                    </div>
+                </div>
+
+                <div class="card glass-panel col-span-3 geo-map-card">
+                    <h3>Geospatial IP Trace</h3>
+                    <div class="svg-map-container" id="geo-map">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+</div>
+
+<script src="js/NetForce_Suite_core.js"></script>
+<script src="js/NetForce_Suite_nesa_engine.js"></script>
+<script src="js/NetForce_Suite_investigator.js"></script>
+<script src="js/NetForce_Suite_email_forensics.js"></script>
+</body>
+</html>

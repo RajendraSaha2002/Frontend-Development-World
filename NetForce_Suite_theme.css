@@ -1,0 +1,39 @@
+:root {
+    --bg-base: #050505;
+    --bg-surface: rgba(15, 23, 42, 0.7);
+    --border-glow: rgba(56, 189, 248, 0.3);
+    --text-main: #e2e8f0;
+    --text-muted: #64748b;
+    --brand-primary: #0ea5e9;
+    --brand-hover: #0284c7;
+    --alert-critical: #ef4444;
+    --alert-warn: #f59e0b;
+    --success: #10b981;
+    --terminal-green: #4ade80;
+
+    --font-ui: 'Inter', system-ui, sans-serif;
+    --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: var(--font-ui);
+    background-color: var(--bg-base);
+    color: var(--text-main);
+    height: 100vh;
+    overflow: hidden;
+    background-image:
+            radial-gradient(circle at 50% 0%, rgba(14, 165, 233, 0.1) 0%, transparent 50%),
+            linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+    background-size: 100% 100%, 30px 30px, 30px 30px;
+}
+
+.glass-panel {
+    background: var(--bg-surface);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+}

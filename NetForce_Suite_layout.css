@@ -1,0 +1,43 @@
+.dashboard-wrapper { display: flex; height: 100vh; }
+
+.sidebar {
+    width: 280px;
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid var(--border-glow);
+    z-index: 10;
+}
+
+.workspace {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    position: relative;
+}
+
+.view-module {
+    display: none;
+    flex-direction: column;
+    height: 100%;
+    padding: 24px;
+    animation: fadeIn 0.3s ease-out;
+}
+.view-module.active { display: flex; }
+
+.grid-layout {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    flex: 1;
+    min-height: 0;
+}
+
+.col-span-2 { grid-column: span 2; }
+.col-span-3 { grid-column: span 3; }
+.row-span-2 { grid-row: span 2; }
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}

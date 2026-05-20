@@ -1,0 +1,64 @@
+/* UI Components */
+.btn {
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: var(--font-ui);
+    border: none;
+}
+.btn.primary { background: var(--brand-primary); color: #fff; box-shadow: 0 0 10px rgba(14, 165, 233, 0.4); }
+.btn.primary:hover { background: var(--brand-hover); box-shadow: 0 0 15px rgba(14, 165, 233, 0.6); }
+.btn.secondary { background: transparent; border: 1px solid var(--brand-primary); color: var(--brand-primary); }
+
+.search-input, .code-textarea, .dropdown {
+    background: rgba(0,0,0,0.5);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: var(--text-main);
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-family: var(--font-mono);
+}
+
+.search-input:focus, .code-textarea:focus { outline: none; border-color: var(--brand-primary); }
+
+/* Terminals */
+.terminal-container, .terminal-code {
+    background: #000;
+    border-radius: 6px;
+    padding: 12px;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    overflow-y: auto;
+    height: 100%;
+}
+.terminal-code { color: var(--terminal-green); white-space: pre-wrap; }
+
+/* NeSA Specifics */
+.packet-row { display: grid; grid-template-columns: 80px 120px 120px 60px 1fr; padding: 4px 0; border-bottom: 1px solid #111; }
+.packet-row:hover { background: rgba(255,255,255,0.05); }
+.pkt-time { color: var(--text-muted); }
+.pkt-proto { font-weight: bold; }
+.pkt-proto.tcp { color: var(--brand-primary); }
+.pkt-proto.udp { color: var(--alert-warn); }
+
+.stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+.stat-box { background: rgba(0,0,0,0.3); padding: 15px; border-radius: 6px; display: flex; flex-direction: column; }
+.stat-box .value { font-size: 1.5rem; font-weight: bold; color: var(--brand-primary); }
+.stat-box .value.critical { color: var(--alert-critical); }
+
+/* Investigator Specifics */
+.threat-list { list-style: none; }
+.threat-list li {
+    padding: 12px;
+    background: rgba(239, 68, 68, 0.1);
+    border-left: 3px solid var(--alert-critical);
+    margin-bottom: 10px;
+    font-size: 0.85rem;
+}
+.highlight { background-color: rgba(245, 158, 11, 0.4); color: #fff; }
+
+/* Tracer Specifics */
+.code-textarea { width: 100%; height: 200px; resize: vertical; }
+.svg-map-container { width: 100%; height: 300px; background: #000; position: relative; border-radius: 4px; overflow: hidden; }
