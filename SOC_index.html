@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CDAC CSOC | Managed Security Services</title>
+    <link rel="stylesheet" href="css/SOC_layout.css">
+    <link rel="stylesheet" href="css/SOC_components.css">
+    <link rel="stylesheet" href="css/SOC_tactical.css">
+</head>
+<body>
+<div class="soc-grid">
+    <aside class="sidebar glass-panel">
+        <div class="brand-header">
+            <div class="shield-logo">CSOC</div>
+            <div>
+                <h1>CDAC SOC</h1>
+                <span>ISO 27001 Certified Grid</span>
+            </div>
+        </div>
+
+        <nav class="soc-nav">
+            <div class="nav-section">Managed Security</div>
+            <button class="nav-btn active" data-target="dashboard">24x7 Monitoring</button>
+            <button class="nav-btn" data-target="incidents">Incident Response</button>
+            <button class="nav-btn" data-target="vulnerabilities">VAPT & Audit</button>
+
+            <div class="nav-section">Advanced Operations</div>
+            <button class="nav-btn">Malware Analysis</button>
+            <button class="nav-btn">Domain Monitoring</button>
+            <button class="nav-btn">Forensic Artefacts</button>
+
+            <div class="nav-section">Cyber Drills</div>
+            <button class="nav-btn warning">Phishing / Spear Phishing</button>
+            <button class="nav-btn warning">DoS Simulation</button>
+        </nav>
+
+        <div class="node-status">
+            <h4>Active Regional Nodes</h4>
+            <ul id="regional-nodes">
+            </ul>
+        </div>
+    </aside>
+
+    <main class="workspace">
+        <header class="topbar glass-panel">
+            <div class="telemetry-summary">
+                <div class="stat"><span class="label">Events/sec</span><span class="value" id="eps-val">0</span></div>
+                <div class="stat"><span class="label">Active Threats</span><span class="value critical" id="threat-val">0</span></div>
+                <div class="stat"><span class="label">Compliance</span><span class="value success">UIDAI, RBI</span></div>
+            </div>
+            <div class="grid-status" id="global-status">SYSTEM SECURE</div>
+        </header>
+
+        <div class="content-area">
+            <section id="dashboard" class="module active">
+                <div class="dashboard-grid">
+                    <div class="card col-span-2 glass-panel">
+                        <div class="card-header">
+                            <h3>Live Network Architecture Telemetry</h3>
+                        </div>
+                        <div class="canvas-container">
+                            <canvas id="trafficChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="card glass-panel">
+                        <div class="card-header">
+                            <h3>Compliance & Audit TPA</h3>
+                        </div>
+                        <ul class="compliance-list">
+                            <li class="pass">ISO 27001 Audit <span>Valid</span></li>
+                            <li class="pass">UIDAI Framework <span>Compliant</span></li>
+                            <li class="pass">RBI Guidelines <span>Compliant</span></li>
+                            <li class="warn">Network Infra Audit <span>Pending Review</span></li>
+                        </ul>
+                    </div>
+
+                    <div class="card col-span-3 glass-panel">
+                        <div class="card-header">
+                            <h3>Real-Time Log Analysis</h3>
+                        </div>
+                        <div class="terminal-view" id="live-logs"></div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="incidents" class="module hidden">
+                <div class="dashboard-grid">
+                    <div class="card col-span-1 glass-panel alert-card">
+                        <h3>Forensic Queues</h3>
+                        <div id="forensic-queue"></div>
+                    </div>
+                    <div class="card col-span-2 glass-panel">
+                        <div class="card-header">
+                            <h3>Root Cause & Remediation Engine</h3>
+                            <button class="btn primary" id="run-remediation">Execute Remediation</button>
+                        </div>
+                        <div class="code-view" id="remediation-log">Awaiting incident selection...</div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+</div>
+
+<script src="js/SOC_core.js"></script>
+<script src="js/SOC_telemetry.js"></script>
+<script src="js/SOC_incident_response.js"></script>
+</body>
+</html>
