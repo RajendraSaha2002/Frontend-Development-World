@@ -1,0 +1,27 @@
+:root {
+    --bg-base: #060913;
+    --bg-panel: #0d1326;
+    --bg-card: #151c33;
+    --text-main: #e2e8f0;
+    --text-muted: #94a3b8;
+    --border-color: #2a3454;
+
+    --brand-primary: #3b82f6;
+    --brand-glow: rgba(59, 130, 246, 0.4);
+    --success: #10b981;
+    --warning: #f59e0b;
+    --danger: #ef4444;
+
+    --font-ui: system-ui, -apple-system, sans-serif;
+    --font-mono: 'Consolas', 'Courier New', monospace;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: var(--font-ui);
+    background-color: var(--bg-base);
+    color: var(--text-main);
+    height: 100vh;
+    overflow: hidden;
+}

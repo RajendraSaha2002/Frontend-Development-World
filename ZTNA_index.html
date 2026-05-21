@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AegisTrust | Zero Trust Network Access</title>
+
+    <link rel="stylesheet" href="css/ZTNA_variables.css">
+    <link rel="stylesheet" href="css/ZTNA_layout.css">
+    <link rel="stylesheet" href="css/ZTNA_components.css">
+    <link rel="stylesheet" href="css/ZTNA_dashboard.css">
+    <link rel="stylesheet" href="css/ZTNA_animations.css">
+</head>
+<body>
+<div class="app-container">
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="brand-logo">AT</div>
+            <div class="brand-text">
+                <h1>AegisTrust</h1>
+                <span>by Nexus Dynamics</span>
+            </div>
+        </div>
+
+        <nav class="nav-menu">
+            <div class="nav-header">Core Modules</div>
+            <button class="nav-btn active" data-target="view-dashboard">
+                <span class="indicator"></span> Global Overview
+            </button>
+            <button class="nav-btn" data-target="view-assets">
+                <span class="indicator"></span> Asset & Identity (IAM)
+            </button>
+            <button class="nav-btn" data-target="view-policy">
+                <span class="indicator"></span> Adaptive Policy Engine
+            </button>
+            <button class="nav-btn" data-target="view-traffic">
+                <span class="indicator"></span> Traffic & Anomalies
+            </button>
+        </nav>
+
+        <div class="system-health">
+            <div class="health-title">Agent-less Architecture</div>
+            <div class="health-status safe" id="global-health-indicator">SYSTEM SECURE</div>
+            <div class="health-sub">Continuous Monitoring Active</div>
+        </div>
+    </aside>
+
+    <main class="workspace">
+        <header class="top-bar">
+            <div class="page-title" id="current-page-title">Global Overview</div>
+            <div class="global-metrics">
+                <div class="metric-pill">
+                    <span class="label">Global Trust Score:</span>
+                    <span class="value" id="global-trust-score">94%</span>
+                </div>
+                <div class="metric-pill alert">
+                    <span class="label">Rogue Devices:</span>
+                    <span class="value" id="rogue-device-count">0</span>
+                </div>
+            </div>
+        </header>
+
+        <div class="content-area">
+            <section id="view-dashboard" class="view-section active">
+                <div class="dashboard-grid">
+                    <div class="card col-span-2">
+                        <div class="card-header">Network Traffic Profiling (Real-time)</div>
+                        <div class="canvas-container">
+                            <canvas id="trafficChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">OS / Service Distribution</div>
+                        <div class="canvas-container donut-container">
+                            <canvas id="osDistributionChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="card col-span-3">
+                        <div class="card-header">Live Security Events & Anomalies</div>
+                        <div class="terminal-log" id="live-event-log">
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="view-assets" class="view-section hidden">
+                <div class="card">
+                    <div class="card-header flex-between">
+                        <span>Automated Asset Identification Matrix</span>
+                        <button class="btn primary" id="btn-scan-network">Run Agent-less Scan</button>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                            <tr>
+                                <th>Asset ID / MAC</th>
+                                <th>Identity / User</th>
+                                <th>OS & Device Type</th>
+                                <th>Trust Score</th>
+                                <th>Vulnerabilities</th>
+                                <th>Access Status</th>
+                            </tr>
+                            </thead>
+                            <tbody id="asset-table-body">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <section id="view-policy" class="view-section hidden">
+                <div class="dashboard-grid">
+                    <div class="card col-span-1">
+                        <div class="card-header">Policy Enforcement Thresholds</div>
+                        <div class="form-group">
+                            <label>Minimum Trust Score for DB Access</label>
+                            <input type="range" min="0" max="100" value="85" class="slider" id="policy-db-slider">
+                            <span class="slider-val" id="policy-db-val">85%</span>
+                        </div>
+                        <div class="form-group">
+                            <label>Minimum Trust Score for DNS/Web</label>
+                            <input type="range" min="0" max="100" value="60" class="slider" id="policy-web-slider">
+                            <span class="slider-val" id="policy-web-val">60%</span>
+                        </div>
+                        <button class="btn primary w-100" id="btn-update-policy">Enforce New Policies</button>
+                    </div>
+                    <div class="card col-span-2">
+                        <div class="card-header">Policy Enforcement Audit Log</div>
+                        <div class="terminal-log" id="policy-audit-log">
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="view-traffic" class="view-section hidden">
+                <div class="dashboard-grid">
+                    <div class="card col-span-3">
+                        <div class="card-header flex-between">
+                            <span>Application Identification & Threat Hunting</span>
+                            <span class="badge danger pulse">Anomaly Detection Active</span>
+                        </div>
+                        <div class="threat-grid" id="threat-hunting-grid">
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+</div>
+
+<script src="js/ZTNA_core_routing.js"></script>
+<script src="js/ZTNA_data_simulation.js"></script>
+<script src="js/ZTNA_canvas_charts.js"></script>
+<script src="js/ZTNA_asset_manager.js"></script>
+<script src="js/ZTNA_policy_engine.js"></script>
+</body>
+</html>
