@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>C-DAC IT/OT Integrated SOC Command Suite</title>
+    <link rel="stylesheet" href="css/IT_OT_SOC_core_layout.css">
+    <link rel="stylesheet" href="css/IT_OT_SOC_purdue_hierarchy.css">
+    <link rel="stylesheet" href="css/IT_OT_SOC_industrial_terminal.css">
+    <link rel="stylesheet" href="css/IT_OT_SOC_alert_matrix.css">
+    <link rel="stylesheet" href="css/IT_OT_SOC_dynamic_layers.css">
+</head>
+<body>
+<div class="scada-matrix-shell">
+    <aside class="control-tower-sidebar">
+        <div class="agency-branding">
+            <div class="militant-hex-shield">RTSG</div>
+            <div class="title-block">
+                <h2>C-DAC IT/OT SOC</h2>
+                <span>Bangalore Knowledge Park</span>
+            </div>
+        </div>
+
+        <nav class="console-routing-grid">
+            <div class="nav-classification-header">Core Interfaces</div>
+            <button class="nav-tab-trigger active" data-view="unified-dashboard">
+                <span class="status-dot green"></span> Hyper-Converged View
+            </button>
+            <button class="nav-tab-trigger" data-view="asset-inventory">
+                <span class="status-dot green"></span> Purdue Asset Matrix
+            </button>
+            <button class="nav-tab-trigger" data-view="packet-inspector">
+                <span class="status-dot yellow"></span> Modbus/IEC-104 DPI
+            </button>
+            <button class="nav-tab-trigger" data-view="siem-rules">
+                <span class="status-dot red"></span> SIEM Correlation Engine
+            </button>
+        </nav>
+
+        <div class="footer-institutional-card">
+            <h5>R&D ENTITY</h5>
+            <p class="highlight-cyan">Real Time Systems Group</p>
+            <p class="geo-text">No. 1, Old Madras Road, Byappanahalli, Bangalore - 560038</p>
+            <span class="compliance-tag">NIST CF / Purdue Compliant</span>
+        </div>
+    </aside>
+
+    <main class="tactical-viewport-container">
+        <header class="master-telemetry-strip">
+            <div class="telemetry-readout-cluster">
+                <div class="metric-node"><span class="lbl">IT Log Rate</span><span class="val cyan" id="it-log-eps">0 EPS</span></div>
+                <div class="metric-node"><span class="lbl">OT Frame Rate</span><span class="val yellow" id="ot-frame-eps">0 FPS</span></div>
+                <div class="metric-node"><span class="lbl">Active Anomalies</span><span class="val red pulse-txt" id="global-anomaly-counter">0</span></div>
+                <div class="metric-node"><span class="lbl">SPAN Link Status</span><span class="val emerald" id="span-status">SNIFFING</span></div>
+            </div>
+            <div class="infrastructure-health-indicator" id="master-system-status">GRID STATUS: NORMAL</div>
+        </header>
+
+        <div class="viewport-canvas-area">
+
+            <section id="unified-dashboard" class="soc-viewport-module active">
+                <div class="dashboard-composite-grid">
+                    <div class="console-panel col-span-2">
+                        <div class="panel-header"><h3>Live Unified IT/OT Convergence Telemetry</h3></div>
+                        <div class="canvas-viewport-wrapper">
+                            <canvas id="convergenceTelemetryCanvas"></canvas>
+                        </div>
+                    </div>
+                    <div class="console-panel">
+                        <div class="panel-header"><h3>Purdue Model Operational Health</h3></div>
+                        <div class="purdue-vertical-stack" id="purdue-health-indicators">
+                        </div>
+                    </div>
+                    <div class="console-panel col-span-3">
+                        <div class="panel-header"><h3>Real-Time Integrated SIEM/IDS Log Ingestion Stream</h3></div>
+                        <div class="industrial-terminal-box" id="siem-live-feed-terminal"></div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="asset-inventory" class="soc-viewport-module">
+                <div class="dashboard-composite-grid">
+                    <div class="console-panel col-span-3">
+                        <div class="panel-header-flex">
+                            <h3>Composite Asset Inventory & Vulnerability Tracking (Wazuh Integrated)</h3>
+                            <div class="filter-actions">
+                                <button class="btn-industrial" id="trigger-asset-scan">Run SPAN Asset Discovery</button>
+                            </div>
+                        </div>
+                        <table class="industrial-data-table">
+                            <thead>
+                            <tr>
+                                <th>Asset Identifier</th>
+                                <th>Classification Layer</th>
+                                <th>Hardware Type</th>
+                                <th>IP/MAC Footprint</th>
+                                <th>Vulnerability Vulnerabilities</th>
+                                <th>Operational State</th>
+                            </tr>
+                            </thead>
+                            <tbody id="asset-matrix-table-body">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <section id="packet-inspector" class="soc-viewport-module">
+                <div class="dashboard-composite-grid">
+                    <div class="console-panel col-span-2">
+                        <div class="panel-header"><h3>Industrial Control Protocol Sniffer (SPAN Port Mapping)</h3></div>
+                        <div class="canvas-viewport-wrapper">
+                            <canvas id="protocolSnifferCanvas"></canvas>
+                        </div>
+                    </div>
+                    <div class="console-panel">
+                        <div class="panel-header"><h3>Deep Packet Inspection (DPI) Field Breakdown</h3></div>
+                        <div class="dpi-field-inspector" id="dpi-breakdown-panel">
+                            <div class="empty-state-notice">Select an industrial frame trace packet to decode register parameters.</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="siem-rules" class="soc-viewport-module">
+                <div class="dashboard-composite-grid">
+                    <div class="console-panel">
+                        <div class="panel-header"><h3>MITRE ATT&CK for ICS Matrix Core</h3></div>
+                        <div class="mitre-card-stack" id="mitre-incident-stack">
+                        </div>
+                    </div>
+                    <div class="console-panel col-span-2">
+                        <div class="panel-header-flex">
+                            <h3>Incident Identification & Playbook Orchestrator</h3>
+                            <button class="btn-industrial emergency" id="execute-remediation-playbook">Mitigate Vector Threat</button>
+                        </div>
+                        <div class="playbook-execution-console" id="playbook-console-output">
+                            Awaiting incident detection anomaly identification parameters...
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+</div>
+
+<script src="js/IT_OT_SOC_soc_orchestrator.js"></script>
+<script src="js/IT_OT_SOC_asset_discovery.js"></script>
+<script src="js/IT_OT_SOC_protocol_engine.js"></script>
+<script src="js/IT_OT_SOC_correlation_rules.js"></script>
+<script src="js/IT_OT_SOC_threat_intel.js"></script>
+</body>
+</html>

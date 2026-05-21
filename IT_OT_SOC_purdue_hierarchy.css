@@ -1,0 +1,59 @@
+/* Purdue Model Classification Layer Interfaces Styling */
+.purdue-vertical-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 5px 0;
+}
+
+.purdue-layer-node {
+    background: rgba(0, 0, 0, 0.4);
+    border-left: 4px solid var(--text-low-contrast);
+    padding: 12px;
+    border-radius: 4px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--font-scada-mono);
+    transition: all 0.3s ease;
+}
+
+.purdue-layer-node.level-5 { border-left-color: #3b82f6; } /* Enterprise Security */
+.purdue-layer-node.level-4 { border-left-color: #6366f1; } /* IT Logistics Demarcation */
+.purdue-layer-node.level-3 { border-left-color: #a855f7; } /* OT Operations Command */
+.purdue-layer-node.level-2 { border-left-color: var(--neon-amber-ot); } /* SCADA Supervisory Controllers */
+.purdue-layer-node.level-1 { border-left-color: #f97316; } /* Local PLCs / RTU Telecontrol */
+.purdue-layer-node.level-0 { border-left-color: var(--crimson-alarm); } /* Actuators and Sensors Infrastructure */
+
+.purdue-layer-meta {
+    display: flex;
+    flex-direction: column;
+}
+
+.purdue-layer-meta .layer-num {
+    font-size: 0.75rem;
+    color: var(--text-low-contrast);
+    font-weight: bold;
+}
+
+.purdue-layer-meta .layer-nm {
+    font-size: 0.85rem;
+    color: var(--text-high-contrast);
+}
+
+.layer-integrity-status {
+    font-size: 0.8rem;
+    font-weight: bold;
+    padding: 2px 8px;
+    border-radius: 2px;
+}
+
+.layer-integrity-status.nominal {
+    color: var(--emerald-safe);
+    background: rgba(16, 185, 129, 0.1);
+}
+
+.layer-integrity-status.compromised {
+    color: var(--crimson-alarm);
+    background: rgba(239, 68, 68, 0.15);
+}

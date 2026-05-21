@@ -1,0 +1,29 @@
+/* Custom UI Animations, Terminal Scanning Lines, Vector Layout Keyframes */
+@keyframes textCriticalPulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+}
+
+.pulse-txt {
+    animation: textCriticalPulse 1.5s infinite ease-in-out;
+}
+
+@keyframes gridBorderAlert {
+    0%, 100% { box-shadow: 0 0 0 transparent; }
+    50% { box-shadow: inset 0 0 20px rgba(239, 68, 68, 0.3); }
+}
+
+.scada-matrix-shell.breached-state {
+    animation: gridBorderAlert 2s infinite ease-in-out;
+}
+
+/* Custom Table Badges */
+.table-badge {
+    padding: 2px 6px;
+    border-radius: 2px;
+    font-size: 0.75rem;
+    font-weight: bold;
+}
+.table-badge.clear { background: rgba(16, 185, 129, 0.15); color: var(--emerald-safe); }
+.table-badge.warn { background: rgba(245, 158, 11, 0.15); color: var(--neon-amber-ot); }
+.table-badge.danger { background: rgba(239, 68, 68, 0.15); color: var(--crimson-alarm); }

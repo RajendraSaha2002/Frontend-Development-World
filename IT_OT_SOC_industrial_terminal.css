@@ -1,0 +1,133 @@
+/* Console Viewports, Deep Packet Inspection Readouts, and Command Data Tables */
+.console-panel {
+    background: var(--bg-card-panel);
+    border: 1px solid var(--matrix-border-glow);
+    border-radius: 6px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.panel-header h3 {
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--neon-cyan-it);
+    border-bottom: 1px solid rgba(6, 182, 212, 0.15);
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+
+.panel-header-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(6, 182, 212, 0.15);
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+
+.panel-header-flex h3 {
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--neon-cyan-it);
+}
+
+.industrial-terminal-box {
+    background-color: #040711;
+    border: 1px solid #1e293b;
+    border-radius: 4px;
+    height: 280px;
+    padding: 15px;
+    font-family: var(--font-scada-mono);
+    font-size: 0.85rem;
+    overflow-y: auto;
+    color: #e2e8f0;
+}
+
+.terminal-frame-line {
+    margin-bottom: 6px;
+    line-height: 1.4;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+    padding-bottom: 4px;
+}
+
+.terminal-frame-line .timestamp {
+    color: var(--text-low-contrast);
+    margin-right: 8px;
+}
+
+.industrial-data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--font-scada-mono);
+    font-size: 0.85rem;
+    text-align: left;
+}
+
+.industrial-data-table th {
+    color: var(--text-low-contrast);
+    font-weight: normal;
+    padding: 12px 8px;
+    border-bottom: 2px solid rgba(6, 182, 212, 0.2);
+}
+
+.industrial-data-table td {
+    padding: 12px 8px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.canvas-viewport-wrapper {
+    width: 100%;
+    height: 250px;
+    position: relative;
+    background: #050814;
+    border-radius: 4px;
+    border: 1px solid rgba(255,255,255,0.02);
+}
+
+.canvas-viewport-wrapper canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+.dpi-field-inspector {
+    background: #000;
+    border: 1px solid rgba(245, 158, 11, 0.2);
+    border-radius: 4px;
+    height: 250px;
+    padding: 15px;
+    font-family: var(--font-scada-mono);
+    font-size: 0.8rem;
+    overflow-y: auto;
+}
+
+.dpi-block {
+    margin-bottom: 10px;
+}
+
+.dpi-title {
+    color: var(--neon-amber-ot);
+    font-weight: bold;
+    border-bottom: 1px solid rgba(245, 158, 11, 0.15);
+    padding-bottom: 2px;
+    margin-bottom: 4px;
+}
+
+.dpi-kv {
+    display: flex;
+    justify-content: space-between;
+    padding: 2px 0;
+}
+
+.dpi-kv .val {
+    color: #e2e8f0;
+}
+
+.empty-state-notice {
+    color: var(--text-low-contrast);
+    text-align: center;
+    margin-top: 100px;
+}

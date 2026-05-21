@@ -1,0 +1,76 @@
+/* Document Root Variables & Screen Mapping Systems */
+:root {
+    --bg-industrial-matte: #0a0f1d;
+    --bg-card-panel: rgba(16, 22, 42, 0.85);
+    --neon-cyan-it: #06b6d4;
+    --neon-amber-ot: #f59e0b;
+    --matrix-border-glow: rgba(6, 182, 212, 0.25);
+    --text-high-contrast: #f8fafc;
+    --text-low-contrast: #64748b;
+    --emerald-safe: #10b981;
+    --crimson-alarm: #ef4444;
+
+    --font-scada-mono: 'Consolas', 'Courier New', monospace;
+    --font-ui-standard: system-ui, -apple-system, sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--bg-industrial-matte);
+    color: var(--text-high-contrast);
+    font-family: var(--font-ui-standard);
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+}
+
+.scada-matrix-shell {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    height: 100vh;
+    width: 100vw;
+}
+
+.control-tower-sidebar {
+    background-color: #0b0e17;
+    border-right: 1px solid rgba(6, 182, 212, 0.2);
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    z-index: 100;
+}
+
+.tactical-viewport-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow-y: auto;
+    position: relative;
+}
+
+.viewport-canvas-area {
+    padding: 24px;
+    flex: 1;
+}
+
+.soc-viewport-module {
+    display: none;
+}
+
+.soc-viewport-module.active {
+    display: block;
+}
+
+.dashboard-composite-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.col-span-2 { grid-column: span 2; }
+.col-span-3 { grid-column: span 3; }
