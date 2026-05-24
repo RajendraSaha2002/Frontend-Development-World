@@ -1,0 +1,49 @@
+/* Branding & Nav */
+.brand { padding: 25px; display: flex; align-items: center; gap: 15px; border-bottom: 1px solid var(--border-color); }
+.logo-hexagon { width: 40px; height: 45px; background: var(--accent-blue); clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%); display: flex; justify-content: center; align-items: center; font-weight: bold; font-family: var(--font-mono); }
+.brand-text h1 { font-size: 1rem; margin: 0; }
+.brand-text span { font-size: 0.75rem; color: var(--accent-cyan); text-transform: uppercase; letter-spacing: 1px; }
+
+.nav-menu { padding: 20px 0; flex: 1; }
+.nav-section { padding: 15px 25px 5px; font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
+.nav-btn { width: 100%; background: none; border: none; color: var(--text-muted); text-align: left; padding: 12px 25px; cursor: pointer; font-size: 0.9rem; transition: 0.2s; border-left: 3px solid transparent; }
+.nav-btn:hover { background: rgba(59, 130, 246, 0.05); color: var(--text-primary); }
+.nav-btn.active { background: rgba(59, 130, 246, 0.1); color: var(--accent-blue); border-left-color: var(--accent-blue); }
+
+/* Sensors */
+.sensor-status-card { padding: 20px 25px; border-top: 1px solid var(--border-color); background: rgba(0,0,0,0.3); }
+.sensor-status-card h5 { color: var(--text-muted); font-size: 0.7rem; margin-bottom: 12px; letter-spacing: 1px; }
+.sensor-list { list-style: none; font-size: 0.8rem; font-family: var(--font-mono); margin-bottom: 15px; }
+.sensor-list li { margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
+.status-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+.status-dot.safe { background: var(--safe-green); box-shadow: 0 0 8px var(--safe-green); }
+.status-dot.warn { background: var(--alert-orange); box-shadow: 0 0 8px var(--alert-orange); }
+.scan-mode { font-size: 0.75rem; color: var(--accent-cyan); border: 1px solid var(--accent-cyan); padding: 6px; border-radius: 4px; text-align: center; }
+
+/* Cards & Tables */
+.card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 6px; padding: 20px; display: flex; flex-direction: column; }
+.card-header { margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid var(--border-color); }
+.card-header h3 { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-primary); }
+.flex-between { display: flex; justify-content: space-between; align-items: center; }
+
+.global-metrics { display: flex; gap: 20px; }
+.metric-box { border: 1px solid var(--border-color); background: var(--bg-card); padding: 8px 16px; border-radius: 6px; display: flex; flex-direction: column; }
+.metric-box .lbl { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; }
+.metric-box .val { font-size: 1.25rem; font-weight: bold; font-family: var(--font-mono); }
+.val.cyan { color: var(--accent-cyan); }
+.val.red { color: var(--alert-red); }
+.val.orange { color: var(--alert-orange); }
+
+.data-table { width: 100%; border-collapse: collapse; font-family: var(--font-mono); font-size: 0.85rem; text-align: left; }
+.data-table th, .data-table td { padding: 12px; border-bottom: 1px solid var(--border-color); }
+.data-table th { color: var(--text-muted); font-weight: normal; font-family: var(--font-ui); text-transform: uppercase; font-size: 0.75rem;}
+.data-table tbody tr:hover { background: rgba(255,255,255,0.02); }
+
+.badge { padding: 4px 8px; border-radius: 4px; font-size: 0.7rem; font-weight: bold; text-transform: uppercase; font-family: var(--font-mono); }
+.badge.safe { background: rgba(16, 185, 129, 0.15); color: var(--safe-green); border: 1px solid var(--safe-green); }
+.badge.warn { background: rgba(249, 115, 22, 0.15); color: var(--alert-orange); border: 1px solid var(--alert-orange); }
+.badge.danger { background: rgba(239, 68, 68, 0.15); color: var(--alert-red); border: 1px solid var(--alert-red); }
+
+.btn { padding: 8px 16px; border-radius: 4px; border: none; cursor: pointer; font-weight: 600; font-size: 0.8rem; transition: 0.2s; }
+.btn.primary { background: var(--accent-blue); color: white; }
+.btn.primary:hover { background: #2563eb; }

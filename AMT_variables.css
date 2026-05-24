@@ -1,0 +1,29 @@
+:root {
+    /* Industrial Cyber Security Palette */
+    --bg-void: #030610;
+    --bg-panel: #0a1120;
+    --bg-card: #111a2f;
+    --border-color: #1e2d4a;
+
+    --text-primary: #e2e8f0;
+    --text-muted: #64748b;
+
+    --accent-cyan: #06b6d4;
+    --accent-blue: #3b82f6;
+    --alert-red: #ef4444;
+    --alert-orange: #f97316;
+    --safe-green: #10b981;
+
+    --font-ui: 'Inter', system-ui, -apple-system, sans-serif;
+    --font-mono: 'Fira Code', 'Consolas', monospace;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    background-color: var(--bg-void);
+    color: var(--text-primary);
+    font-family: var(--font-ui);
+    height: 100vh;
+    overflow: hidden;
+}

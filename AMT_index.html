@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OmniGuard AMT | Critical Infrastructure Security</title>
+
+    <link rel="stylesheet" href="css/AMT_variables.css">
+    <link rel="stylesheet" href="css/AMT_layout.css">
+    <link rel="stylesheet" href="css/AMT_components.css">
+    <link rel="stylesheet" href="css/AMT_purdue_map.css">
+    <link rel="stylesheet" href="css/AMT_animations.css">
+</head>
+<body>
+<div class="app-wrapper">
+
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="logo-hexagon">OG</div>
+            <div class="brand-text">
+                <h1>OmniGuard AMT</h1>
+                <span>Nexus Industrial Security</span>
+            </div>
+        </div>
+
+        <nav class="nav-menu">
+            <div class="nav-section">Situational Awareness</div>
+            <button class="nav-btn active" data-target="view-dashboard">Purdue Model Topology</button>
+            <button class="nav-btn" data-target="view-inventory">Cyber Asset Inventory</button>
+
+            <div class="nav-section">Deep Content Inspection</div>
+            <button class="nav-btn" data-target="view-vulnerabilities">CVE / NVD Mapping</button>
+            <button class="nav-btn" data-target="view-inspector">SPAN / TAP Packet Sniffer</button>
+        </nav>
+
+        <div class="sensor-status-card">
+            <h5>AMT SENSOR HEALTH</h5>
+            <ul class="sensor-list">
+                <li><span class="status-dot safe"></span> L4 Sensor (Enterprise)</li>
+                <li><span class="status-dot safe"></span> L3 Sensor (Control Center)</li>
+                <li><span class="status-dot warn"></span> L2 Sensor (Local Control)</li>
+                <li><span class="status-dot safe"></span> L1 Sensor (Controller LAN)</li>
+            </ul>
+            <div class="scan-mode">Hybrid Scanning Active (Passive/Select Probing)</div>
+        </div>
+    </aside>
+
+    <main class="workspace">
+
+        <header class="top-bar">
+            <h2 id="current-view-title" class="view-title">Purdue Model Topology Map</h2>
+            <div class="global-metrics">
+                <div class="metric-box">
+                    <span class="lbl">Authorized Assets</span>
+                    <span class="val cyan" id="auth-asset-count">0</span>
+                </div>
+                <div class="metric-box">
+                    <span class="lbl">Unauthorized/Rogue</span>
+                    <span class="val red pulse-text" id="rogue-asset-count">0</span>
+                </div>
+                <div class="metric-box">
+                    <span class="lbl">Network Anomalies</span>
+                    <span class="val orange" id="anomaly-count">0</span>
+                </div>
+            </div>
+        </header>
+
+        <div class="main-content">
+
+            <section id="view-dashboard" class="module-view active">
+                <div class="dashboard-grid">
+                    <div class="card col-span-3 topology-card">
+                        <div class="card-header flex-between">
+                            <h3>Live Network Architecture (Purdue Levels 0 - 4)</h3>
+                            <span class="badge safe border-glow">Continuous Sniffing Active</span>
+                        </div>
+                        <div class="canvas-container">
+                            <canvas id="purdueMapCanvas"></canvas>
+                        </div>
+                        <div class="legend-bar">
+                            <span><strong>L4:</strong> Enterprise Zone</span>
+                            <span><strong>L3:</strong> Control Center</span>
+                            <span><strong>L2:</strong> Local Control</span>
+                            <span><strong>L1:</strong> Controller LAN</span>
+                            <span><strong>L0:</strong> Field I/O</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="view-inventory" class="module-view hidden">
+                <div class="dashboard-grid">
+                    <div class="card col-span-3">
+                        <div class="card-header flex-between">
+                            <h3>Comprehensive Cyber Asset Inventory</h3>
+                            <div class="filter-group">
+                                <button class="btn primary" id="btn-baseline">Establish New Baseline</button>
+                            </div>
+                        </div>
+                        <table class="data-table">
+                            <thead>
+                            <tr>
+                                <th>Asset Tag / MAC</th>
+                                <th>Device Type</th>
+                                <th>Purdue Level</th>
+                                <th>IP Address</th>
+                                <th>Firmware / OS</th>
+                                <th>Authorization</th>
+                            </tr>
+                            </thead>
+                            <tbody id="asset-inventory-body">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <section id="view-vulnerabilities" class="module-view hidden">
+                <div class="dashboard-grid">
+                    <div class="card col-span-2">
+                        <div class="card-header"><h3>CVE / NVD Vulnerability Mapping</h3></div>
+                        <div class="vuln-list" id="cve-mapping-list">
+                        </div>
+                    </div>
+                    <div class="card col-span-1">
+                        <div class="card-header"><h3>Approved Software Inventory</h3></div>
+                        <ul class="software-list" id="software-inventory-list">
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section id="view-inspector" class="module-view hidden">
+                <div class="dashboard-grid">
+                    <div class="card col-span-3">
+                        <div class="card-header flex-between">
+                            <h3>Deep Packet Inspection (DPI) & Content Parsing</h3>
+                            <span class="badge warn">Non-Intrusive Capture</span>
+                        </div>
+                        <div class="terminal-box" id="packet-sniffer-terminal">
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+</div>
+
+<script src="js/AMT_app_core.js"></script>
+<script src="js/AMT_purdue_visualizer.js"></script>
+<script src="js/AMT_asset_inventory.js"></script>
+<script src="js/AMT_vulnerability_scanner.js"></script>
+<script src="js/AMT_packet_inspector.js"></script>
+</body>
+</html>

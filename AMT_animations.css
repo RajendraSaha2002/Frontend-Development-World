@@ -1,0 +1,16 @@
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulseRedText {
+    0%, 100% { opacity: 1; text-shadow: 0 0 0 transparent; }
+    50% { opacity: 0.8; text-shadow: 0 0 10px rgba(239, 68, 68, 0.8); }
+}
+.pulse-text { animation: pulseRedText 1.5s infinite; }
+
+@keyframes borderGlowSafe {
+    0%, 100% { box-shadow: 0 0 0 transparent; }
+    50% { box-shadow: 0 0 8px var(--safe-green); }
+}
+.border-glow { animation: borderGlowSafe 2s infinite; }
