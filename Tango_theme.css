@@ -1,0 +1,30 @@
+:root {
+    /* Computational Biology Palette */
+    --bg-base: #0a0a0f;
+    --bg-panel: #11111a;
+    --bg-card: #181824;
+    --border-color: #2a2a3d;
+
+    --text-primary: #e0e0e8;
+    --text-muted: #808099;
+
+    --accent-primary: #6366f1; /* Indigo */
+    --accent-secondary: #8b5cf6; /* Violet */
+    --cyan: #06b6d4;
+    --success: #10b981;
+    --warning: #f59e0b;
+    --danger: #ef4444;
+
+    --font-ui: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    --font-mono: 'Consolas', 'Courier New', monospace;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    background-color: var(--bg-base);
+    color: var(--text-primary);
+    font-family: var(--font-ui);
+    height: 100vh;
+    overflow: hidden;
+}

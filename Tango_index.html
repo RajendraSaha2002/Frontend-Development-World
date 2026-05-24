@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TANGO | BioCompute Nexus</title>
+
+    <link rel="stylesheet" href="css/Tango_theme.css">
+    <link rel="stylesheet" href="css/Tango_layout.css">
+    <link rel="stylesheet" href="css/Tango_components.css">
+    <link rel="stylesheet" href="css/Tango_visualizer.css">
+    <link rel="stylesheet" href="css/Tango_animations.css">
+</head>
+<body>
+<div class="app-wrapper">
+
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="logo-molecule">
+                <div class="atom a1"></div>
+                <div class="atom a2"></div>
+                <div class="atom a3"></div>
+            </div>
+            <div class="brand-text">
+                <h1>TANGO Suite</h1>
+                <span>BioCompute Nexus</span>
+            </div>
+        </div>
+
+        <nav class="nav-menu">
+            <div class="nav-section">Ligand Processing</div>
+            <button class="nav-btn active" data-target="view-dashboard">Conformation Workflow</button>
+            <button class="nav-btn" data-target="view-database">Ligand Database</button>
+
+            <div class="nav-section">MPI Architecture</div>
+            <button class="nav-btn" data-target="view-cluster">Master-Slave Cluster</button>
+            <button class="nav-btn" data-target="view-terminal">CLI / Batch Jobs</button>
+        </nav>
+
+        <div class="tech-stack-card">
+            <h5>ENGINE SPECIFICATIONS</h5>
+            <ul class="tech-list">
+                <li><span class="status-dot active"></span> C & Python Backend</li>
+                <li><span class="status-dot active"></span> MPI Load Balancing</li>
+                <li><span class="status-dot active"></span> MOPAC Semi-empirical</li>
+            </ul>
+            <div class="mode-badge">High-Throughput Mode</div>
+        </div>
+    </aside>
+
+    <main class="workspace">
+
+        <header class="top-bar">
+            <h2 id="current-view-title" class="view-title">Conformation Workflow & Optimization</h2>
+            <div class="global-metrics">
+                <div class="metric-box">
+                    <span class="lbl">Active Conformers</span>
+                    <span class="val cyan" id="conformer-count">0</span>
+                </div>
+                <div class="metric-box">
+                    <span class="lbl">Best Energy (kcal/mol)</span>
+                    <span class="val green" id="best-energy-val">--</span>
+                </div>
+                <div class="metric-box">
+                    <span class="lbl">Cluster Nodes Active</span>
+                    <span class="val orange" id="node-count">0/16</span>
+                </div>
+            </div>
+        </header>
+
+        <div class="main-content">
+
+            <section id="view-dashboard" class="module-view active">
+                <div class="dashboard-grid">
+
+                    <div class="card col-span-1">
+                        <div class="card-header"><h3>Torsion Angle Configuration</h3></div>
+                        <div class="form-group">
+                            <label>Target Ligand ID</label>
+                            <input type="text" value="MOL_7842_A" class="form-control" disabled>
+                        </div>
+                        <div class="form-group">
+                            <label>Exocyclic Bond Rotation Steps (Degrees)</label>
+                            <select class="form-control" id="torsion-step">
+                                <option value="15">15° Steps (High Precision)</option>
+                                <option value="30" selected>30° Steps (Standard)</option>
+                                <option value="60">60° Steps (Fast)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>MOPAC Optimization Method</label>
+                            <select class="form-control">
+                                <option value="pm6">PM6 (Recommended)</option>
+                                <option value="am1">AM1</option>
+                                <option value="rm1">RM1</option>
+                            </select>
+                        </div>
+                        <button class="btn primary w-100" id="btn-start-generation">Initialize MPI Generation</button>
+                    </div>
+
+                    <div class="card col-span-2">
+                        <div class="card-header flex-between">
+                            <h3>MOPAC Energy vs RMSD Distribution</h3>
+                            <span class="badge safe">Optimization Complete</span>
+                        </div>
+                        <div class="canvas-container">
+                            <canvas id="energyChartCanvas"></canvas>
+                        </div>
+                        <div class="legend-bar">
+                            <span><span class="dot best"></span> Best Conformation</span>
+                            <span><span class="dot alternate"></span> Alternate Stable</span>
+                            <span><span class="dot unstable"></span> High Energy</span>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <section id="view-cluster" class="module-view hidden">
+                <div class="dashboard-grid">
+                    <div class="card col-span-3">
+                        <div class="card-header flex-between">
+                            <h3>Parallel Computation Topology (Tree-like Fashion)</h3>
+                            <div class="filter-group">
+                                <span class="badge warn">Load Balancing Active</span>
+                            </div>
+                        </div>
+                        <div class="canvas-container large">
+                            <canvas id="mpiClusterCanvas"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="view-terminal" class="module-view hidden">
+                <div class="dashboard-grid">
+                    <div class="card col-span-3">
+                        <div class="card-header"><h3>TANGO CLI Interface & Batch Execution</h3></div>
+                        <div class="terminal-box" id="cli-terminal">
+                            <div class="term-line">BioCompute Nexus TANGO v2.1.0</div>
+                            <div class="term-line">Initializing master-slave MPI environment...</div>
+                            <div class="term-line">Waiting for batch job submission...</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="view-database" class="module-view hidden">
+                <div class="dashboard-grid">
+                    <div class="card col-span-3">
+                        <div class="card-header"><h3>Input Molecule Repository</h3></div>
+                        <table class="data-table">
+                            <thead>
+                            <tr>
+                                <th>Ligand ID</th>
+                                <th>Formula</th>
+                                <th>Exocyclic Bonds</th>
+                                <th>Estimated Conformers</th>
+                                <th>Status</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>MOL_7842_A</td>
+                                <td>C15H20N2O3</td>
+                                <td>4</td>
+                                <td>~1,296</td>
+                                <td><span class="badge safe">Optimized</span></td>
+                            </tr>
+                            <tr>
+                                <td>LIG_003_XYZ</td>
+                                <td>C10H12N4O</td>
+                                <td>2</td>
+                                <td>~144</td>
+                                <td><span class="badge warn">Pending Batch</span></td>
+                            </tr>
+                            <tr>
+                                <td>INHIB_99_B</td>
+                                <td>C22H28FN3O2</td>
+                                <td>6</td>
+                                <td>~46,656</td>
+                                <td><span class="badge warn">Pending Batch</span></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+</div>
+
+<script src="js/Tango_app_core.js"></script>
+<script src="js/Tango_mpi_cluster.js"></script>
+<script src="js/Tango_energy_chart.js"></script>
+<script src="js/Tango_job_controller.js"></script>
+</body>
+</html>
