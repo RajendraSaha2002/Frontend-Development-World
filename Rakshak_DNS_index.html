@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rakshak DNS | Enterprise Protective Solution</title>
+
+    <link rel="stylesheet" href="css/Rakshak_DNS_theme.css">
+    <link rel="stylesheet" href="css/Rakshak_DNS_layout.css">
+    <link rel="stylesheet" href="css/Rakshak_DNS_components.css">
+    <link rel="stylesheet" href="css/Rakshak_DNS_tools.css">
+    <link rel="stylesheet" href="css/Rakshak_DNS_animations.css">
+</head>
+<body>
+<div class="rakshak-grid-container">
+
+    <aside class="sidebar-console">
+        <div class="brand-header">
+            <div class="logo-shield">
+                <div class="inner-shield"></div>
+            </div>
+            <div class="brand-text">
+                <h1>RAKSHAK DNS</h1>
+                <span>Sentinel Grid CoE</span>
+            </div>
+        </div>
+
+        <nav class="module-navigation">
+            <div class="nav-label">Enterprise Protection</div>
+            <button class="nav-item active" data-target="view-dashboard">Global Traffic Visualizer</button>
+            <button class="nav-item" data-target="view-threats">Active Threat Mitigation</button>
+
+            <div class="nav-label">DNS Security Tools</div>
+            <button class="nav-item" data-target="view-tools">Forensic DNS Tools</button>
+            <button class="nav-item" data-target="view-api">Blacklist API Services</button>
+        </nav>
+
+        <div class="resolver-info-card">
+            <h5>ACTIVE RESOLVER IPs</h5>
+            <div class="ip-block">
+                <span class="ip-type">IPv4</span>
+                <span class="ip-val">103.58.120.120</span>
+                <span class="ip-val">220.156.189.43</span>
+            </div>
+            <div class="ip-block mt-2">
+                <span class="ip-type">IPv6</span>
+                <span class="ip-val">2405:8a00:8001::20</span>
+            </div>
+        </div>
+    </aside>
+
+    <main class="tactical-workspace">
+
+        <header class="top-telemetry-bar">
+            <h2 id="view-title" class="current-view-title">Global Traffic Visualizer</h2>
+            <div class="global-stats">
+                <div class="stat-pill">
+                    <span class="lbl">Queries/sec</span>
+                    <span class="val cyan" id="qps-counter">0</span>
+                </div>
+                <div class="stat-pill alert-border">
+                    <span class="lbl">Threats Blocked</span>
+                    <span class="val red" id="threat-counter">0</span>
+                </div>
+                <div class="stat-pill success-border">
+                    <span class="lbl">Safe Browsing</span>
+                    <span class="val green">ACTIVE</span>
+                </div>
+            </div>
+        </header>
+
+        <div class="viewport-area">
+
+            <section id="view-dashboard" class="workspace-module active">
+                <div class="dashboard-layout">
+                    <div class="card map-card col-span-2">
+                        <div class="card-header">
+                            <h3>Global Traffic Visualization of DNS Resolvers</h3>
+                            <span class="badge pulse-blue">Live Feed</span>
+                        </div>
+                        <div class="canvas-wrapper">
+                            <canvas id="globalTrafficMap"></canvas>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Health Index Chart</h3>
+                        </div>
+                        <div class="canvas-wrapper">
+                            <canvas id="healthIndexChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="view-threats" class="workspace-module hidden">
+                <div class="dashboard-layout">
+                    <div class="card col-span-3">
+                        <div class="card-header flex-between">
+                            <h3>Real-Time Malicious Query Mitigation</h3>
+                            <div class="filter-badges">
+                                <span class="badge red">Phishing</span>
+                                <span class="badge orange">Malware</span>
+                                <span class="badge yellow">Privacy</span>
+                            </div>
+                        </div>
+                        <div class="terminal-container" id="threat-log-terminal">
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="view-tools" class="workspace-module hidden">
+                <div class="dashboard-layout">
+                    <div class="card col-span-1">
+                        <div class="card-header"><h3>Forensic Utilities</h3></div>
+                        <div class="tool-selector">
+                            <button class="tool-btn active" data-tool="malicious">Malicious Domain Checker</button>
+                            <button class="tool-btn" data-tool="punycode">Domain Punycode Identifier</button>
+                            <button class="tool-btn" data-tool="typosquatting">Typosquatting Checker</button>
+                            <button class="tool-btn" data-tool="health">DNS Health Analyzer</button>
+                        </div>
+                    </div>
+                    <div class="card col-span-2">
+                        <div class="card-header"><h3 id="active-tool-title">Malicious Domain Checker</h3></div>
+                        <div class="tool-workspace">
+                            <div class="input-group">
+                                <input type="text" id="tool-input" placeholder="Enter Domain Name (e.g., example.com)">
+                                <button class="action-btn" id="execute-tool-btn">Analyze Target</button>
+                            </div>
+                            <div class="tool-results" id="tool-results-panel">
+                                Awaiting input for analysis...
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="view-api" class="workspace-module hidden">
+                <div class="dashboard-layout">
+                    <div class="card col-span-3 api-card">
+                        <div class="card-header"><h3>Blacklisted Domain Names API Service</h3></div>
+                        <p class="api-desc">Integrate Sentinel Grid's protective blocklists directly into your perimeter defenses. Feeds are updated continuously based on global telemetry.</p>
+
+                        <div class="api-endpoints">
+                            <div class="endpoint">
+                                <span class="method">GET</span>
+                                <span class="url">/api/v1/blacklists/daily</span>
+                                <span class="desc">Retrieves domains flagged within the last 24 hours.</span>
+                            </div>
+                            <div class="endpoint">
+                                <span class="method">GET</span>
+                                <span class="url">/api/v1/blacklists/weekly</span>
+                                <span class="desc">Retrieves aggregated domains flagged over a 7-day rolling period.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+</div>
+
+<script src="js/Rakshak_DNS_app_core.js"></script>
+<script src="js/Rakshak_DNS_canvas_visualizer.js"></script>
+<script src="js/Rakshak_DNS_threat_engine.js"></script>
+<script src="js/Rakshak_DNS_dns_tools.js"></script>
+</body>
+</html>

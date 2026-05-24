@@ -1,0 +1,50 @@
+.rakshak-grid-container {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+}
+
+.sidebar-console {
+    width: 280px;
+    background-color: var(--bg-panel);
+    border-right: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    z-index: 10;
+}
+
+.tactical-workspace {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow-y: auto;
+}
+
+.top-telemetry-bar {
+    height: 80px;
+    background-color: var(--bg-panel);
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 32px;
+}
+
+.viewport-area {
+    padding: 32px;
+    flex: 1;
+}
+
+.workspace-module { display: none; }
+.workspace-module.active { display: block; animation: fadeIn 0.4s ease-out; }
+
+.dashboard-layout {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+}
+
+.col-span-1 { grid-column: span 1; }
+.col-span-2 { grid-column: span 2; }
+.col-span-3 { grid-column: span 3; }
