@@ -1,0 +1,10 @@
+/* Editor Tabs */
+.editor-tabs { display: flex; background-color: var(--bg-panel); height: 35px; border-bottom: 1px solid var(--border-color); overflow-x: auto;}
+.tab { padding: 0 20px; display: flex; align-items: center; background-color: var(--bg-tab); border-right: 1px solid var(--border-color); font-size: 0.85rem; cursor: pointer; color: var(--text-muted);}
+.tab.active { background-color: var(--bg-tab-active); color: var(--brand-accent); border-top: 2px solid var(--brand-accent); }
+
+/* Code Area */
+.editor-wrapper { flex: 1; display: flex; background-color: var(--bg-editor); overflow: hidden; position: relative;}
+.line-numbers { width: 45px; background-color: var(--bg-base); border-right: 1px solid var(--border-color); padding: 10px 5px; text-align: right; color: var(--text-muted); font-family: var(--font-mono); font-size: 0.85rem; line-height: 1.5; user-select: none; overflow: hidden;}
+.code-input { flex: 1; background: transparent; color: #d4d4d4; font-family: var(--font-mono); font-size: 0.85rem; line-height: 1.5; padding: 10px; border: none; outline: none; resize: none; white-space: pre; overflow: auto;}
+.code-input::selection { background: rgba(58, 115, 172, 0.4); }

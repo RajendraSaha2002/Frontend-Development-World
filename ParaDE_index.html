@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ParaDE | NovaCore HPC Development Environment</title>
+
+  <link rel="stylesheet" href="css/ParaDE_variables.css">
+  <link rel="stylesheet" href="css/ParaDE_reset.css">
+  <link rel="stylesheet" href="css/ParaDE_layout.css">
+  <link rel="stylesheet" href="css/ParaDE_components.css">
+  <link rel="stylesheet" href="css/ParaDE_editor.css">
+  <link rel="stylesheet" href="css/ParaDE_terminal.css">
+</head>
+<body>
+<div class="ide-container">
+
+  <header class="top-nav">
+    <div class="brand">
+      <div class="logo-icon">P</div>
+      <div class="brand-text">
+        <h1>ParaDE</h1>
+        <span>NovaCore HPC</span>
+      </div>
+    </div>
+    <nav class="menu-bar">
+      <div class="menu-item dropdown">File
+        <div class="dropdown-content">
+          <a href="#" id="action-new">New Project</a>
+          <a href="#" id="action-import">Import Project</a>
+          <a href="#" id="action-download">Download with Makefiles</a>
+        </div>
+      </div>
+      <div class="menu-item">Edit</div>
+      <div class="menu-item">View</div>
+      <div class="menu-item dropdown">Tools
+        <div class="dropdown-content">
+          <a href="#" id="action-debugger">Launch Debugger</a>
+          <a href="#" id="action-profiler">Performance Profiler</a>
+          <a href="#" id="action-converter">Source Converter (CUDA/OpenACC)</a>
+        </div>
+      </div>
+    </nav>
+    <div class="run-actions">
+      <select id="lrm-selector" class="ide-select">
+        <option value="slurm">Slurm LRM</option>
+        <option value="torque">Torque/PBS</option>
+      </select>
+      <button class="btn btn-compile" id="btn-compile">Compile & Build</button>
+      <button class="btn btn-run" id="btn-submit-job">Submit HPC Job</button>
+    </div>
+  </header>
+
+  <div class="main-workspace">
+    <aside class="sidebar-left">
+      <div class="sidebar-header">EXPLORER</div>
+      <div class="file-tree" id="file-tree">
+      </div>
+    </aside>
+
+    <div class="editor-terminal-split">
+
+      <section class="editor-area">
+        <div class="editor-tabs" id="editor-tabs">
+        </div>
+        <div class="editor-wrapper">
+          <div class="line-numbers" id="line-numbers">1</div>
+          <textarea class="code-input" id="code-input" spellcheck="false" wrap="off"></textarea>
+        </div>
+      </section>
+
+      <section class="panel-area">
+        <div class="panel-tabs">
+          <div class="panel-tab active" data-panel="terminal">Terminal</div>
+          <div class="panel-tab" data-panel="compiler">Compiler Output</div>
+          <div class="panel-tab" data-panel="jobs">Job Queue (LRM)</div>
+          <div class="panel-tab" data-panel="profiler">Profiler Analytics</div>
+        </div>
+        <div class="panel-content">
+          <div id="panel-terminal" class="panel-view active">
+            <div class="term-line">nova-hpc@parade-node01:~/workspace$ ready.</div>
+          </div>
+          <div id="panel-compiler" class="panel-view hidden">
+            <div class="term-line sys">Awaiting compilation instructions...</div>
+          </div>
+          <div id="panel-jobs" class="panel-view hidden">
+            <table class="job-table">
+              <thead>
+              <tr><th>Job ID</th><th>Name</th><th>Nodes</th><th>Tasks</th><th>Status</th><th>Time</th></tr>
+              </thead>
+              <tbody id="job-queue-body">
+              </tbody>
+            </table>
+          </div>
+          <div id="panel-profiler" class="panel-view hidden">
+            <div class="profiler-stats" id="profiler-stats">
+              Run a job with profiling enabled to view execution analytics.
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <aside class="sidebar-right">
+      <div class="sidebar-header">HYBRID CONFIG</div>
+      <div class="config-panel">
+        <div class="config-group">
+          <label>Paradigm Toggles</label>
+          <label class="checkbox-container"><input type="checkbox" checked> OpenMP Support <span class="checkmark"></span></label>
+          <label class="checkbox-container"><input type="checkbox" checked> MPI Integration <span class="checkmark"></span></label>
+          <label class="checkbox-container"><input type="checkbox"> CUDA Acceleration <span class="checkmark"></span></label>
+          <label class="checkbox-container"><input type="checkbox"> OpenACC Directives <span class="checkmark"></span></label>
+          <label class="checkbox-container"><input type="checkbox"> OpenCL <span class="checkmark"></span></label>
+        </div>
+        <div class="config-group">
+          <label>Compiler Flags</label>
+          <input type="text" class="ide-input" value="-O3 -march=native -fopenmp">
+        </div>
+        <div class="config-group">
+          <label>Target Architecture</label>
+          <select class="ide-select w-100">
+            <option>x86_64 (Generic)</option>
+            <option>AMD EPYC (Zen 3)</option>
+            <option>Intel Xeon</option>
+            <option>NVIDIA A100/H100</option>
+          </select>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <footer class="status-bar">
+    <div class="status-left">ParaDE Cloud Environment v3.4 | Connected to NovaCore Cluster</div>
+    <div class="status-right">
+      <span id="file-type">C/C++</span> |
+      <span id="cursor-pos">Ln 1, Col 1</span> |
+      UTF-8
+    </div>
+  </footer>
+</div>
+
+<div id="job-modal" class="modal hidden">
+  <div class="modal-content">
+    <div class="modal-header">Configure HPC Job (Slurm)</div>
+    <div class="modal-body">
+      <div class="config-group">
+        <label>Nodes (-N)</label>
+        <input type="number" id="job-nodes" class="ide-input w-100" value="2" min="1">
+      </div>
+      <div class="config-group">
+        <label>Tasks per Node (--ntasks-per-node)</label>
+        <input type="number" id="job-tasks" class="ide-input w-100" value="16" min="1">
+      </div>
+      <div class="config-group">
+        <label>Time Limit (--time)</label>
+        <input type="text" id="job-time" class="ide-input w-100" value="02:00:00">
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" id="btn-cancel-job">Cancel</button>
+      <button class="btn btn-run" id="btn-confirm-job">sbatch Submit</button>
+    </div>
+  </div>
+</div>
+
+<script src="js/ParaDE_core_ui.js"></script>
+<script src="js/ParaDE_file_system.js"></script>
+<script src="js/ParaDE_code_editor.js"></script>
+<script src="js/ParaDE_hpc_compiler.js"></script>
+<script src="js/ParaDE_profiler_tools.js"></script>
+</body>
+</html>

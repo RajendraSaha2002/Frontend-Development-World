@@ -1,0 +1,47 @@
+/* Header Elements */
+.brand { display: flex; align-items: center; gap: 10px; margin-right: 20px;}
+.logo-icon { background: var(--brand-accent); color: white; width: 24px; height: 24px; display: flex; justify-content: center; align-items: center; font-weight: bold; border-radius: 4px; }
+.brand-text h1 { font-size: 1rem; margin: 0; line-height: 1; color: var(--text-active);}
+.brand-text span { font-size: 0.6rem; color: var(--text-muted); text-transform: uppercase;}
+
+.menu-bar { display: flex; flex: 1; gap: 15px; font-size: 0.85rem; }
+.menu-item { cursor: pointer; padding: 5px 10px; border-radius: 4px; position: relative;}
+.menu-item:hover { background-color: rgba(255,255,255,0.1); color: var(--text-active); }
+
+/* Dropdowns */
+.dropdown-content { display: none; position: absolute; top: 100%; left: 0; background-color: var(--bg-panel); border: 1px solid var(--border-color); min-width: 200px; z-index: 100; box-shadow: 0 4px 8px rgba(0,0,0,0.5); border-radius: 4px;}
+.dropdown:hover .dropdown-content { display: block; }
+.dropdown-content a { color: var(--text-primary); padding: 8px 15px; text-decoration: none; display: block; font-size: 0.8rem; }
+.dropdown-content a:hover { background-color: var(--compile-blue); color: white; }
+
+/* Buttons & Inputs */
+.run-actions { display: flex; gap: 10px; align-items: center;}
+.btn { padding: 4px 12px; border: none; border-radius: 4px; color: white; cursor: pointer; font-size: 0.8rem; font-family: var(--font-ui); transition: 0.2s;}
+.btn-compile { background-color: var(--compile-blue); }
+.btn-compile:hover { background-color: #0b4e7a; }
+.btn-run { background-color: var(--run-green); }
+.btn-run:hover { background-color: #3e8e41; }
+.ide-select, .ide-input { background: var(--bg-base); color: var(--text-primary); border: 1px solid var(--border-color); padding: 4px 8px; border-radius: 4px; font-size: 0.8rem; outline: none;}
+.ide-select:focus, .ide-input:focus { border-color: var(--border-focus); }
+.w-100 { width: 100%; }
+
+/* Sidebars */
+.sidebar-header { font-size: 0.7rem; color: var(--text-muted); padding: 10px 15px; text-transform: uppercase; letter-spacing: 1px; font-weight: bold;}
+.file-tree { padding: 0 10px; font-size: 0.85rem; overflow-y: auto;}
+.folder { font-weight: bold; margin-bottom: 5px; color: var(--text-active);}
+.file { padding: 4px 10px 4px 20px; cursor: pointer; border-radius: 4px; color: var(--text-primary); display: flex; align-items: center; gap: 8px;}
+.file:hover { background-color: rgba(255,255,255,0.05); }
+.file.active { background-color: rgba(255,255,255,0.1); color: var(--brand-accent); }
+
+/* Config Panel */
+.config-panel { padding: 15px; display: flex; flex-direction: column; gap: 20px;}
+.config-group label { display: block; font-size: 0.8rem; margin-bottom: 6px; color: var(--text-muted);}
+.checkbox-container { display: flex; align-items: center; gap: 8px; font-size: 0.8rem; margin-bottom: 8px; cursor: pointer; color: var(--text-primary);}
+
+/* Modals */
+.modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 1000; display: flex; justify-content: center; align-items: center;}
+.modal.hidden { display: none; }
+.modal-content { background: var(--bg-panel); border: 1px solid var(--border-color); border-radius: 6px; width: 400px; box-shadow: 0 10px 20px rgba(0,0,0,0.5);}
+.modal-header { padding: 15px; border-bottom: 1px solid var(--border-color); font-weight: bold; color: var(--text-active);}
+.modal-body { padding: 15px; }
+.modal-footer { padding: 15px; border-top: 1px solid var(--border-color); display: flex; justify-content: flex-end; gap: 10px;}

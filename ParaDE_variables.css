@@ -1,0 +1,29 @@
+:root {
+    /* Pro IDE Dark Theme Palette (VSCode / JetBrains inspired) */
+    --bg-base: #1e1e1e;
+    --bg-panel: #252526;
+    --bg-header: #333333;
+    --bg-sidebar: #1e1e1e;
+    --bg-editor: #1e1e1e;
+    --bg-tab: #2d2d2d;
+    --bg-tab-active: #1e1e1e;
+
+    --border-color: #3c3c3c;
+    --border-focus: #007acc;
+
+    --text-primary: #cccccc;
+    --text-active: #ffffff;
+    --text-muted: #858585;
+
+    /* Branding Accent (Purple from ParaDE original concept) */
+    --brand-accent: #c586c0;
+    --brand-hover: #a36da0;
+
+    --compile-blue: #0e639c;
+    --run-green: #4CAF50;
+    --alert-red: #f44336;
+    --warning-yellow: #d7ba7d;
+
+    --font-ui: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    --font-mono: 'Consolas', 'Courier New', monospace;
+}
