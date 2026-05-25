@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meghdoot Cloud Suite | NimbusCore Technologies</title>
+
+    <link rel="stylesheet" href="css/Meghdoot_Cloud_theme.css">
+    <link rel="stylesheet" href="css/Meghdoot_Cloud_layout.css">
+    <link rel="stylesheet" href="css/Meghdoot_Cloud_components.css">
+    <link rel="stylesheet" href="css/Meghdoot_Cloud_topology.css">
+    <link rel="stylesheet" href="css/Meghdoot_Cloud_terminal.css">
+</head>
+<body>
+<div class="cloud-grid-wrapper">
+
+    <aside class="sidebar-console">
+        <div class="brand-header">
+            <div class="logo-cloud">
+                <div class="cloud-ring r1"></div>
+                <div class="cloud-ring r2"></div>
+            </div>
+            <div class="brand-text">
+                <h1>MEGHDOOT</h1>
+                <span>Sovereign Private Cloud</span>
+            </div>
+        </div>
+
+        <nav class="module-navigation">
+            <div class="nav-label">Unified Management</div>
+            <button class="nav-item active" data-target="view-dashboard">Hyper-Converged Overview</button>
+            <button class="nav-item" data-target="view-k8s">OpenStack & K8s Agility</button>
+
+            <div class="nav-label">Workloads & Operations</div>
+            <button class="nav-item" data-target="view-hpc">HPC Simulations</button>
+            <button class="nav-item" data-target="view-vdi">Next-Gen VDI Workforce</button>
+
+            <div class="nav-label">Security & Automation</div>
+            <button class="nav-item" data-target="view-security">Real-Time Logging & Security</button>
+        </nav>
+
+        <div class="infrastructure-card">
+            <h5>MANAGED ON-PREM CLOUD</h5>
+            <ul class="infra-list">
+                <li><span class="status-dot green"></span> Network Fabric: Active</li>
+                <li><span class="status-dot green"></span> Storage Pools: Synced</li>
+                <li><span class="status-dot green"></span> Compute Nodes: 128/128</li>
+            </ul>
+            <div class="sovereign-badge">NimbusCore Certified</div>
+        </div>
+    </aside>
+
+    <main class="tactical-workspace">
+
+        <header class="top-telemetry-bar">
+            <h2 id="view-title" class="current-view-title">Hyper-Converged Data Center Overview</h2>
+            <div class="global-stats">
+                <div class="stat-pill">
+                    <span class="lbl">Total vCPUs</span>
+                    <span class="val cyan" id="vcpu-counter">8,192</span>
+                </div>
+                <div class="stat-pill">
+                    <span class="lbl">RAM Provisioned</span>
+                    <span class="val purple" id="ram-counter">32.4 TB</span>
+                </div>
+                <div class="stat-pill alert-border">
+                    <span class="lbl">Threats Mitigated</span>
+                    <span class="val red" id="threat-counter">0</span>
+                </div>
+            </div>
+        </header>
+
+        <div class="viewport-area">
+
+            <section id="view-dashboard" class="workspace-module active">
+                <div class="dashboard-layout">
+                    <div class="card col-span-2">
+                        <div class="card-header">
+                            <h3>Data Center Compute Telemetry</h3>
+                            <span class="badge pulse-blue">Live Aggregation</span>
+                        </div>
+                        <div class="canvas-wrapper">
+                            <canvas id="computeTelemetryCanvas"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>HCI Storage Allocation</h3>
+                        </div>
+                        <div class="canvas-wrapper donut-wrapper">
+                            <canvas id="storageDonutCanvas"></canvas>
+                            <div class="donut-center">
+                                <span class="donut-val">2.4 PB</span>
+                                <span class="donut-lbl">Total Capacity</span>
+                            </div>
+                        </div>
+                        <div class="legend-bar-vertical">
+                            <span><span class="dot block-storage"></span> Block (NVMe) - 60%</span>
+                            <span><span class="dot object-storage"></span> Object (S3) - 25%</span>
+                            <span><span class="dot file-storage"></span> File (NFS) - 15%</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="view-k8s" class="workspace-module hidden">
+                <div class="dashboard-layout">
+                    <div class="card col-span-3 topology-card">
+                        <div class="card-header flex-between">
+                            <h3>Containerized Workflows & OpenStack Foundation</h3>
+                            <div class="filter-badges">
+                                <span class="badge blue">Control Plane</span>
+                                <span class="badge purple">Worker Nodes</span>
+                                <span class="badge green">Pod Replicas</span>
+                            </div>
+                        </div>
+                        <div class="canvas-wrapper topology-wrapper">
+                            <canvas id="k8sTopologyCanvas"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="view-hpc" class="workspace-module hidden">
+                <div class="dashboard-layout">
+                    <div class="card col-span-3">
+                        <div class="card-header"><h3>HPC Job Scheduler: Complex Simulations to Real-World Results</h3></div>
+                        <table class="data-table">
+                            <thead>
+                            <tr>
+                                <th>Job ID</th>
+                                <th>Simulation Type</th>
+                                <th>Nodes Allocated</th>
+                                <th>CPU Cores</th>
+                                <th>Runtime</th>
+                                <th>Status</th>
+                                <th>Progress</th>
+                            </tr>
+                            </thead>
+                            <tbody id="hpc-queue-body">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <section id="view-vdi" class="workspace-module hidden">
+                <div class="dashboard-layout">
+                    <div class="card col-span-3">
+                        <div class="card-header flex-between">
+                            <h3>Secure Workforce VDI Provisioning</h3>
+                            <button class="action-btn">Provision New Pool</button>
+                        </div>
+                        <div class="vdi-grid" id="vdi-container">
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="view-security" class="workspace-module hidden">
+                <div class="dashboard-layout">
+                    <div class="card col-span-3">
+                        <div class="card-header flex-between">
+                            <h3>Next-Gen Cloud Security & Operations Automation</h3>
+                            <span class="badge red pulse-red">SIEM Active</span>
+                        </div>
+                        <div class="terminal-container" id="security-log-terminal">
+                            <div class="log-entry sys-msg">Connecting to Meghdoot Telemetry Stream...</div>
+                            <div class="log-entry sys-msg">Authentication verified. Real-time logging initiated.</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+</div>
+
+<script src="js/Meghdoot_Cloud_app_router.js"></script>
+<script src="js/Meghdoot_Cloud_telemetry_charts.js"></script>
+<script src="js/Meghdoot_Cloud_k8s_topology.js"></script>
+<script src="js/Meghdoot_Cloud_hpc_scheduler.js"></script>
+<script src="js/Meghdoot_Cloud_security_logger.js"></script>
+</body>
+</html>

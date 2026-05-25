@@ -1,0 +1,28 @@
+/* Canvas Containers */
+.canvas-wrapper { width: 100%; height: 350px; position: relative; background: var(--bg-deep); border-radius: 6px; border: 1px solid var(--border-color); }
+.topology-card { height: 600px; }
+.topology-wrapper { height: 480px; }
+canvas { width: 100%; height: 100%; display: block; }
+
+/* Donut Chart Specifics */
+.donut-wrapper { display: flex; justify-content: center; align-items: center; }
+.donut-center { position: absolute; display: flex; flex-direction: column; align-items: center; pointer-events: none;}
+.donut-val { font-size: 1.5rem; font-weight: bold; font-family: var(--font-mono); color: var(--text-main); }
+.donut-lbl { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; }
+
+.legend-bar-vertical { margin-top: 16px; display: flex; flex-direction: column; gap: 8px; font-size: 0.8rem; color: var(--text-muted); font-family: var(--font-mono);}
+.legend-bar-vertical .dot { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 8px; }
+.block-storage { background: var(--accent-blue); }
+.object-storage { background: var(--accent-purple); }
+.file-storage { background: var(--accent-cyan); }
+
+/* VDI Grid */
+.vdi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; height: 450px; overflow-y: auto; padding-right: 8px;}
+.vdi-node { background: var(--bg-deep); border: 1px solid var(--border-color); border-radius: 6px; padding: 16px; display: flex; flex-direction: column; gap: 8px;}
+.vdi-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 8px;}
+.vdi-id { font-weight: bold; color: var(--accent-cyan); font-family: var(--font-mono); font-size: 0.85rem;}
+.vdi-status { width: 8px; height: 8px; border-radius: 50%; }
+.vdi-status.active { background: var(--safe-green); box-shadow: 0 0 5px var(--safe-green);}
+.vdi-status.idle { background: var(--alert-orange); }
+.vdi-user { font-size: 0.8rem; color: var(--text-main); }
+.vdi-os { font-size: 0.7rem; color: var(--text-muted); font-family: var(--font-mono);}
