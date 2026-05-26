@@ -1,0 +1,37 @@
+:root {
+    /* Nexus QSim Color Palette (Deep Purples & Clean Whites) */
+    --bg-main: #f4f5f7;
+    --bg-sidebar: #4a2b82; /* Deep Quantum Purple */
+    --bg-sidebar-dark: #3a2266;
+    --bg-panel: #ffffff;
+
+    --text-main: #1e293b;
+    --text-light: #64748b;
+    --text-inverse: #ffffff;
+    --text-inverse-muted: #cbd5e1;
+
+    --accent-primary: #6366f1;
+    --accent-hover: #4f46e5;
+
+    --gate-h: #10b981; /* Emerald */
+    --gate-x: #ef4444; /* Red */
+    --gate-y: #f59e0b; /* Orange */
+    --gate-z: #3b82f6; /* Blue */
+    --gate-cx: #8b5cf6; /* Purple */
+    --gate-m: #64748b; /* Gray */
+
+    --border-color: #e2e8f0;
+
+    --font-ui: 'Inter', -apple-system, sans-serif;
+    --font-mono: 'JetBrains Mono', 'Consolas', monospace;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    font-family: var(--font-ui);
+    height: 100vh;
+    overflow: hidden;
+}

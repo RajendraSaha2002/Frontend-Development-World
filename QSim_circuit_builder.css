@@ -1,0 +1,27 @@
+.circuit-panel { flex: 1; min-height: 400px; }
+
+.toolbar-mini { display: flex; gap: 8px; }
+.tool-btn { padding: 4px 10px; font-size: 0.8rem; border-radius: 4px; border: 1px solid var(--border-color); background: white; cursor: pointer; }
+
+.gate-palette { padding: 12px 20px; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; gap: 12px; background: #f8fafc; }
+.gate-draggable { width: 36px; height: 36px; display: flex; justify-content: center; align-items: center; color: white; font-weight: bold; border-radius: 4px; cursor: grab; font-family: var(--font-mono); box-shadow: 0 2px 4px rgba(0,0,0,0.1);}
+
+.hadamard { background: var(--gate-h); }
+.pauli-x { background: var(--gate-x); }
+.pauli-y { background: var(--gate-y); }
+.pauli-z { background: var(--gate-z); }
+.cnot { background: var(--gate-cx); border-radius: 50%; width: 30px; height: 30px; }
+.measure { background: var(--gate-m); color: white; }
+
+.circuit-grid { flex: 1; padding: 30px 20px; overflow-x: auto; background: white; position: relative; }
+.q-wire { display: flex; align-items: center; margin-bottom: 40px; position: relative; }
+.wire-label { width: 40px; font-family: var(--font-mono); font-weight: bold; color: var(--text-light); }
+.wire-track { height: 2px; background: #cbd5e1; flex: 1; display: flex; align-items: center; gap: 20px; padding: 0 20px;}
+.gate-slot { width: 40px; height: 40px; border: 1px dashed #94a3b8; border-radius: 4px; display: flex; justify-content: center; align-items: center; background: rgba(255,255,255,0.5); z-index: 2;}
+
+.cnot-target { position: absolute; width: 24px; height: 24px; border: 2px solid var(--gate-cx); border-radius: 50%; display: flex; justify-content: center; align-items: center; background: white; z-index: 2;}
+.cnot-target::after { content: '+'; color: var(--gate-cx); font-weight: bold; font-size: 1.2rem;}
+.cnot-line { position: absolute; width: 2px; background: var(--gate-cx); z-index: 1;}
+
+.c-wire { display: flex; align-items: center; margin-top: 20px; }
+.c-wire-track { height: 4px; border-top: 1px solid #94a3b8; border-bottom: 1px solid #94a3b8; flex: 1; }

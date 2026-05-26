@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QSim Horizon | Nexus Quantum Labs</title>
+
+    <link rel="stylesheet" href="css/QSim_theme.css">
+    <link rel="stylesheet" href="css/QSim_layout.css">
+    <link rel="stylesheet" href="css/QSim_sidebar.css">
+    <link rel="stylesheet" href="css/QSim_circuit_builder.css">
+    <link rel="stylesheet" href="css/QSim_editor.css">
+    <link rel="stylesheet" href="css/QSim_results_panel.css">
+</head>
+<body>
+<div class="qsim-app">
+
+    <aside class="sidebar">
+        <div class="brand-area">
+            <div class="logo-box">Q</div>
+            <div class="brand-text">
+                <h1>QSim Horizon</h1>
+                <span>Nexus Quantum Labs</span>
+            </div>
+        </div>
+
+        <div class="user-profile">
+            <div class="avatar"></div>
+            <div class="user-info">
+                <span class="user-name">Dr. Alan Turing</span>
+                <span class="user-role">Quantum Architect</span>
+            </div>
+        </div>
+
+        <nav class="side-nav">
+            <button class="nav-btn active" data-target="workspace">
+                <span class="icon">⚛</span> Quantum Workspace
+            </button>
+            <button class="nav-btn" data-target="noise-models">
+                <span class="icon">≈</span> Noise Models
+            </button>
+            <button class="nav-btn" data-target="examples">
+                <span class="icon">📖</span> Solved Examples
+            </button>
+            <button class="nav-btn" data-target="settings">
+                <span class="icon">⚙</span> Configuration
+            </button>
+        </nav>
+
+        <div class="execution-mode">
+            <label>Compute Backend</label>
+            <select class="custom-select" id="compute-backend">
+                <option value="cloud">QCloud HPC Cluster</option>
+                <option value="local">QBox Standalone Engine</option>
+            </select>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <header class="top-toolbar">
+            <div class="project-info">
+                <h2>Project: Entanglement_Test_01</h2>
+                <span class="status-badge online">Cloud Backend Online</span>
+            </div>
+            <div class="action-buttons">
+                <button class="btn btn-secondary">Save Circuit</button>
+                <button class="btn btn-primary" id="btn-simulate">Run Simulation</button>
+            </div>
+        </header>
+
+        <section id="workspace" class="view-panel active">
+            <div class="workspace-grid">
+
+                <div class="col-left">
+                    <div class="panel code-panel">
+                        <div class="panel-header">
+                            <h3>Python Quantum Script</h3>
+                            <span class="lang-tag">Q-Python</span>
+                        </div>
+                        <div class="editor-container">
+                            <div class="line-numbers" id="line-numbers"></div>
+                            <textarea id="code-editor" class="code-area" spellcheck="false" wrap="off">
+from nexus_qsim import QuantumCircuit, execute
+
+# Initialize a 2-qubit circuit
+qc = QuantumCircuit(2, 2)
+
+# Apply Hadamard gate to Qubit 0
+qc.h(0)
+
+# Apply CNOT gate (Control=0, Target=1)
+qc.cx(0, 1)
+
+# Measure qubits
+qc.measure([0, 1], [0, 1])
+
+# Execute on QCloud Simulator
+result = execute(qc, backend='qcloud', shots=1024)
+print(result.get_counts())
+                                </textarea>
+                        </div>
+                    </div>
+
+                    <div class="panel results-panel">
+                        <div class="panel-header">
+                            <h3>Simulated Density Matrix / State Probability</h3>
+                        </div>
+                        <div class="canvas-wrapper">
+                            <canvas id="density-matrix-canvas"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-right">
+                    <div class="panel circuit-panel">
+                        <div class="panel-header flex-between">
+                            <h3>Visual Circuit Composer</h3>
+                            <div class="toolbar-mini">
+                                <button class="tool-btn">Add Qubit</button>
+                                <button class="tool-btn">Clear</button>
+                            </div>
+                        </div>
+
+                        <div class="gate-palette">
+                            <span>Gates:</span>
+                            <div class="gate-draggable hadamard">H</div>
+                            <div class="gate-draggable pauli-x">X</div>
+                            <div class="gate-draggable pauli-y">Y</div>
+                            <div class="gate-draggable pauli-z">Z</div>
+                            <div class="gate-draggable cnot">CX</div>
+                            <div class="gate-draggable measure">M</div>
+                        </div>
+
+                        <div class="circuit-grid" id="circuit-grid">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section id="noise-models" class="view-panel hidden">
+            <div class="panel noise-config-panel">
+                <div class="panel-header">
+                    <h3>Realistic Quantum Noise Simulator</h3>
+                </div>
+                <div class="noise-controls">
+                    <div class="control-group">
+                        <label>Depolarizing Error Probability (Gate)</label>
+                        <input type="range" min="0" max="100" value="5" class="slider" id="noise-depolarizing">
+                        <span class="val-display" id="val-depolarizing">0.05</span>
+                    </div>
+                    <div class="control-group">
+                        <label>Thermal Relaxation (T1 time in µs)</label>
+                        <input type="range" min="10" max="200" value="50" class="slider" id="noise-t1">
+                        <span class="val-display" id="val-t1">50 µs</span>
+                    </div>
+                    <div class="control-group">
+                        <label>Dephasing Time (T2 time in µs)</label>
+                        <input type="range" min="10" max="200" value="70" class="slider" id="noise-t2">
+                        <span class="val-display" id="val-t2">70 µs</span>
+                    </div>
+                    <button class="btn btn-primary" id="btn-apply-noise">Apply Noise Profile</button>
+                </div>
+            </div>
+        </section>
+    </main>
+</div>
+
+<script src="js/QSim_app_core.js"></script>
+<script src="js/QSim_circuit_engine.js"></script>
+<script src="js/QSim_quantum_noise.js"></script>
+<script src="js/QSim_isometric_chart.js"></script>
+<script src="js/QSim_python_editor.js"></script>
+</body>
+</html>
