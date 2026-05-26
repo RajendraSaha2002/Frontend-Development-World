@@ -1,0 +1,28 @@
+/* Entanglement Swapping Diagram Recreation */
+.topology-card { height: 650px; display: flex; flex-direction: column; }
+.topology-container { flex: 1; position: relative; background: #7c7b80; /* Gray bg from PDF */ border-radius: 6px; overflow: hidden; margin-top: 10px; border: 2px solid var(--border-color); }
+canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none;}
+
+.node-box { position: absolute; z-index: 2; border-radius: 2px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); display: flex; flex-direction: column; align-items: center; padding: 15px; transition: transform 0.3s;}
+.node-box:hover { transform: scale(1.05); }
+
+/* Swap Nodes (Green) */
+.swap-node { background: var(--swap-node-bg); color: var(--swap-node-text); width: 16%; height: 25%; }
+.node-title { font-weight: bold; font-size: 0.85rem; margin-bottom: auto; }
+.memory-label { font-size: 0.75rem; margin-bottom: 5px; }
+.memory-slots { display: flex; gap: 10px; }
+.mem-ring { width: 30px; height: 30px; border: 6px solid white; border-radius: 8px; background: transparent; }
+
+/* BSM Nodes (Orange) */
+.bsm-node { background: var(--bsm-node-bg); color: var(--bsm-node-text); width: 22%; height: 25%; justify-content: space-between;}
+.bsm-internals { display: flex; align-items: center; gap: 10px; width: 100%; justify-content: center;}
+.detector { background: black; color: white; border-radius: 20px 0 0 20px; padding: 8px 15px; font-weight: bold; font-size: 0.8rem; }
+.d-minus { border-radius: 0 20px 20px 0; }
+.beam-splitter { width: 4px; height: 40px; background: black; }
+.bsm-label { font-size: 0.7rem; font-weight: bold; }
+
+/* Legend */
+.topology-legend { position: absolute; bottom: 20px; right: 20px; background: rgba(0,0,0,0.6); padding: 10px 15px; border-radius: 6px; z-index: 3; color: white; font-size: 0.8rem; display: flex; flex-direction: column; gap: 8px;}
+.line-sample { display: inline-block; width: 30px; height: 4px; vertical-align: middle; margin-right: 8px; }
+.line-sample.cc { background: var(--channel-cc); }
+.line-sample.qc { background: var(--channel-qc); }

@@ -1,0 +1,36 @@
+:root {
+    /* Quantum Network Vibe - Deep Space Purples, Neons, and Emeralds */
+    --bg-void: #0a0b10;
+    --bg-panel: #131520;
+    --bg-card: #1c1f30;
+    --border-color: #2d324a;
+
+    --text-main: #e2e8f0;
+    --text-muted: #94a3b8;
+
+    /* Topological Colors from PDF */
+    --swap-node-bg: #6ee7b7; /* Emerald Green */
+    --swap-node-text: #064e3b;
+    --bsm-node-bg: #fcd34d; /* Golden Orange */
+    --bsm-node-text: #78350f;
+    --channel-cc: #3b82f6; /* Blue for Classical */
+    --channel-qc: #ec4899; /* Pink/Red for Quantum */
+
+    --accent-cyan: #06b6d4;
+    --accent-purple: #8b5cf6;
+    --alert-red: #ef4444;
+    --safe-green: #10b981;
+
+    --font-ui: 'Inter', system-ui, sans-serif;
+    --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    background-color: var(--bg-void);
+    color: var(--text-main);
+    font-family: var(--font-ui);
+    height: 100vh;
+    overflow: hidden;
+}

@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QNetSim Pro | Nexus Quantum Systems</title>
+
+    <link rel="stylesheet" href="css/QNetSim_theme.css">
+    <link rel="stylesheet" href="css/QNetSim_layout.css">
+    <link rel="stylesheet" href="css/QNetSim_sidebar.css">
+    <link rel="stylesheet" href="css/QNetSim_swapping_topology.css">
+    <link rel="stylesheet" href="css/QNetSim_dashboard_panels.css">
+    <link rel="stylesheet" href="css/QNetSim_animations.css">
+</head>
+<body>
+<div class="qnet-app-wrapper">
+
+    <aside class="sidebar-console">
+        <div class="brand-header">
+            <div class="quantum-logo">
+                <div class="orbit o1"></div>
+                <div class="orbit o2"></div>
+                <div class="core"></div>
+            </div>
+            <div class="brand-text">
+                <h1>QNetSim Pro</h1>
+                <span>Nexus Quantum Systems</span>
+            </div>
+        </div>
+
+        <nav class="module-navigation">
+            <div class="nav-label">Core Simulation</div>
+            <button class="nav-item active" data-target="view-swapping">Entanglement Swapping</button>
+            <button class="nav-item" data-target="view-protocols">Built-in Protocols</button>
+
+            <div class="nav-label">Environment Config</div>
+            <button class="nav-item" data-target="view-noise">Noisy Channels & Sync</button>
+            <button class="nav-item" data-target="view-hpc">HPC Backend & Logs</button>
+        </nav>
+
+        <div class="mission-card">
+            <h5>QUANTUM INTERNET GOAL</h5>
+            <p class="mission-desc">Efficiently simulate the communication of quantum information over quantum networks.</p>
+            <div class="badge-group">
+                <span class="q-badge">Explore</span>
+                <span class="q-badge">Analyze</span>
+                <span class="q-badge">Refine</span>
+            </div>
+        </div>
+    </aside>
+
+    <main class="tactical-workspace">
+
+        <header class="top-telemetry-bar">
+            <h2 id="view-title" class="current-view-title">Application: Entanglement Swapping</h2>
+            <div class="global-stats">
+                <div class="stat-pill">
+                    <span class="lbl">HPC Integration</span>
+                    <span class="val cyan">Multi-Core Active</span>
+                </div>
+                <div class="stat-pill">
+                    <span class="lbl">Global Fidelity</span>
+                    <span class="val purple" id="fidelity-metric">0.984</span>
+                </div>
+                <button class="action-btn" id="btn-master-sim">Start Simulation</button>
+            </div>
+        </header>
+
+        <div class="viewport-area">
+
+            <section id="view-swapping" class="workspace-module active">
+                <div class="dashboard-layout single-col">
+                    <div class="card topology-card">
+                        <div class="card-header flex-between">
+                            <h3>Quantum Network Topology: Bell State Measurement (BSM)</h3>
+                            <span class="q-badge pulse-purple">Live Interactive Simulation</span>
+                        </div>
+
+                        <div class="topology-container" id="swapping-topology">
+                            <canvas id="topology-canvas"></canvas>
+
+                            <div class="node-box swap-node" style="top: 10%; left: 10%;" id="node-a">
+                                <div class="node-title">Swap Node A</div>
+                                <div class="memory-label">Memory</div>
+                                <div class="memory-slots"><div class="mem-ring"></div></div>
+                            </div>
+
+                            <div class="node-box swap-node" style="top: 10%; left: 42.5%;" id="node-b">
+                                <div class="node-title">Swap Node B</div>
+                                <div class="memory-label">Memory</div>
+                                <div class="memory-slots"><div class="mem-ring"></div><div class="mem-ring"></div></div>
+                            </div>
+
+                            <div class="node-box swap-node" style="top: 10%; left: 75%;" id="node-c">
+                                <div class="node-title">Swap Node C</div>
+                                <div class="memory-label">Memory</div>
+                                <div class="memory-slots"><div class="mem-ring"></div></div>
+                            </div>
+
+                            <div class="node-box bsm-node" style="top: 65%; left: 20%;" id="bsm-1">
+                                <div class="node-title">BSM Node</div>
+                                <div class="bsm-internals">
+                                    <div class="detector d-plus">D+</div>
+                                    <div class="beam-splitter"></div>
+                                    <div class="detector d-minus">D-</div>
+                                </div>
+                                <div class="bsm-label">Beam Splitter</div>
+                            </div>
+
+                            <div class="node-box bsm-node" style="top: 65%; left: 60%;" id="bsm-2">
+                                <div class="node-title">BSM Node</div>
+                                <div class="bsm-internals">
+                                    <div class="detector d-plus">D+</div>
+                                    <div class="beam-splitter"></div>
+                                    <div class="detector d-minus">D-</div>
+                                </div>
+                                <div class="bsm-label">Beam Splitter</div>
+                            </div>
+
+                            <div class="topology-legend">
+                                <div><span class="line-sample cc"></span> Classical Channel (CC)</div>
+                                <div><span class="line-sample qc"></span> Quantum Channel (QC)</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="view-protocols" class="workspace-module hidden">
+                <div class="dashboard-layout">
+                    <div class="card col-span-1">
+                        <div class="card-header"><h3>Built-in Protocols</h3></div>
+                        <div class="protocol-list">
+                            <div class="proto-item active" data-proto="teleport">Quantum Teleportation</div>
+                            <div class="proto-item" data-proto="qkd">Quantum Key Distribution (QKD)</div>
+                            <div class="proto-item" data-proto="sdc">Super Dense Coding</div>
+                            <div class="proto-item" data-proto="purify">Entanglement Purification</div>
+                        </div>
+                    </div>
+
+                    <div class="card col-span-2">
+                        <div class="card-header flex-between">
+                            <h3 id="proto-analytics-title">Quantum Teleportation Metrics</h3>
+                            <button class="action-btn outline">Export Data</button>
+                        </div>
+                        <div class="metrics-grid">
+                            <div class="metric-box">
+                                <span class="lbl">Qubit Transmission Rate</span>
+                                <span class="val cyan" id="m-rate">1,024 qb/s</span>
+                            </div>
+                            <div class="metric-box">
+                                <span class="lbl">Fidelity Drop</span>
+                                <span class="val red" id="m-drop">1.2%</span>
+                            </div>
+                            <div class="metric-box">
+                                <span class="lbl">EPR Pairs Consumed</span>
+                                <span class="val purple" id="m-epr">4,096</span>
+                            </div>
+                        </div>
+                        <div class="terminal-block mt-4" id="proto-live-feed">
+                            <div class="t-line info">Initialize Teleportation Protocol...</div>
+                            <div class="t-line info">Alice applies CNOT to |ψ⟩ and EPR half.</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="view-noise" class="workspace-module hidden">
+                <div class="dashboard-layout">
+                    <div class="card col-span-3">
+                        <div class="card-header"><h3>Noisy Quantum Channels & Network Synchronization</h3></div>
+                        <div class="config-grid">
+                            <div class="config-panel">
+                                <h4>Decoherence Parameters</h4>
+                                <div class="slider-group">
+                                    <label>T1 (Thermal Relaxation) <span class="slider-val" id="val-t1">50 µs</span></label>
+                                    <input type="range" id="slide-t1" min="10" max="200" value="50">
+                                </div>
+                                <div class="slider-group">
+                                    <label>T2 (Dephasing Time) <span class="slider-val" id="val-t2">30 µs</span></label>
+                                    <input type="range" id="slide-t2" min="5" max="100" value="30">
+                                </div>
+                                <div class="slider-group">
+                                    <label>Channel Depolarization Loss <span class="slider-val" id="val-loss">0.05 dB/km</span></label>
+                                    <input type="range" id="slide-loss" min="0" max="50" value="5">
+                                </div>
+                            </div>
+
+                            <div class="config-panel">
+                                <h4>Network Synchronization</h4>
+                                <div class="slider-group">
+                                    <label>Clock Drift Tolerance <span class="slider-val" id="val-drift">10 ns</span></label>
+                                    <input type="range" id="slide-drift" min="1" max="100" value="10">
+                                </div>
+                                <div class="slider-group">
+                                    <label>Classical Comm Latency <span class="slider-val" id="val-lat">5 ms</span></label>
+                                    <input type="range" id="slide-lat" min="1" max="50" value="5">
+                                </div>
+                                <button class="action-btn mt-4 w-100" id="btn-apply-params">Apply Flexible Parameters</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="view-hpc" class="workspace-module hidden">
+                <div class="dashboard-layout">
+                    <div class="card col-span-3">
+                        <div class="card-header flex-between">
+                            <h3>HPC Backend Integration (Multi/Many Core Processor)</h3>
+                            <span class="q-badge safe">Cloud Service Connected</span>
+                        </div>
+                        <div class="hpc-terminal-wrapper">
+                            <div class="terminal-header">
+                                <span>Nexus_QCloud_Terminal // root@hpc-node-01</span>
+                            </div>
+                            <div class="hpc-terminal" id="hpc-console">
+                                <div class="t-line sys">Attempting handshake with High-Performance Classical Computing backends...</div>
+                                <div class="t-line success">Connection established. 128 cores allocated for Quantum State Vector Simulation.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+</div>
+
+<script src="js/QNetSim_app_router.js"></script>
+<script src="js/QNetSim_swapping_canvas.js"></script>
+<script src="js/QNetSim_protocol_engine.js"></script>
+<script src="js/QNetSim_hpc_terminal.js"></script>
+<script src="js/QNetSim_noise_models.js"></script>
+</body>
+</html>
