@@ -1,0 +1,6 @@
+/* Geometric Projection Mechanics Container */
+.bloch-visualization-enclosure { position: relative; width: 340px; height: 340px; background-color: #08090d; border-radius: 50%; border: 1px solid var(--border-glow); display: flex; align-items: center; justify-content: center; box-shadow: inset 0 0 40px rgba(0,0,0,0.6); }
+#bloch-sphere-canvas { width: 100%; height: 100%; }
+.bloch-telemetry-readout { position: absolute; bottom: -40px; display: flex; gap: 20px; font-family: var(--mono-font); font-size: 0.85rem; background-color: var(--panel-bg); padding: 6px 16px; border-radius: 20px; border: 1px solid var(--border-glow); }
+.bloch-telemetry-readout span { color: var(--text-secondary); }
+.bloch-telemetry-readout strong { color: var(--accent-cyan); }

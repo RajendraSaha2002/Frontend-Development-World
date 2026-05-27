@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lumina Quantum Suite | Single-Qubit Photonic Lab</title>
+
+  <link rel="stylesheet" href="css/PhotonEdu_theme.css">
+  <link rel="stylesheet" href="css/PhotonEdu_layout.css">
+  <link rel="stylesheet" href="css/PhotonEdu_hardware_bench.css">
+  <link rel="stylesheet" href="css/PhotonEdu_circuit_builder.css">
+  <link rel="stylesheet" href="css/PhotonEdu_analytics_panel.css">
+  <link rel="stylesheet" href="css/PhotonEdu_bloch_sphere.css">
+</head>
+<body>
+<div class="lq-app-container">
+
+  <aside class="lq-sidebar">
+    <div class="lq-brand">
+      <div class="photon-emitter-node">
+        <div class="wave-ring wr-1"></div>
+        <div class="wave-ring wr-2"></div>
+        <div class="photon-core"></div>
+      </div>
+      <div class="lq-title-block">
+        <h1>Lumina Q-Suite</h1>
+        <span>Programmable Photonic System</span>
+      </div>
+    </div>
+
+    <nav class="lq-nav-menu">
+      <div class="menu-header">Lab Workspaces</div>
+      <button class="nav-tab-btn active" data-target="workspace-optical">Physical Optical Bench</button>
+      <button class="nav-tab-btn" data-target="workspace-circuit">Circuit & Code Console</button>
+      <button class="nav-tab-btn" data-target="workspace-math">State Analytics & Matrices</button>
+    </nav>
+
+    <div class="lq-hardware-status-card">
+      <h5>HARDWARE STATUS</h5>
+      <div class="status-indicator-row">
+        <span class="pulse-dot green"></span>
+        <span class="status-lbl">Laser Stable: 405 nm</span>
+      </div>
+      <p class="crypto-val">g²(0) Coherence: <span id="lbl-g2-val">0.042</span></p>
+      <div class="tag-row">
+        <span class="lbl-tag">SPDC Active</span>
+        <span class="lbl-tag">Single Photon</span>
+      </div>
+    </div>
+  </aside>
+
+  <main class="lq-main-workspace">
+    <header class="lq-top-telemetry-bar">
+      <h2 id="current-view-title">Workspace: Physical Optical Bench</h2>
+      <div class="global-telemetry-controls">
+        <div class="telemetry-pill">
+          <span class="t-lbl">Statevector</span>
+          <span class="t-val cyan" id="telemetry-state">|0⟩</span>
+        </div>
+        <div class="telemetry-pill">
+          <span class="t-lbl">Photon Source Mode</span>
+          <span class="t-val emerald">Heralded Single Qubit</span>
+        </div>
+        <button class="lq-btn-primary" id="btn-global-trigger">Fire Quantum Sequence</button>
+      </div>
+    </header>
+
+    <div class="lq-viewport-grid">
+
+      <section id="workspace-optical" class="lq-module-view active">
+        <div class="view-row-layout">
+          <div class="lq-card hardware-card">
+            <div class="card-header-bar">
+              <h3>Real-Time Photonic Optical Bench Array Schematic</h3>
+              <span class="lbl-tag active-pulse">Active Optical Interconnects</span>
+            </div>
+            <div class="optical-canvas-container" id="canvas-bench-wrapper">
+              <canvas id="optical-bench-canvas"></canvas>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="workspace-circuit" class="lq-module-view hidden">
+        <div class="view-split-layout">
+          <div class="lq-card flex-col">
+            <div class="card-header-bar">
+              <h3>OpenQASM 2.0 Instruction Stream</h3>
+            </div>
+            <div class="qasm-editor-wrapper">
+              <div class="line-numbers-strip" id="editor-line-numbers">1<br>2<br>3<br>4<br>5<br>6<br>7<br>8</div>
+              <textarea id="qasm-code-input" autocomplete="off" spellcheck="false">OPENQASM 2.0;
+include "qelib1.inc";
+qreg q[1];
+creg c[1];
+
+h q[0];
+t q[0];
+measure q[0] -> c[0];</textarea>
+            </div>
+            <div class="editor-action-strip">
+              <span class="syntax-status text-emerald" id="lbl-syntax-msg">Syntax Validated</span>
+              <button class="lq-btn-secondary" id="btn-compile-code">Compile & Inject Gates</button>
+            </div>
+          </div>
+
+          <div class="lq-card flex-col">
+            <div class="card-header-bar">
+              <h3>Interactive Photonic Circuit Grid</h3>
+            </div>
+            <div class="circuit-grid-workspace">
+              <div class="gate-toolbox">
+                <div class="draggable-gate-primitive" data-gate="X">Pauli-X</div>
+                <div class="draggable-gate-primitive" data-gate="Y">Pauli-Y</div>
+                <div class="draggable-gate-primitive" data-gate="Z">Pauli-Z</div>
+                <div class="draggable-gate-primitive" data-gate="H">Hadamard</div>
+                <div class="draggable-gate-primitive" data-gate="S">Phase (S)</div>
+                <div class="draggable-gate-primitive" data-gate="T">π/8 (T)</div>
+              </div>
+              <div class="circuit-wire-container">
+                <div class="wire-label">|ψ⟩₀</div>
+                <div class="circuit-timeline" id="main-circuit-line">
+                </div>
+                <button class="btn-clear-wire" id="btn-flush-circuit">Flush Wire</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="workspace-math" class="lq-module-view hidden">
+        <div class="view-split-layout">
+          <div class="lq-card flex-col">
+            <div class="card-header-bar">
+              <h3>Wavefunction Mathematical Amplitudes</h3>
+            </div>
+            <div class="math-matrix-display">
+              <div class="matrix-bracket-row">
+                <span class="matrix-symbol">|ψ⟩ = </span>
+                <div class="bracket-enclosure">
+                  <div class="matrix-cell" id="mat-alpha">1.000 + 0.000i</div>
+                  <div class="matrix-cell" id="mat-beta">0.000 + 0.000i</div>
+                </div>
+                <div class="basis-vector-labels">
+                  <div>|0⟩ (Horizontal)</div>
+                  <div>|1⟩ (Vertical)</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="probability-bars-section">
+              <h4>Measurement Probability Metrics (Real-Time Counts)</h4>
+              <div class="prob-wrapper">
+                <div class="prob-row">
+                  <span class="lbl-basis">|0⟩ (H)</span>
+                  <div class="track-bg"><div class="fill-bar bg-cyan" id="bar-prob-zero" style="width: 100%;"></div></div>
+                  <span class="lbl-pct" id="lbl-pct-zero">100.0%</span>
+                </div>
+                <div class="prob-row">
+                  <span class="lbl-basis">|1⟩ (V)</span>
+                  <div class="track-bg"><div class="fill-bar bg-purple" id="bar-prob-one" style="width: 0%;"></div></div>
+                  <span class="lbl-pct" id="lbl-pct-one">0.0%</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="lq-card flex-col align-center justify-center">
+            <div class="card-header-bar w-100">
+              <h3>3D Bloch Sphere Geometrical Space Projection</h3>
+            </div>
+            <div class="bloch-visualization-enclosure">
+              <canvas id="bloch-sphere-canvas"></canvas>
+              <div class="bloch-telemetry-readout">
+                <span>X: <strong id="b-coord-x">0.000</strong></span>
+                <span>Y: <strong id="b-coord-y">0.000</strong></span>
+                <span>Z: <strong id="b-coord-z">1.000</strong></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+</div>
+
+<script src="js/PhotonEdu_router.js"></script>
+<script src="js/PhotonEdu_quantum_math.js"></script>
+<script src="js/PhotonEdu_qasm_parser.js"></script>
+<script src="js/PhotonEdu_optical_bench.js"></script>
+<script src="js/PhotonEdu_bloch_canvas.js"></script>
+<script src="js/PhotonEdu_ui_controller.js"></script>
+</body>
+</html>

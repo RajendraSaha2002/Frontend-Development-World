@@ -1,0 +1,19 @@
+/* Mathematics and Amplitudes Display Components */
+.math-matrix-display { display: flex; justify-content: center; align-items: center; padding: 40px 0; background-color: rgba(0,0,0,0.1); border-radius: 8px; border: 1px solid var(--border-glow); }
+.matrix-bracket-row { display: flex; align-items: center; gap: 16px; }
+.matrix-symbol { font-family: var(--mono-font); font-size: 1.4rem; color: var(--text-primary); }
+.bracket-enclosure { border-left: 3px solid var(--text-primary); border-right: 3px solid var(--text-primary); border-radius: 4px; padding: 0 14px; display: flex; flex-direction: column; gap: 12px; }
+.matrix-cell { font-family: var(--mono-font); font-size: 1.2rem; font-weight: 500; color: var(--accent-cyan); text-align: center; min-width: 140px; }
+.basis-vector-labels { display: flex; flex-direction: column; justify-content: space-around; height: 68px; font-size: 0.82rem; color: var(--text-secondary); font-family: var(--mono-font); }
+
+/* Probability Bar Charts */
+.probability-bars-section { margin-top: auto; }
+.probability-bars-section h4 { font-size: 0.85rem; text-transform: uppercase; color: var(--text-secondary); margin-bottom: 16px; letter-spacing: 0.02em; }
+.prob-wrapper { display: flex; flex-direction: column; gap: 14px; }
+.prob-row { display: flex; align-items: center; gap: 16px; }
+.lbl-basis { width: 60px; font-family: var(--mono-font); font-size: 0.85rem; color: var(--text-secondary); }
+.track-bg { flex: 1; height: 16px; background-color: #080a0f; border-radius: 4px; overflow: hidden; border: 1px solid var(--border-glow); }
+.fill-bar { height: 100%; width: 0%; border-radius: 3px; transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+.bg-cyan { background-color: var(--accent-cyan); box-shadow: 0 0 8px var(--accent-cyan); }
+.bg-purple { background-color: var(--accent-purple); box-shadow: 0 0 8px var(--accent-purple); }
+.lbl-pct { width: 60px; text-align: right; font-family: var(--mono-font); font-size: 0.9rem; font-weight: 600; }

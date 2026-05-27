@@ -1,0 +1,26 @@
+/* Code Console & Editor Configurations */
+.qasm-editor-wrapper { flex: 1; min-height: 250px; background-color: #080a0f; border: 1px solid var(--border-glow); border-radius: 6px; display: flex; padding: 14px; font-family: var(--mono-font); font-size: 0.9rem; }
+.line-numbers-strip { width: 30px; text-align: right; color: var(--text-dark); user-select: none; padding-right: 12px; line-height: 1.5; }
+#qasm-code-input { flex: 1; background: none; border: none; outline: none; color: #a6accd; resize: none; line-height: 1.5; font-size: 0.9rem; height: 100%; }
+.editor-action-strip { display: flex; justify-content: space-between; align-items: center; margin-top: 16px; }
+.syntax-status { font-size: 0.85rem; font-weight: 500; }
+.text-emerald { color: var(--emerald-glow); }
+.lq-btn-secondary { background: none; border: 1px solid var(--border-highlight); color: var(--text-primary); padding: 8px 16px; border-radius: 6px; font-weight: 500; transition: background 0.2s; }
+.lq-btn-secondary:hover { background-color: var(--border-glow); border-color: var(--accent-cyan); }
+
+/* Timeline Drag/Drop System */
+.circuit-grid-workspace { display: flex; flex-direction: column; gap: 24px; flex: 1; }
+.gate-toolbox { display: flex; gap: 10px; flex-wrap: wrap; background-color: rgba(0,0,0,0.15); padding: 12px; border-radius: 6px; border: 1px solid var(--border-glow); }
+.draggable-gate-primitive { background-color: var(--panel-bg); border: 1px solid var(--border-highlight); padding: 8px 14px; border-radius: 4px; font-family: var(--mono-font); font-size: 0.82rem; font-weight: 600; color: var(--accent-cyan); cursor: grab; user-select: none; }
+.draggable-gate-primitive:hover { border-color: var(--accent-cyan); background-color: rgba(6, 182, 212, 0.05); }
+
+.circuit-wire-container { display: flex; align-items: center; gap: 16px; background-color: #080a0f; padding: 30px 20px; border-radius: 8px; border: 1px solid var(--border-glow); position: relative; margin-top: auto; }
+.wire-label { font-family: var(--mono-font); font-size: 1rem; font-weight: bold; color: var(--text-secondary); }
+.circuit-timeline { flex: 1; height: 60px; border-bottom: 2px solid var(--border-highlight); display: flex; align-items: center; gap: 14px; padding: 0 10px; position: relative; }
+
+.wire-gate-node { position: relative; background-color: var(--accent-purple); color: white; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; border-radius: 6px; font-family: var(--mono-font); font-weight: bold; font-size: 1.1rem; box-shadow: 0 4px 10px rgba(168, 85, 247, 0.3); transition: all 0.2s; cursor: pointer; }
+.wire-gate-node:hover { transform: scale(1.08); background-color: #b566ff; }
+.wire-gate-node .node-remove-btn { position: absolute; top: -6px; right: -6px; width: 16px; height: 16px; background-color: var(--accent-laser); border-radius: 50%; color: white; font-size: 0.65rem; display: flex; align-items: center; justify-content: center; font-family: sans-serif; font-weight: bold; }
+
+.btn-clear-wire { background: none; border: none; color: var(--text-dark); font-size: 0.8rem; font-weight: 600; text-transform: uppercase; cursor: pointer; }
+.btn-clear-wire:hover { color: var(--accent-laser); }

@@ -1,0 +1,5 @@
+/* Photonic Optical Track System */
+.hardware-card { flex: 1; min-height: 500px; display: flex; flex-direction: column; }
+.optical-canvas-container { flex: 1; background-color: #08090e; border: 1px solid var(--border-glow); border-radius: 8px; position: relative; overflow: hidden; }
+#optical-bench-canvas { position: absolute; top:0; left:0; width:100%; height:100%; }
+.active-pulse { background-color: rgba(6, 182, 212, 0.1); border: 1px solid var(--accent-cyan); color: var(--accent-cyan); font-size: 0.7rem; font-weight: 600; padding: 4px 10px; border-radius: 4px; }

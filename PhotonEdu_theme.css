@@ -1,0 +1,42 @@
+:root {
+    /* Advanced Deep-Space Engineering Color Space System */
+    --void-bg: #06070a;
+    --panel-bg: #0d0f16;
+    --card-bg: #141824;
+    --border-glow: #22293d;
+    --border-highlight: #384566;
+
+    /* Functional UI Typography and Accent Color Space */
+    --text-primary: #f1f5f9;
+    --text-secondary: #94a3b8;
+    --text-dark: #475569;
+
+    --accent-cyan: #06b6d4;
+    --accent-purple: #a855f7;
+    --accent-laser: #ff2a6d; /* 405nm UV/Laser hot pink simulation */
+    --emerald-glow: #10b981;
+    --amber-warning: #f59e0b;
+
+    --ui-font: 'Inter', system-ui, -apple-system, sans-serif;
+    --mono-font: 'JetBrains Mono', 'Fira Code', monospace;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--void-bg);
+    color: var(--text-primary);
+    font-family: var(--ui-font);
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+}
+
+/* Base Form Elements and Typography Reset */
+h1, h2, h3, h4, h5 { font-weight: 600; letter-spacing: -0.02em; }
+button { font-family: var(--ui-font); cursor: pointer; }
+textarea { font-family: var(--mono-font); }
