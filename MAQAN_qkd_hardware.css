@@ -1,0 +1,34 @@
+/* FMC Card & Optics */
+.hardware-schematic { display: flex; flex-direction: column; align-items: center; gap: 20px; padding: 20px; }
+.fpga-chip { background: #1e293b; border: 2px solid var(--accent-blue); padding: 20px 40px; border-radius: 8px; font-weight: bold; letter-spacing: 1px; color: var(--accent-cyan); box-shadow: inset 0 0 20px rgba(0,0,0,0.5);}
+.data-bus { width: 8px; height: 40px; background: repeating-linear-gradient(to bottom, var(--text-secondary) 0, var(--text-secondary) 4px, transparent 4px, transparent 8px); }
+.fmc-card { background: #064e3b; border: 2px solid var(--emerald-safe); border-radius: 8px; padding: 20px; width: 100%; text-align: center; }
+.fmc-card h4 { color: #d1fae5; margin-bottom: 20px; text-transform: uppercase;}
+.interface-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.int-box { background: rgba(0,0,0,0.4); border: 1px solid #10b981; padding: 12px; border-radius: 4px; font-size: 0.8rem; color: #a7f3d0; font-family: var(--mono-font); }
+
+.hardware-metrics { display: flex; flex-direction: column; gap: 16px; }
+.h-metric { background: rgba(0,0,0,0.2); border: 1px solid var(--border-glow); padding: 16px; border-radius: 6px; display: flex; justify-content: space-between; align-items: center;}
+.h-metric span { color: var(--text-secondary); font-size: 0.85rem;}
+.h-metric strong { color: var(--accent-cyan); font-family: var(--mono-font); font-size: 1.1rem;}
+
+/* QKD Protocols (CoW/DPS) */
+.protocol-toggle { display: flex; background: var(--bg-void); border-radius: 6px; overflow: hidden; border: 1px solid var(--border-glow);}
+.proto-btn { background: transparent; border: none; padding: 6px 16px; color: var(--text-secondary); cursor: pointer; font-family: var(--ui-font); font-weight: bold; transition: 0.2s;}
+.proto-btn.active { background: var(--accent-blue); color: white; }
+
+.qkd-stream-visualizer { display: flex; align-items: center; justify-content: space-between; margin-top: 30px; background: rgba(0,0,0,0.2); padding: 30px 20px; border-radius: 8px; border: 1px solid var(--border-glow);}
+.actor-panel { text-align: center; }
+.actor-panel h4 { font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 12px; }
+.bit-stream { font-family: var(--mono-font); font-size: 1.2rem; letter-spacing: 4px; color: var(--accent-cyan); background: var(--bg-panel); padding: 10px; border-radius: 4px; border: 1px solid var(--border-highlight); width: 220px;}
+
+.quantum-channel-display { flex: 1; height: 60px; position: relative; display: flex; align-items: center; margin: 0 20px; }
+.quantum-channel-display::before { content: ''; position: absolute; width: 100%; height: 2px; background: rgba(255,255,255,0.1); }
+.q-wave-container { position: absolute; width: 100%; height: 100%; }
+.photon-pulse { position: absolute; font-size: 1.5rem; transform: translateY(-50%); top: 50%; color: var(--accent-gold); text-shadow: 0 0 10px var(--accent-gold); animation: movePhoton 2s linear infinite; }
+
+.distillation-pipeline { display: flex; align-items: center; justify-content: center; gap: 12px; }
+.pipeline-step { padding: 10px 16px; border-radius: 4px; font-size: 0.8rem; font-weight: bold; background: var(--bg-panel); border: 1px solid var(--border-glow); color: var(--text-secondary); }
+.pipeline-step.success { border-color: var(--emerald-safe); color: var(--emerald-safe); }
+.pipeline-step.fail { border-color: var(--alert-red); color: var(--alert-red); }
+.pipeline-arrow { color: var(--border-highlight); }

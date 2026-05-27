@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Q-MetroNet | Aegis Quantum Secure Communication</title>
+
+    <link rel="stylesheet" href="css/MAQAN_theme.css">
+    <link rel="stylesheet" href="css/MAQAN_layout.css">
+    <link rel="stylesheet" href="css/MAQAN_network_topology.css">
+    <link rel="stylesheet" href="css/MAQAN_qkd_hardware.css">
+    <link rel="stylesheet" href="css/MAQAN_darpan_controller.css">
+    <link rel="stylesheet" href="css/MAQAN_animations.css">
+</head>
+<body>
+<div class="qm-app-container">
+
+    <aside class="qm-sidebar">
+        <div class="qm-brand">
+            <div class="quantum-entanglement-node">
+                <div class="q-dot alice"></div>
+                <div class="q-dot bob"></div>
+                <div class="q-link"></div>
+            </div>
+            <div class="qm-title-block">
+                <h1>Q-MetroNet</h1>
+                <span>Aegis Quantum Systems</span>
+            </div>
+        </div>
+
+        <nav class="qm-nav-menu">
+            <div class="menu-header">Network Operations</div>
+            <button class="nav-tab-btn active" data-target="workspace-topology">Metro Area Topology</button>
+            <button class="nav-tab-btn" data-target="workspace-sdn">DARPAN-Q SDN Controller</button>
+
+            <div class="menu-header">Hardware & Protocols</div>
+            <button class="nav-tab-btn" data-target="workspace-hardware">FMC Card & Optics</button>
+            <button class="nav-tab-btn" data-target="workspace-qkd">QKD Protocols (CoW/DPS)</button>
+        </nav>
+
+        <div class="qm-hardware-status-card">
+            <h5>NETWORK HEALTH</h5>
+            <div class="status-indicator-row">
+                <span class="pulse-dot green"></span>
+                <span class="status-lbl">WDM Clock Sync: Locked</span>
+            </div>
+            <p class="crypto-val">Avg. QBER: <span id="lbl-qber-val">1.24%</span></p>
+            <div class="tag-row">
+                <span class="lbl-tag">Fiber-Based</span>
+                <span class="lbl-tag">Multi-Party</span>
+            </div>
+        </div>
+    </aside>
+
+    <main class="qm-main-workspace">
+        <header class="qm-top-telemetry-bar">
+            <h2 id="current-view-title">Workspace: Metro Area Topology</h2>
+            <div class="global-telemetry-controls">
+                <div class="telemetry-pill">
+                    <span class="t-lbl">Active Protocol</span>
+                    <span class="t-val cyan" id="telemetry-protocol">CoW (Coherent One-Way)</span>
+                </div>
+                <div class="telemetry-pill">
+                    <span class="t-lbl">Secure Key Rate</span>
+                    <span class="t-val emerald" id="telemetry-skr">45.2 kbps</span>
+                </div>
+                <button class="qm-btn-primary" id="btn-eavesdrop">Simulate Eavesdropper (Eve)</button>
+            </div>
+        </header>
+
+        <div class="qm-viewport-grid">
+
+            <section id="workspace-topology" class="qm-module-view active">
+                <div class="view-row-layout">
+                    <div class="qm-card topology-card">
+                        <div class="card-header-bar">
+                            <h3>Metro Area Multi-Party QKD Network Testbed</h3>
+                            <div class="topology-legend">
+                                <span class="legend-item"><span class="line-qc"></span> QKD Channel</span>
+                                <span class="legend-item"><span class="line-cc"></span> Classical Mgmt</span>
+                            </div>
+                        </div>
+
+                        <div class="topology-map-container" id="network-topology-map">
+                            <div class="net-node" id="node-a" style="left: 10%; top: 50%;">
+                                <div class="node-circle">A</div>
+                                <div class="node-label">Alpha Node</div>
+                            </div>
+                            <div class="net-node" id="node-b" style="left: 30%; top: 50%;">
+                                <div class="node-circle">B</div>
+                                <div class="node-label">Beta Hub</div>
+                            </div>
+                            <div class="net-node" id="node-c" style="left: 55%; top: 20%;">
+                                <div class="node-circle">C</div>
+                                <div class="node-label">Gamma Site 1</div>
+                            </div>
+                            <div class="net-node" id="node-d" style="left: 55%; top: 80%;">
+                                <div class="node-circle">D</div>
+                                <div class="node-label">Gamma Site 2</div>
+                            </div>
+                            <div class="net-mux" id="node-mux" style="left: 75%; top: 50%;">
+                                <div class="mux-shape"></div>
+                                <div class="node-label">Opt. MUX</div>
+                            </div>
+                            <div class="net-node" id="node-e" style="left: 90%; top: 50%;">
+                                <div class="node-circle">E</div>
+                                <div class="node-label">Omega Data Ctr</div>
+                            </div>
+
+                            <div class="eve-node hidden" id="node-eve">
+                                <div class="eve-icon">👁️</div>
+                                <div class="eve-label">Eve Detected!</div>
+                            </div>
+
+                            <svg id="topology-svg"></svg>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="workspace-sdn" class="qm-module-view hidden">
+                <div class="view-split-layout">
+                    <div class="qm-card flex-col col-span-1">
+                        <div class="card-header-bar">
+                            <h3>DARPAN-Q: Network Control</h3>
+                        </div>
+                        <div class="sdn-controls">
+                            <div class="control-group">
+                                <label>QKD Node Emulation</label>
+                                <select class="qm-input w-100">
+                                    <option>Node A (Alpha) -> Node B (Beta)</option>
+                                    <option>Node B (Beta) -> Node C (Gamma 1)</option>
+                                    <option>Node C (Gamma 1) -> Node E (Omega)</option>
+                                </select>
+                            </div>
+                            <div class="control-group">
+                                <label>Management Channel Interface</label>
+                                <input type="text" class="qm-input w-100" value="REST-API over IPsec" disabled>
+                            </div>
+                            <button class="qm-btn-secondary w-100" id="btn-sdn-sync">Force WDM Clock Sync</button>
+                            <button class="qm-btn-secondary w-100 mt-2" id="btn-sdn-route">Compute Secure Route</button>
+                        </div>
+                    </div>
+                    <div class="qm-card flex-col col-span-2">
+                        <div class="card-header-bar">
+                            <h3>SD-QKDN Controller Logs</h3>
+                            <span class="lbl-tag active-pulse">Listening</span>
+                        </div>
+                        <div class="sdn-terminal" id="sdn-terminal-log">
+                            <div class="t-line sys">[DARPAN-Q] Controller initialized. Monitoring QKD nodes...</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="workspace-hardware" class="qm-module-view hidden">
+                <div class="view-split-layout">
+                    <div class="qm-card flex-col col-span-2">
+                        <div class="card-header-bar">
+                            <h3>Custom FMC Card Architecture (FPGA Interface)</h3>
+                        </div>
+                        <div class="hardware-schematic">
+                            <div class="fpga-chip">FPGA (HPC-LPC Port)</div>
+                            <div class="data-bus"></div>
+                            <div class="fmc-card">
+                                <h4>QKD Control Electronics (FMC)</h4>
+                                <div class="interface-grid">
+                                    <div class="int-box">Single-Photon Detectors (NIM/LVTTL)</div>
+                                    <div class="int-box">Bias Gen: Phase Modulator</div>
+                                    <div class="int-box">Bias Gen: Intensity Modulator</div>
+                                    <div class="int-box">Time-to-Digital Converter (TDC)</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="qm-card flex-col col-span-1">
+                        <div class="card-header-bar">
+                            <h3>Hardware Telemetry</h3>
+                        </div>
+                        <div class="hardware-metrics">
+                            <div class="h-metric">
+                                <span>TDC Resolution</span>
+                                <strong><span id="val-tdc">50</span> ps</strong>
+                            </div>
+                            <div class="h-metric">
+                                <span>Photodetector Gate</span>
+                                <strong><span id="val-gate">1.2</span> ns</strong>
+                            </div>
+                            <div class="h-metric">
+                                <span>Variable Opt. Attenuator</span>
+                                <strong><span id="val-voa">-42.5</span> dBm</strong>
+                            </div>
+                        </div>
+                        <button class="qm-btn-primary w-100 mt-4" id="btn-recalibrate">Recalibrate Biases</button>
+                    </div>
+                </div>
+            </section>
+
+            <section id="workspace-qkd" class="qm-module-view hidden">
+                <div class="view-row-layout">
+                    <div class="qm-card flex-col">
+                        <div class="card-header-bar">
+                            <h3>Quantum Secure Communication Stream</h3>
+                            <div class="protocol-toggle">
+                                <button class="proto-btn active" data-proto="cow">CoW</button>
+                                <button class="proto-btn" data-proto="dps">DPS</button>
+                            </div>
+                        </div>
+
+                        <div class="qkd-stream-visualizer">
+                            <div class="actor-panel alice-panel">
+                                <h4>ALICE (Transmitter)</h4>
+                                <div class="bit-stream" id="stream-alice">1 0 0 1 0 0 0 1 1 0</div>
+                            </div>
+
+                            <div class="quantum-channel-display">
+                                <div class="q-wave-container" id="q-wave-anim">
+                                </div>
+                            </div>
+
+                            <div class="actor-panel bob-panel">
+                                <h4>BOB (Receiver)</h4>
+                                <div class="bit-stream" id="stream-bob">1 0 0 1 0 0 0 1 1 0</div>
+                            </div>
+                        </div>
+
+                        <div class="distillation-pipeline mt-4">
+                            <div class="pipeline-step success">Key Sifting</div>
+                            <div class="pipeline-arrow">➔</div>
+                            <div class="pipeline-step success" id="step-error">Error Correction</div>
+                            <div class="pipeline-arrow">➔</div>
+                            <div class="pipeline-step success" id="step-privacy">Privacy Amplification</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+</div>
+
+<script src="js/MAQAN_router.js"></script>
+<script src="js/MAQAN_network_topology.js"></script>
+<script src="js/MAQAN_fmc_hardware.js"></script>
+<script src="js/MAQAN_qkd_protocols.js"></script>
+<script src="js/MAQAN_darpan_sdn.js"></script>
+</body>
+</html>
