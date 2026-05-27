@@ -1,0 +1,29 @@
+:root {
+    /* Automotive Cyber Security Color Palette */
+    --void-bg: #090b10;
+    --panel-bg: #111520;
+    --card-bg: #1a2030;
+    --border-glow: #2a344d;
+    --border-highlight: #3c4c70;
+
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+
+    --accent-blue: #3b82f6;
+    --accent-cyan: #06b6d4;
+    --emerald-safe: #10b981;
+    --alert-orange: #f59e0b;
+    --alert-red: #ef4444;
+
+    --ui-font: 'Segoe UI', system-ui, sans-serif;
+    --mono-font: 'Consolas', 'JetBrains Mono', monospace;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    background-color: var(--void-bg);
+    color: var(--text-primary);
+    font-family: var(--ui-font);
+    height: 100vh; width: 100vw; overflow: hidden;
+}

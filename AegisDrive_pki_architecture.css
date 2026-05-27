@@ -1,0 +1,16 @@
+/* Custom Tree Diagram for PKI Hierarchy */
+.pki-tree-container { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 20px; padding: 20px; background: rgba(0,0,0,0.1); border-radius: 6px; }
+.pki-node { background: var(--panel-bg); border: 1px solid var(--accent-blue); padding: 10px 20px; border-radius: 4px; font-size: 0.85rem; text-align: center; position: relative; box-shadow: 0 4px 10px rgba(59, 130, 246, 0.2); z-index: 2;}
+.pki-node.root { background: var(--accent-blue); color: white; font-weight: bold; border: none; }
+.pki-node.leaf { border-color: var(--accent-cyan); font-size: 0.8rem; }
+.pki-node.intermediate { background: rgba(59, 130, 246, 0.1); }
+
+.pki-branches { display: flex; gap: 60px; position: relative; width: 100%; justify-content: center; }
+/* Pseudo-elements for connecting lines */
+.pki-branches::before { content: ''; position: absolute; top: -20px; left: calc(50% - 150px); right: calc(50% - 150px); height: 1px; background: var(--border-highlight); }
+.pki-col { display: flex; flex-direction: column; align-items: center; gap: 20px; position: relative; }
+.pki-col::before { content: ''; position: absolute; top: -20px; left: 50%; width: 1px; height: 20px; background: var(--border-highlight); }
+
+.pki-leaves { display: flex; gap: 10px; margin-top: 10px; }
+.pki-devices { display: flex; gap: 15px; margin-top: 30px; width: 100%; justify-content: center; padding-top: 20px; border-top: 1px dashed var(--border-highlight); }
+.dev-node { background: var(--emerald-safe); color: #000; padding: 6px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: bold; font-family: var(--mono-font); }
