@@ -1,0 +1,226 @@
+.chamber-visual {
+    min-height: 210px;
+    border-radius: 8px;
+    background: linear-gradient(180deg, #f1f6f4, #fff);
+    border: 1px solid var(--line);
+    position: relative;
+    overflow: hidden;
+    display: grid;
+    place-items: center;
+}
+
+.sensor-array {
+    display: grid;
+    grid-template-columns: repeat(4, 34px);
+    gap: 9px;
+    z-index: 2;
+}
+
+.sensor-cell {
+    width: 34px;
+    height: 34px;
+    border-radius: 8px;
+    background: var(--teal);
+    opacity: var(--intensity);
+    box-shadow: 0 0 18px rgba(12, 120, 133, 0.25);
+}
+
+.flow-line {
+    position: absolute;
+    width: 82%;
+    height: 2px;
+    background: repeating-linear-gradient(90deg, rgba(22,128,91,.2), rgba(22,128,91,.2) 10px, transparent 10px, transparent 20px);
+    top: 52%;
+}
+
+.sample-vessel {
+    position: absolute;
+    bottom: 18px;
+    left: 18px;
+    padding: 10px 14px;
+    border-radius: 8px;
+    background: #d6eadf;
+    color: #0e5c41;
+    font-weight: 800;
+}
+
+.state-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 13px 0 0;
+    color: var(--muted);
+}
+
+.state-row strong {
+    color: var(--ink);
+}
+
+.vision-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+.swatch {
+    aspect-ratio: 1;
+    border-radius: 8px;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    display: flex;
+    align-items: end;
+    padding: 8px;
+    color: white;
+    font-size: 12px;
+    font-weight: 800;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
+}
+
+.progress-stack {
+    display: grid;
+    gap: 12px;
+}
+
+.progress-stack div {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 8px;
+    align-items: center;
+}
+
+.progress-stack span {
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.progress-stack i {
+    grid-column: 1 / -1;
+    height: 8px;
+    background: var(--surface-soft);
+    border-radius: 999px;
+    position: relative;
+    overflow: hidden;
+}
+
+.progress-stack i::after {
+    content: "";
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: var(--value);
+    background: linear-gradient(90deg, var(--green), var(--teal));
+}
+
+.decision-meter {
+    display: flex;
+    gap: 18px;
+    align-items: center;
+    margin-bottom: 18px;
+}
+
+.meter-ring {
+    width: 118px;
+    height: 118px;
+    flex: 0 0 auto;
+    border-radius: 50%;
+    background: conic-gradient(var(--green) var(--meter), #e7eeeb 0);
+    display: grid;
+    place-items: center;
+}
+
+.meter-ring span {
+    width: 82px;
+    height: 82px;
+    border-radius: 50%;
+    background: white;
+    display: grid;
+    place-items: center;
+    font-size: 28px;
+    font-weight: 900;
+}
+
+.decision-copy strong {
+    display: block;
+    font-size: 20px;
+    margin-bottom: 6px;
+}
+
+.decision-copy small {
+    color: var(--muted);
+    line-height: 1.4;
+}
+
+.signal-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 10px;
+}
+
+.signal-list li {
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px solid var(--line);
+    padding-top: 10px;
+    color: var(--muted);
+}
+
+.signal-list strong {
+    color: var(--ink);
+}
+
+.grade-summary {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-top: 14px;
+}
+
+.grade-summary div {
+    background: var(--surface-soft);
+    border-radius: 8px;
+    padding: 10px;
+}
+
+.grade-summary span {
+    display: block;
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.grade-summary strong {
+    display: block;
+    margin-top: 4px;
+}
+
+.table-wrap {
+    overflow-x: auto;
+}
+
+th,
+td {
+    padding: 13px 12px;
+    border-bottom: 1px solid var(--line);
+    text-align: left;
+    white-space: nowrap;
+}
+
+th {
+    color: var(--muted);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0;
+}
+
+td {
+    font-size: 14px;
+}
+
+.status-good {
+    color: var(--green);
+    font-weight: 800;
+}
+
+.status-watch {
+    color: var(--amber);
+    font-weight: 800;
+}

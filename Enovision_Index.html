@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ENOVISION Quality Intelligence Dashboard</title>
+    <link rel="stylesheet" href="styles/Enovision_base.css">
+    <link rel="stylesheet" href="styles/Enovision_layout.css">
+    <link rel="stylesheet" href="styles/Enovision_components.css">
+    <link rel="stylesheet" href="styles/Enovision_dashboard.css">
+    <link rel="stylesheet" href="styles/Enovision_responsive.css">
+</head>
+<body>
+<div class="app-shell">
+    <aside class="sidebar" aria-label="Primary navigation">
+        <div class="brand-block">
+            <div class="brand-mark">EV</div>
+            <div>
+                <h1>ENOVISION</h1>
+                <p>Quality Intelligence</p>
+            </div>
+        </div>
+        <nav class="nav-list">
+            <button class="nav-item active" data-section="overview">Overview</button>
+            <button class="nav-item" data-section="aroma">AromaSense</button>
+            <button class="nav-item" data-section="vision">VisionCore</button>
+            <button class="nav-item" data-section="fermentation">Fermentation</button>
+            <button class="nav-item" data-section="grading">Gradation</button>
+            <button class="nav-item" data-section="reports">Reports</button>
+        </nav>
+        <div class="sidebar-card">
+            <span class="status-dot"></span>
+            <div>
+                <strong>Plant Line A</strong>
+                <small>Local mode - no external API</small>
+            </div>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <header class="topbar">
+            <div>
+                <p class="eyebrow">Fused electronic nose and vision monitoring</p>
+                <h2>Manufacturing Quality Command Center</h2>
+            </div>
+            <div class="topbar-actions">
+                <label class="select-label">
+                    Batch
+                    <select id="batchSelect">
+                        <option>CTC-BL-2407</option>
+                        <option>ORTHO-LF-1182</option>
+                        <option>PREM-BK-9031</option>
+                    </select>
+                </label>
+                <button class="primary-btn" id="simulateBtn">Run Cycle</button>
+            </div>
+        </header>
+
+        <section class="kpi-grid" aria-label="Key process metrics">
+            <article class="metric-card">
+                <span>Aroma match</span>
+                <strong id="aromaScore">92.4%</strong>
+                <small class="trend up">+3.1 vs reference</small>
+            </article>
+            <article class="metric-card">
+                <span>Fermentation</span>
+                <strong id="fermentState">Optimal</strong>
+                <small id="fermentEta">ETA 06 min</small>
+            </article>
+            <article class="metric-card">
+                <span>Vision grade</span>
+                <strong id="visionGrade">Premium A</strong>
+                <small>Colour index 8.7</small>
+            </article>
+            <article class="metric-card">
+                <span>Fibre risk</span>
+                <strong id="fiberRisk">Low</strong>
+                <small class="trend up">1.8% detected</small>
+            </article>
+        </section>
+
+        <section class="dashboard-grid">
+            <article class="panel wide" data-panel="overview">
+                <div class="panel-header">
+                    <div>
+                        <h3>Sensor Fusion Timeline</h3>
+                        <p>Aroma fingerprint, colour transition, and process maturity in one local model.</p>
+                    </div>
+                    <span class="pill">Live simulation</span>
+                </div>
+                <canvas id="fusionChart" height="260" aria-label="Fusion timeline chart"></canvas>
+            </article>
+
+            <article class="panel">
+                <div class="panel-header">
+                    <div>
+                        <h3>AromaSense Chamber</h3>
+                        <p>MOS sensor array response and odour handling state.</p>
+                    </div>
+                </div>
+                <div class="chamber-visual">
+                    <div class="sensor-array" id="sensorArray"></div>
+                    <div class="flow-line"></div>
+                    <div class="sample-vessel">Sample</div>
+                </div>
+                <div class="state-row">
+                    <span>Air pump</span><strong id="pumpState">Sampling</strong>
+                </div>
+                <div class="state-row">
+                    <span>Purging valve</span><strong id="purgeState">Standby</strong>
+                </div>
+            </article>
+
+            <article class="panel">
+                <div class="panel-header">
+                    <div>
+                        <h3>VisionCore Inspection</h3>
+                        <p>HSI colour analysis for leaf, liquor, infusion, blackness, and fibre.</p>
+                    </div>
+                </div>
+                <div class="vision-grid" id="visionSwatches"></div>
+                <div class="progress-stack">
+                    <div><span>Blackness</span><b>87%</b><i style="--value:87%"></i></div>
+                    <div><span>Leaf uniformity</span><b>91%</b><i style="--value:91%"></i></div>
+                    <div><span>Fibre content</span><b>1.8%</b><i style="--value:18%"></i></div>
+                </div>
+            </article>
+            <article class="panel">
+                <div class="panel-header">
+                    <div>
+                        <h3>Fermentation Decision</h3>
+                        <p>Detects first and second aroma peaks plus colour endpoint drift.</p>
+                    </div>
+                </div>
+                <div class="decision-meter">
+                    <div class="meter-ring" id="meterRing"><span id="meterValue">84</span></div>
+                    <div class="decision-copy">
+                        <strong id="decisionText">Continue 6 minutes</strong>
+                        <small>Peak stability and colour match are inside target band.</small>
+                    </div>
+                </div>
+                <ul class="signal-list" id="signalList"></ul>
+            </article>
+
+            <article class="panel">
+                <div class="panel-header">
+                    <div>
+                        <h3>Drier Mouth Gradation</h3>
+                        <p>Estimated grade distribution from image segmentation.</p>
+                    </div>
+                </div>
+                <canvas id="gradeChart" height="220" aria-label="Grade distribution chart"></canvas>
+                <div class="grade-summary" id="gradeSummary"></div>
+            </article>
+            <article class="panel wide">
+                <div class="panel-header">
+                    <div>
+                        <h3>Reference Intelligence</h3>
+                        <p>Training profiles replace manual judgment with repeatable local comparisons.</p>
+                    </div>
+                    <button class="ghost-btn" id="exportBtn">Create Report</button>
+                </div>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>Profile</th>
+                            <th>Use case</th>
+                            <th>Reference method</th>
+                            <th>Status</th>
+                            <th>Confidence</th>
+                        </tr>
+                        </thead>
+                        <tbody id="referenceTable"></tbody>
+                    </table>
+                </div>
+            </article>
+        </section>
+    </main>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="scripts/Enovision_data.js"></script>
+<script src="scripts/Enovision_charts.js"></script>
+<script src="scripts/Enovision_modules.js"></script>
+<script src="scripts/Enovision_interactions.js"></script>
+<script src="scripts/Enovision_app.js"></script>
+</body>
+</html>

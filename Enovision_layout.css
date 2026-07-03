@@ -1,0 +1,92 @@
+.app-shell {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 280px minmax(0, 1fr);
+}
+
+.sidebar {
+    background: #10211e;
+    color: #f8fbfa;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+}
+
+.brand-block {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.brand-mark {
+    width: 48px;
+    height: 48px;
+    display: grid;
+    place-items: center;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #2aa06f, #1b738e);
+    font-weight: 800;
+}
+
+.brand-block h1 {
+    margin: 0;
+    font-size: 20px;
+    letter-spacing: 0;
+}
+
+.brand-block p {
+    margin: 2px 0 0;
+    color: #a7bab4;
+    font-size: 13px;
+}
+
+.nav-list {
+    display: grid;
+    gap: 8px;
+}
+
+.main-content {
+    padding: 28px;
+    min-width: 0;
+}
+
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.topbar h2 {
+    margin: 4px 0 0;
+    font-size: clamp(28px, 4vw, 42px);
+    line-height: 1.05;
+}
+
+.topbar-actions {
+    display: flex;
+    align-items: end;
+    gap: 12px;
+}
+
+.kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.wide {
+    grid-column: span 2;
+}

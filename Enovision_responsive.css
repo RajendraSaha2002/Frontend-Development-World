@@ -1,0 +1,59 @@
+@media (max-width: 1180px) {
+    .dashboard-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .kpi-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 860px) {
+    .app-shell {
+        grid-template-columns: 1fr;
+    }
+
+    .sidebar {
+        position: static;
+        height: auto;
+    }
+
+    .nav-list {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .topbar,
+    .topbar-actions {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .dashboard-grid,
+    .kpi-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .wide {
+        grid-column: auto;
+    }
+}
+
+@media (max-width: 560px) {
+    .main-content,
+    .sidebar {
+        padding: 18px;
+    }
+
+    .nav-list {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .panel-header,
+    .decision-meter {
+        flex-direction: column;
+    }
+
+    .grade-summary {
+        grid-template-columns: 1fr;
+    }
+}
