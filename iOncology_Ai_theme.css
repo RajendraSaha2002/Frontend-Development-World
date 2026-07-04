@@ -1,0 +1,22 @@
+:root {
+    --bg-main: #f0f4f8;
+    --bg-card: #ffffff;
+    --bg-sidebar: #0a192f;
+    --text-primary: #1e293b;
+    --text-light: #f8fafc;
+    --text-muted: #64748b;
+    --accent-blue: #0284c7;
+    --accent-teal: #0d9488;
+    --accent-purple: #7c3aed;
+    --danger-red: #e11d48;
+    --border-color: #e2e8f0;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
+    --shadow-md: 0 4px 6px rgba(0,0,0,0.05);
+    --radius: 8px;
+    --font-base: 'Segoe UI', system-ui, sans-serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--font-base); background-color: var(--bg-main); color: var(--text-primary); }
+h1, h2, h3, h4 { color: var(--bg-sidebar); margin-bottom: 0.5rem; }
+.mt-4 { margin-top: 1.5rem; }

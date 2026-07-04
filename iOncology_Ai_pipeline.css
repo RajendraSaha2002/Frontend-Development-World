@@ -1,0 +1,11 @@
+.pipeline-controls { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+.btn-outline { background: transparent; border: 1px solid var(--text-muted); color: var(--text-primary); padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer; font-size: 0.85rem; transition: 0.2s; }
+.btn-outline:hover { border-color: var(--accent-purple); color: var(--accent-purple); background: rgba(124, 58, 237, 0.05); }
+
+.ml-flowchart { display: flex; align-items: center; justify-content: space-between; background: var(--bg-main); padding: 1.5rem; border-radius: var(--radius); border: 1px dashed var(--border-color); }
+.flow-step { padding: 1rem; background: white; border: 2px solid var(--accent-blue); border-radius: var(--radius); text-align: center; font-weight: 600; font-size: 0.9rem; flex: 1; }
+.flow-step.core { border-color: var(--accent-purple); background: rgba(124, 58, 237, 0.05); flex: 2; }
+.flow-step.result { border-color: var(--accent-teal); }
+.flow-arrow { font-size: 1.5rem; color: var(--text-muted); margin: 0 1rem; font-weight: bold; }
+
+.console-output { background: #0f172a; color: #10b981; font-family: monospace; padding: 1.5rem; border-radius: var(--radius); height: 200px; overflow-y: auto; font-size: 0.85rem; line-height: 1.6; }

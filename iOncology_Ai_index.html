@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iOncology.ai | Integrated Oncology Platform</title>
+    <link rel="stylesheet" href="css/iOncology_Ai_theme.css">
+    <link rel="stylesheet" href="css/iOncology_Ai_layout.css">
+    <link rel="stylesheet" href="css/iOncology_Ai_ehr_forms.css">
+    <link rel="stylesheet" href="css/iOncology_Ai_imaging_viewer.css">
+    <link rel="stylesheet" href="css/iOncology_Ai_pipeline.css">
+</head>
+<body>
+<div class="app-shell">
+    <!-- Navigation Sidebar -->
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="logo">iO</div>
+            <div class="brand-text">
+                <h1>iOncology.ai</h1>
+                <p>Powered by HPC-AI</p>
+            </div>
+        </div>
+        <nav class="nav-menu">
+            <button class="nav-item active" data-target="view-dashboard">Platform Overview</button>
+            <button class="nav-item" data-target="view-ehr">Web-based EHR & Proforma</button>
+            <button class="nav-item" data-target="view-imaging">Radiology & Pathology</button>
+            <button class="nav-item" data-target="view-pipeline">AI Pipeline & Training[cite: 3]</button>
+        </nav>
+        <div class="partner-info">
+            <small>In collaboration with:<br><strong>National Institute of Advanced Medical Sciences</strong></small>
+        </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="content-area">
+        <header class="top-bar">
+            <h2>India-Centric Evidence Based Diagnostic Platform[cite: 3]</h2>
+            <div class="user-profile">Dr. A. Sharma | Oncology Dept.</div>
+        </header>
+
+        <!-- View: Dashboard Overview -->
+        <section id="view-dashboard" class="view-section active">
+            <div class="grid-layout">
+                <div class="card col-span-2">
+                    <h3>Data and Components of Project[cite: 3]</h3>
+                    <div class="data-architecture">
+                        <div class="data-node">Demographic Data[cite: 3]</div>
+                        <div class="data-node">Screening for Cancer Risk[cite: 3]</div>
+                        <div class="data-node central">
+                            Clinical Data: Symptoms, Investigations, Diagnosis (TNM, Staging), Treatment, QoL[cite: 3]
+                        </div>
+                        <div class="data-node">Genetics Data[cite: 3]</div>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>Platform Capabilities</h3>
+                    <ul class="feature-list">
+                        <li>Prevention of cancer in high-risk patients[cite: 3]</li>
+                        <li>Early diagnosis of cancer patients[cite: 3]</li>
+                        <li>Next generation sequencing for Oncology[cite: 3]</li>
+                        <li>Drug Discovery in Oncology[cite: 3]</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- View: Web EHR & Clinical Proforma -->
+        <section id="view-ehr" class="view-section">
+            <div class="card">
+                <h3>Standardized Proforma: Breast & Ovarian Cancer[cite: 3]</h3>
+                <form id="ehr-form" class="ehr-grid">
+                    <div class="form-group">
+                        <label>Patient ID</label>
+                        <input type="text" value="PT-88492" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label>Cancer Type</label>
+                        <select id="cancer-type">
+                            <option value="breast">Breast Cancer[cite: 3]</option>
+                            <option value="ovarian">Ovarian Cancer[cite: 3]</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>TNM Classification Staging[cite: 3]</label>
+                        <select id="tnm-stage">
+                            <option>Stage I (T1, N0, M0)</option>
+                            <option>Stage IIA (T0, N1, M0)</option>
+                            <option>Stage IIB (T2, N1, M0)</option>
+                            <option>Stage III (T3, N1, M0)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Clinical Symptoms[cite: 3]</label>
+                        <input type="text" placeholder="Enter observed symptoms...">
+                    </div>
+                    <div class="form-actions col-span-2">
+                        <button type="button" class="btn-primary" id="btn-predict-outcome">Run HPC-AI Prognosis Model[cite: 3]</button>
+                    </div>
+                </form>
+                <div id="ehr-results" class="results-panel hidden">
+                    <h4>Decision Support System Output[cite: 3]</h4>
+                    <p id="prediction-text"></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- View: Radiology & Computer Vision -->
+        <section id="view-imaging" class="view-section">
+            <div class="grid-layout">
+                <!-- MRI Classification -->
+                <div class="card">
+                    <h3>MRI Classification & Segmentation[cite: 3]</h3>
+                    <div class="viewer-window" id="mri-viewer">
+                        <div class="scan-overlay scan-mri"></div>
+                        <div class="segmentation-mask hidden" id="mri-mask"></div>
+                    </div>
+                    <button class="btn-secondary" id="btn-run-mri">Run AI Segmentation[cite: 3]</button>
+                </div>
+
+                <!-- Mammography -->
+                <div class="card">
+                    <h3>Mammography Abnormality Detection[cite: 3]</h3>
+                    <div class="viewer-window" id="mammo-viewer">
+                        <div class="scan-overlay scan-mammo"></div>
+                        <div class="bounding-box hidden" id="mammo-box"></div>
+                    </div>
+                    <button class="btn-secondary" id="btn-run-mammo">Detect Abnormalities[cite: 3]</button>
+                </div>
+
+                <!-- Histopathology -->
+                <div class="card col-span-2">
+                    <h3>Digital Pathology: Histopathology Classification[cite: 3]</h3>
+                    <div class="pathology-container">
+                        <div class="viewer-window path-view">
+                            <div class="scan-overlay scan-path"></div>
+                        </div>
+                        <div class="path-controls">
+                            <h4>Multi-class & Binary Classification[cite: 3]</h4>
+                            <button class="btn-primary" id="btn-run-path">Analyze Slide Data</button>
+                            <div id="path-results" class="status-box">Awaiting input...</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- View: AI Pipeline -->
+        <section id="view-pipeline" class="view-section">
+            <div class="card">
+                <h3>AI Pipeline Management[cite: 3]</h3>
+                <div class="pipeline-controls">
+                    <button class="btn-outline" id="btn-upload-data">Data Upload[cite: 3]</button>
+                    <button class="btn-outline" id="btn-upload-model">Model Upload[cite: 3]</button>
+                    <button class="btn-outline" id="btn-retrain">Model Re-training[cite: 3]</button>
+                    <button class="btn-outline" id="btn-validate">Model Validation[cite: 3]</button>
+                    <button class="btn-outline" id="btn-export">Data Export[cite: 3]</button>
+                </div>
+
+                <div class="ml-flowchart mt-4">
+                    <div class="flow-step">Input Data[cite: 3]</div>
+                    <div class="flow-arrow">→</div>
+                    <div class="flow-step core">
+                        Machine Learning Algorithm[cite: 3]<br>
+                        <small>(Training Data → Model ← Evaluate)[cite: 3]</small>
+                    </div>
+                    <div class="flow-arrow">→</div>
+                    <div class="flow-step result">Prediction[cite: 3]</div>
+                </div>
+
+                <div id="pipeline-console" class="console-output mt-4">
+                    System initialized. Awaiting pipeline execution commands...
+                </div>
+            </div>
+        </section>
+    </main>
+</div>
+
+<!-- Script Modules -->
+<script src="js/iOncology_Ai_navigation.js"></script>
+<script src="js/iOncology_Ai_ehr_module.js"></script>
+<script src="js/iOncology_Ai_imaging_analysis.js"></script>
+<script src="js/iOncology_Ai_pipeline.js"></script>
+</body>
+</html>
