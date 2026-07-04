@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vanguard Intelligence | Speech Analytics Suite</title>
+  <link rel="stylesheet" href="css/Speech_Analytics_Suite_variables.css">
+  <link rel="stylesheet" href="css/Speech_Analytics_Suite_layout.css">
+  <link rel="stylesheet" href="css/Speech_Analytics_Suite_typography.css">
+  <link rel="stylesheet" href="css/Speech_Analytics_Suite_controls.css">
+  <link rel="stylesheet" href="css/Speech_Analytics_Suite_widgets.css">
+</head>
+<body>
+<div class="app-container">
+  <!-- Sidebar Configuration & File Management -->
+  <aside class="sidebar">
+    <div class="brand-header">
+      <div class="brand-logo"></div>
+      <h2>Vanguard Intel</h2>
+      <p>Speech Analytics Suite</p>
+    </div>
+
+    <div class="service-selector">
+      <h3>Select Services</h3>
+      <ul class="service-list">
+        <li><label><input type="checkbox" id="svc-stt" checked> Speech-to-Text (STT)</label></li>
+        <li><label><input type="checkbox" id="svc-gid" checked> Gender Identification (GID)[cite: 2]</label></li>
+        <li><label><input type="checkbox" id="svc-kws" checked> Keyword Spotting (KWS)[cite: 2]</label></li>
+        <li><label><input type="checkbox" id="svc-slid" checked> Spoken Language Identification[cite: 2]</label></li>
+        <li><label><input type="checkbox" id="svc-sid" checked> Speaker Identification (SID)[cite: 2]</label></li>
+        <li><label><input type="checkbox" id="svc-sd" checked> Speaker Diarization (SD)[cite: 2]</label></li>
+      </ul>
+    </div>
+
+    <div class="file-manager">
+      <h3>Browse Audio Files[cite: 2]</h3>
+      <input type="file" id="audio-upload" accept="audio/*, video/*" class="file-input">
+      <div class="audio-player">
+        <audio id="main-audio" controls></audio>
+      </div>
+      <button id="btn-process" class="btn-primary" disabled>Initialize AI Analysis</button>
+    </div>
+  </aside>
+
+  <!-- Main Dashboard View -->
+  <main class="dashboard">
+    <header class="dashboard-header">
+      <h1>Investigative Media Analysis[cite: 2]</h1>
+      <div class="status-indicator">
+        <span id="system-status" class="status-text">System Idle - Awaiting Media</span>
+        <span class="pulse"></span>
+      </div>
+    </header>
+
+    <div class="widget-grid">
+      <!-- Speaker Profile Widget -->
+      <div class="widget profile-widget">
+        <div class="widget-header">
+          <h3>Speaker Profile</h3>
+          <span class="icon-expand">⤢</span>
+        </div>
+        <div class="widget-body">
+          <div class="data-row">
+            <span class="label">Primary Speaker:</span>
+            <span class="value" id="out-speaker">Pending...</span>
+          </div>
+          <div class="data-row">
+            <span class="label">Identified Gender:</span>
+            <span class="value" id="out-gender">Pending...</span>
+          </div>
+          <div class="data-row">
+            <span class="label">Spoken Language:</span>
+            <span class="value" id="out-language">Pending...</span>
+          </div>
+          <button class="btn-secondary btn-sm" id="btn-enroll">New Speaker Enrolment[cite: 2]</button>
+        </div>
+      </div>
+
+      <!-- ASR / STT Widget -->
+      <div class="widget asr-widget">
+        <div class="widget-header">
+          <h3>Automatic Speech Recognition (ASR)[cite: 2]</h3>
+          <span class="icon-expand">⤢</span>
+        </div>
+        <div class="widget-body">
+          <div class="transcription-box" id="out-asr">
+            <p class="placeholder-text">Load a multilingual audio/video file to begin natural language processing transcription...[cite: 2]</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Keyword Spotting (KWS) Widget -->
+      <div class="widget kws-widget">
+        <div class="widget-header">
+          <h3>Keyword Spotting (KWS)[cite: 2]</h3>
+          <span class="icon-expand">⤢</span>
+        </div>
+        <div class="widget-body table-container">
+          <table class="data-table">
+            <thead>
+            <tr>
+              <th>Keyword</th>
+              <th>Start Time</th>
+              <th>End Time</th>
+              <th>Contextual Text</th>
+            </tr>
+            </thead>
+            <tbody id="out-kws">
+            <tr><td colspan="4" class="text-center">No keywords detected yet.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Speaker Diarization Widget -->
+      <div class="widget sd-widget">
+        <div class="widget-header">
+          <h3>Speaker Diarization Timeline[cite: 2]</h3>
+          <span class="speaker-count" id="out-speaker-count">Count: 0</span>
+        </div>
+        <div class="widget-body">
+          <div class="timeline-container" id="out-sd">
+            <p class="placeholder-text">Detecting changes in speakers...[cite: 2]</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- Scripts Module Loading -->
+<script src="js/Speech_Analytics_Suite_core_audio.js"></script>
+<script src="js/Speech_Analytics_Suite_nlp_engine.js"></script>
+<script src="js/Speech_Analytics_Suite_dom_controller.js"></script>
+<script src="js/Speech_Analytics_Suite_bootstrap.js"></script>
+</body>
+</html>

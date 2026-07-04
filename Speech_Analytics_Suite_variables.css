@@ -1,0 +1,13 @@
+:root {
+    --bg-dark: #0f111a;
+    --bg-panel: #1a1d2d;
+    --bg-panel-hover: #23273b;
+    --accent-gold: #f5a623;
+    --accent-red: #d0021b;
+    --accent-blue: #4a90e2;
+    --text-primary: #e0e6ed;
+    --text-secondary: #8b9bb4;
+    --border-color: rgba(255, 255, 255, 0.1);
+    --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+    --shadow-depth: 0 4px 6px rgba(0, 0, 0, 0.3);
+}

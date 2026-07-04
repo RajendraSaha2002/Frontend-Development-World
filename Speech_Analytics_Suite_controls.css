@@ -1,0 +1,13 @@
+.btn-primary, .btn-secondary { width: 100%; padding: 0.75rem; border-radius: 4px; border: none; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+.btn-primary { background-color: var(--accent-blue); color: #fff; }
+.btn-primary:disabled { background-color: #2c3e50; color: #7f8c8d; cursor: not-allowed; }
+.btn-primary:hover:not(:disabled) { filter: brightness(1.1); }
+.btn-secondary { background-color: transparent; border: 1px solid var(--accent-gold); color: var(--accent-gold); margin-top: 1rem; }
+.btn-secondary:hover { background-color: rgba(245, 166, 35, 0.1); }
+.btn-sm { padding: 0.5rem; font-size: 0.8rem; }
+.service-list { list-style: none; margin-bottom: 2rem; }
+.service-list li { margin-bottom: 0.5rem; font-size: 0.9rem; }
+.service-list label { display: flex; align-items: center; cursor: pointer; }
+.service-list input { margin-right: 0.75rem; accent-color: var(--accent-gold); }
+.file-input { width: 100%; padding: 0.5rem; background: rgba(0,0,0,0.2); border: 1px dashed var(--border-color); margin-bottom: 1rem; color: var(--text-primary); }
+audio { width: 100%; margin-bottom: 1.5rem; border-radius: 4px; outline: none; }

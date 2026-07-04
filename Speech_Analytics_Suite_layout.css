@@ -1,0 +1,11 @@
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background-color: var(--bg-dark); height: 100vh; overflow: hidden; }
+.app-container { display: flex; height: 100vh; }
+.sidebar { width: 320px; background-color: var(--bg-panel); border-right: 1px solid var(--border-color); display: flex; flex-direction: column; padding: 1.5rem; }
+.dashboard { flex: 1; display: flex; flex-direction: column; padding: 1.5rem; overflow-y: auto; }
+.dashboard-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
+.widget-grid { display: grid; grid-template-columns: repeat(2, 1fr); grid-template-rows: auto auto; gap: 1.5rem; }
+.profile-widget { grid-column: 1 / 2; }
+.asr-widget { grid-column: 2 / 3; grid-row: 1 / 3; }
+.kws-widget { grid-column: 1 / 2; }
+.sd-widget { grid-column: 1 / 3; }
