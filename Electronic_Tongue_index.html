@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AromaSense Nexus - Electronic Tongue Dashboard</title>
+    <link rel="stylesheet" href="css/Electronic_Tongue_base.css">
+    <link rel="stylesheet" href="css/Electronic_Tongue_layout.css">
+    <link rel="stylesheet" href="css/Electronic_Tongue_components.css">
+    <link rel="stylesheet" href="css/Electronic_Tongue_dashboard.css">
+    <link rel="stylesheet" href="css/Electronic_Tongue_themes.css">
+    <link rel="stylesheet" href="css/Electronic_Tongue_animations.css">
+    <link rel="stylesheet" href="css/Electronic_Tongue_responsive.css">
+    <link rel="stylesheet" href="css/Electronic_Tongue_print.css">
+</head>
+<body>
+<div class="app-shell" data-theme="light">
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="brand-mark">AS</div>
+            <div>
+                <strong>AromaSense Nexus</strong>
+                <span>Electronic Tongue Suite</span>
+            </div>
+        </div>
+        <nav class="nav-list" aria-label="Dashboard sections">
+            <a class="nav-item active" href="#overview">Overview</a>
+            <a class="nav-item" href="#array">Sensor Array</a>
+            <a class="nav-item" href="#recognition">Taste Recognition</a>
+            <a class="nav-item" href="#calibration">Calibration</a>
+            <a class="nav-item" href="#quality">Quality Control</a>
+            <a class="nav-item" href="#reports">Reports</a>
+</nav>
+<div class="system-card">
+    <span class="status-dot"></span>
+    <div>
+        <strong>Analyzer Online</strong>
+        <small>Offline lab mode</small>
+    </div>
+</div>
+</aside>
+
+<main class="main-panel">
+    <header class="topbar">
+        <div>
+            <p class="eyebrow">Real-time artificial taste sensing</p>
+            <h1>Electronic Tongue Dashboard</h1>
+        </div>
+        <div class="topbar-actions">
+            <button class="icon-button" id="themeToggle" title="Toggle theme">Theme</button>
+            <button class="primary-button" id="runCycle">Run Analysis</button>
+            <button class="secondary-button" id="exportReport">Export Report</button>
+        </div>
+    </header>
+<section class="hero-strip" id="overview">
+    <div class="hero-copy">
+        <h2>Multi-sensor taste fingerprinting for food, water, pharma, and process labs.</h2>
+        <p>Pattern recognition, potentiometric response tracking, calibration control, and batch quality grading in one offline dashboard.</p>
+    </div>
+    <div class="process-line" aria-label="Electronic tongue workflow">
+        <span>Sample</span>
+        <span>Conditioning</span>
+        <span>Sensor Array</span>
+        <span>Acquisition</span>
+        <span>Classification</span>
+    </div>
+</section>
+<section class="kpi-grid">
+    <article class="metric-card">
+        <span>Recognition Accuracy</span>
+        <strong id="accuracyMetric">97.4%</strong>
+        <small>Hybrid PCA + neural classifier</small>
+    </article>
+    <article class="metric-card">
+        <span>Sample Throughput</span>
+        <strong id="throughputMetric">42/hr</strong>
+        <small>Auto-rinse method enabled</small>
+    </article>
+    <article class="metric-card">
+        <span>Drift Index</span>
+        <strong id="driftMetric">0.018</strong>
+        <small>Within sensor stability limit</small>
+    </article>
+    <article class="metric-card">
+        <span>Batch Verdict</span>
+        <strong id="verdictMetric">Pass</strong>
+        <small>Reference profile matched</small>
+    </article>
+</section>
+<section class="dashboard-grid">
+    <article class="panel span-8" id="array">
+        <div class="panel-heading">
+            <div>
+                <p class="eyebrow">Potentiometric response</p>
+                <h3>Sensor Array Signal Map</h3>
+            </div>
+            <select id="sampleSelect" class="select-control" aria-label="Sample type">
+<option value="tea">Tea infusion</option>
+<option value="milk">Milk sample</option>
+<option value="water">Drinking water</option>
+<option value="syrup">Syrup batch</option>
+</select>
+</div>
+<canvas id="sensorChart" height="250"></canvas>
+<div class="sensor-legend" id="sensorLegend"></div>
+</article>
+
+<article class="panel span-4">
+    <div class="panel-heading">
+        <div>
+            <p class="eyebrow">Taste classes</p>
+            <h3>Recognition Confidence</h3>
+        </div>
+    </div>
+    <canvas id="tasteChart" height="250"></canvas>
+</article>
+
+<article class="panel span-5" id="recognition">
+    <div class="panel-heading">
+        <div>
+            <p class="eyebrow">Machine intelligence</p>
+            <h3>Pattern Recognition Engine</h3>
+        </div>
+    </div>
+    <div class="model-stack">
+        <div><strong>PCA Projection</strong><span id="pcaState">Cluster distance: 0.21</span></div>
+        <div><strong>ANN Classifier</strong><span id="annState">Class: Reference Match</span></div>
+        <div><strong>Fuzzy Decision</strong><span id="fuzzyState">Risk: Low</span></div>
+    </div>
+    <div class="scatter-wrap">
+        <canvas id="pcaChart" height="220"></canvas>
+    </div>
+</article>
+
+<article class="panel span-7" id="calibration">
+    <div class="panel-heading">
+        <div>
+            <p class="eyebrow">Instrument health</p>
+            <h3>Calibration and Drift Monitor</h3>
+        </div>
+        <button class="secondary-button compact" id="calibrateBtn">Calibrate</button>
+    </div>
+    <div class="calibration-grid">
+        <div>
+            <label>Reference buffer pH</label>
+            <input id="phInput" type="number" min="1" max="14" step="0.1" value="7.0">
+        </div>
+        <div>
+            <label>Temperature compensation</label>
+            <input id="tempInput" type="number" min="5" max="80" step="0.5" value="25">
+        </div>
+        <div>
+            <label>Rinse duration (sec)</label>
+            <input id="rinseInput" type="number" min="5" max="120" step="5" value="30">
+        </div>
+    </div>
+    <div class="health-bars" id="healthBars"></div>
+</article>
+
+<article class="panel span-6" id="quality">
+    <div class="panel-heading">
+        <div>
+            <p class="eyebrow">Production quality</p>
+            <h3>Batch Quality Gate</h3>
+        </div>
+    </div>
+    <table class="data-table">
+        <thead>
+        <tr><th>Batch</th><th>Sample</th><th>Match</th><th>Decision</th></tr>
+        </thead>
+        <tbody id="batchTable"></tbody>
+    </table>
+</article>
+
+<article class="panel span-6">
+    <div class="panel-heading">
+        <div>
+            <p class="eyebrow">Alerting</p>
+            <h3>Lab Event Stream</h3>
+        </div>
+    </div>
+    <div class="event-list" id="eventList"></div>
+</article>
+
+<article class="panel span-12" id="reports">
+    <div class="panel-heading">
+        <div>
+            <p class="eyebrow">Implementation modules</p>
+            <h3>System Features Included</h3>
+        </div>
+    </div>
+    <div class="feature-grid">
+        <div><strong>Sensor Array</strong><span>Ion-selective and cross-sensitive electrodes for sweet, sour, salty, bitter, umami, and astringent signatures.</span></div>
+        <div><strong>Signal Conditioning</strong><span>Noise smoothing, baseline correction, temperature compensation, and response normalization.</span></div>
+        <div><strong>Classification</strong><span>PCA visualization, artificial neural recognition, fuzzy verdicts, and reference profile matching.</span></div>
+        <div><strong>Use Cases</strong><span>Food authentication, beverage grading, water quality, pharmaceutical taste masking, fermentation, and process monitoring.</span></div>
+    </div>
+</article>
+</section>
+</main>
+</div>
+
+<script src="js/Electronic_Tongue_data.js"></script>
+<script src="js/Electronic_Tongue_charts.js"></script>
+<script src="js/Electronic_Tongue_sensors.js"></script>
+<script src="js/Electronic_Tongue_calibration.js"></script>
+<script src="js/Electronic_Tongue_alerts.js"></script>
+<script src="js/Electronic_Tongue_simulation.js"></script>
+<script src="js/Electronic_Tongue_export.js"></script>
+<script src="js/Electronic_Tongue_ui.js"></script>
+<script src="js/Electronic_Tongue_app.js"></script>
+</body>
+</html>

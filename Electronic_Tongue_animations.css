@@ -1,0 +1,29 @@
+@keyframes pulse {
+    0% { transform: scale(1); opacity: 1; }
+    70% { transform: scale(1.18); opacity: 0.55; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+.status-dot {
+    animation: pulse 1.8s ease-in-out infinite;
+}
+
+.panel,
+.metric-card,
+.hero-strip {
+    transition: transform 160ms ease, box-shadow 160ms ease, background 160ms ease;
+}
+
+.panel:hover,
+.metric-card:hover {
+    transform: translateY(-2px);
+}
+.flash {
+    animation: panelFlash 700ms ease;
+}
+
+@keyframes panelFlash {
+    0% { outline: 0 solid rgba(15,118,110,0); }
+    35% { outline: 4px solid rgba(15,118,110,0.25); }
+    100% { outline: 0 solid rgba(15,118,110,0); }
+}

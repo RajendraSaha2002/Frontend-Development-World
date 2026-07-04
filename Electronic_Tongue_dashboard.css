@@ -1,0 +1,139 @@
+.hero-strip {
+    min-height: 230px;
+    padding: 28px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(280px, 42%);
+    gap: 24px;
+    align-items: center;
+    background:
+            linear-gradient(120deg, rgba(15,118,110,0.95), rgba(18,32,43,0.88)),
+            repeating-linear-gradient(90deg, rgba(255,255,255,0.08) 0 1px, transparent 1px 34px);
+    color: #fff;
+}
+
+.hero-copy h2 {
+    margin: 0 0 12px;
+    font-size: clamp(1.7rem, 3vw, 3rem);
+    line-height: 1.04;
+    max-width: 900px;
+}
+
+.hero-copy p {
+    margin: 0;
+    color: #d9f2ef;
+    max-width: 720px;
+}
+.process-line {
+    display: grid;
+    gap: 10px;
+}
+
+.process-line span {
+    padding: 11px 12px;
+    border-radius: 8px;
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.2);
+    font-weight: 800;
+}
+
+.kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+    margin-top: 18px;
+}
+
+.metric-card {
+    padding: 18px;
+}
+.metric-card span {
+    color: var(--muted);
+    font-weight: 700;
+}
+
+.metric-card strong {
+    display: block;
+    margin: 8px 0 4px;
+    font-size: 2rem;
+}
+
+.sensor-legend,
+.health-bars,
+.event-list,
+.feature-grid,
+.model-stack {
+    display: grid;
+    gap: 10px;
+}
+.sensor-legend {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    margin-top: 12px;
+}
+
+.sensor-legend span,
+.health-item,
+.event-item,
+.feature-grid div,
+.model-stack div {
+    border: 1px solid var(--line);
+    background: var(--surface-strong);
+    border-radius: 8px;
+    padding: 12px;
+}
+
+.model-stack {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin-bottom: 14px;
+}
+.calibration-grid label {
+    display: block;
+    color: var(--muted);
+    font-weight: 700;
+    margin-bottom: 6px;
+}
+
+.calibration-grid input {
+    width: 100%;
+}
+
+.health-meter {
+    height: 10px;
+    background: #d7e0e8;
+    border-radius: 999px;
+    overflow: hidden;
+    margin-top: 8px;
+}
+.health-meter span {
+    display: block;
+    height: 100%;
+    background: var(--accent);
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.data-table th,
+.data-table td {
+    padding: 12px 10px;
+    border-bottom: 1px solid var(--line);
+    text-align: left;
+}
+.pill {
+    display: inline-flex;
+    align-items: center;
+    min-height: 26px;
+    padding: 0 10px;
+    border-radius: 999px;
+    font-size: 0.84rem;
+    font-weight: 800;
+}
+
+.pill.pass { background: rgba(21,128,61,0.12); color: var(--good); }
+.pill.review { background: rgba(180,83,9,0.13); color: var(--warn); }
+.pill.fail { background: rgba(185,28,28,0.12); color: var(--bad); }
+
+.feature-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+}

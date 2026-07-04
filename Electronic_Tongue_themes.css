@@ -1,0 +1,21 @@
+[data-theme="dark"] {
+    --bg: #0e151b;
+    --surface: #16222d;
+    --surface-strong: #101b24;
+    --text: #edf5fb;
+    --muted: #a5b4c1;
+    --line: #273845;
+    --shadow: 0 18px 45px rgba(0, 0, 0, 0.32);
+}
+
+[data-theme="dark"] .sidebar {
+    background: #071017;
+}
+
+[data-theme="dark"] .secondary-button,
+[data-theme="dark"] .icon-button,
+[data-theme="dark"] .select-control,
+[data-theme="dark"] input {
+    background: #101b24;
+    color: var(--text);
+}

@@ -1,0 +1,21 @@
+@media print {
+    .sidebar,
+    .topbar-actions {
+        display: none;
+    }
+
+    .app-shell {
+        display: block;
+    }
+
+    .main-panel {
+        padding: 0;
+    }
+
+    .panel,
+    .metric-card,
+    .hero-strip {
+        box-shadow: none;
+        break-inside: avoid;
+    }
+}

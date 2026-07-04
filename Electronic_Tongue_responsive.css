@@ -1,0 +1,66 @@
+@media (max-width: 1180px) {
+    .app-shell {
+        grid-template-columns: 1fr;
+    }
+
+    .sidebar {
+        position: static;
+        height: auto;
+    }
+
+    .nav-list {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .system-card {
+        margin-top: 0;
+    }
+
+    .span-4,
+    .span-5,
+    .span-6,
+    .span-7,
+    .span-8 {
+        grid-column: span 12;
+    }
+
+    .kpi-grid,
+    .feature-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+@media (max-width: 760px) {
+    .main-panel {
+        padding: 18px;
+    }
+
+    .topbar,
+    .panel-heading,
+    .hero-strip {
+        grid-template-columns: 1fr;
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .topbar-actions {
+        justify-content: stretch;
+    }
+
+    .topbar-actions button,
+    .topbar-actions select {
+        flex: 1 1 auto;
+    }
+
+    .nav-list,
+    .kpi-grid,
+    .sensor-legend,
+    .model-stack,
+    .calibration-grid,
+    .feature-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .dashboard-grid {
+        gap: 14px;
+    }
+}
