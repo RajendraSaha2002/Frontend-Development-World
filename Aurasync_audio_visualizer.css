@@ -1,0 +1,141 @@
+.visualizer-pane {
+    grid-row: span 2;
+}
+
+.visualizer-container {
+    position: relative;
+    flex: 1;
+    background-color: #05070f;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-height: 300px;
+}
+
+canvas {
+    width: 100%;
+    flex: 1;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.biometric-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    background: linear-gradient(rgba(0, 240, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 240, 255, 0.03) 1px, transparent 1px);
+    background-size: 20px 20px;
+    animation: grid-pulse 4s infinite linear;
+}
+
+@keyframes grid-pulse {
+    0% { opacity: 0.3; }
+    50% { opacity: 0.6; }
+    100% { opacity: 0.3; }
+}
+
+.audio-controls {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.status-ticker {
+    margin-top: 1rem;
+    background-color: rgba(0, 0, 0, 0.3);
+    padding: 0.6rem;
+    border-radius: 4px;
+    font-family: monospace;
+    font-size: 0.8rem;
+    color: var(--accent-blue);
+    border-left: 3px solid var(--accent-blue);
+}
+
+.metrics-display {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.metric-card {
+    background: rgba(0,0,0,0.2);
+    border: 1px solid var(--border-color);
+    padding: 0.75rem;
+    border-radius: 6px;
+    text-align: center;
+}
+
+.metric-label {
+    display: block;
+    font-size: 0.7rem;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    margin-bottom: 0.25rem;
+}
+
+.metric-value {
+    font-family: monospace;
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: white;
+}
+
+/* Modal Styling */
+.modal-overlay {
+    position: fixed;
+    top:0; left:0; width:100vw; height:100vh;
+    background: rgba(4, 6, 14, 0.8);
+    backdrop-filter: blur(4px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-box {
+    background: var(--bg-surface);
+    border: 1px solid var(--accent-blue);
+    border-radius: 12px;
+    width: 450px;
+    padding: 1.5rem;
+    box-shadow: 0 0 30px rgba(0, 240, 255, 0.2);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.modal-close {
+    background: transparent; border:none; color: white; font-size: 1.5rem; cursor: pointer;
+}
+
+.status-graphic {
+    width: 60px;
+    height: 60px;
+    margin: 1.5rem auto;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.status-graphic.verified {
+    background: rgba(0, 255, 102, 0.1);
+    border: 2px solid var(--accent-green);
+    box-shadow: 0 0 15px rgba(0, 255, 102, 0.3);
+}
+.status-graphic.failed {
+    background: rgba(255, 56, 56, 0.1);
+    border: 2px solid var(--accent-red);
+    box-shadow: 0 0 15px rgba(255, 56, 56, 0.3);
+}

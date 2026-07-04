@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AuraSync Biometrics - Text-Independent Speaker Recognition</title>
+    <link rel="stylesheet" href="css/Aurasync_core_theme.css">
+    <link rel="stylesheet" href="css/Aurasync_glass_panes.css">
+    <link rel="stylesheet" href="css/Aurasync_audio_visualizer.css">
+</head>
+<body>
+<header class="app-header">
+    <div class="logo-container">
+        <div class="logo-icon"></div>
+        <h1>AURASYNC <span class="subtitle">Speech Processing Division</span></h1>
+    </div>
+    <div class="system-status">
+        <span class="status-indicator ready"></span> SYSTEM READY
+    </div>
+</header>
+
+<main class="dashboard-grid">
+    <!-- Control Center (Left Panel) -->
+    <section class="pane control-pane">
+        <h2>System Configuration</h2>
+        <hr class="pane-divider">
+        <div class="form-group">
+            <label>Operational Alternative</label>
+            <div class="radio-group">
+                <label class="custom-radio">
+                    <input type="radio" name="system-mode" value="identification" checked>
+                    <span class="radio-box"></span> Speaker Identification
+                </label>
+                <label class="custom-radio">
+                    <input type="radio" name="system-mode" value="verification">
+                    <span class="radio-box"></span> Speaker Verification[cite: 1]
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group target-speaker-group hidden">
+            <label for="claimed-identity">Claimed Identity (Verification Target)</label>
+            <select id="claimed-identity" class="form-select">
+                <option value="">-- Select Registered Profile --</option>
+            </select>
+        </div>
+    </section>
+
+    <!-- Acoustic Signal Processing (Center Visualizer) -->
+    <section class="pane visualizer-pane">
+        <h2>Acoustic Signal Processing[cite: 1]</h2>
+        <hr class="pane-divider">
+        <div class="visualizer-container">
+            <canvas id="waveform-canvas"></canvas>
+            <canvas id="spectrogram-canvas"></canvas>
+            <div class="biometric-overlay"></div>
+        </div>
+        <div class="audio-controls">
+            <button id="btn-record" class="btn btn-primary">Start Recording</button>
+            <button id="btn-play" class="btn btn-secondary" disabled>Play Capture</button>
+            <button id="btn-clear" class="btn btn-danger">Reset Buffer</button>
+        </div>
+        <div class="status-ticker">
+            <p id="system-log">Awaiting audio stream initialization...</p>
+        </div>
+    </section>
+
+    <!-- Enrolment / Training Engine (Right Panel Top) -->
+    <section class="pane training-pane">
+        <h2>Speaker Enrolment & Training</h2>
+        <hr class="pane-divider">
+        <div class="form-group">
+            <label for="speaker-name">Enter Speaker Name for Training[cite: 1]</label>
+            <input type="text" id="speaker-name" class="form-input" placeholder="e.g., Professor Archer">
+        </div>
+        <div class="form-group">
+            <label for="train-codebook-size">Select Codebook Size for Clustering Weighting[cite: 1]</label>
+            <select id="train-codebook-size" class="form-select">
+                <option value="16">16 Centroids (Fast / Local Execution)</option>
+                <option value="32" selected>32 Centroids (Balanced Accuracy)</option>
+                <option value="64">64 Centroids (High-Fidelity Profiling)</option>
+            </select>
+        </div>
+        <button id="btn-train" class="btn btn-accent" disabled>Compute & Save Weights[cite: 1]</button>
+    </section>
+
+    <!-- Matching / Verification Engine (Right Panel Bottom) -->
+    <section class="pane matching-pane">
+        <h2>Pattern Recognition & Matching[cite: 1]</h2>
+        <hr class="pane-divider">
+        <div class="form-group">
+            <label for="match-codebook-size">Select Codebook Size for Matching[cite: 1]</label>
+            <select id="match-codebook-size" class="form-select">
+                <option value="16">16 Centroids</option>
+                <option value="32" selected>32 Centroids</option>
+                <option value="64">64 Centroids</option>
+            </select>
+        </div>
+        <div class="metrics-display">
+            <div class="metric-card">
+                <span class="metric-label">Power Profile</span>
+                <span id="metric-power" class="metric-value">0.00 dB</span>
+            </div>
+            <div class="metric-card">
+                <span class="metric-label">Distortion Score</span>
+                <span id="metric-distortion" class="metric-value">0.0000</span>
+            </div>
+        </div>
+        <button id="btn-match" class="btn btn-success" disabled>Find Match / Verify Identity[cite: 1]</button>
+    </section>
+</main>
+
+<!-- Modal Status Notification Window -->
+<div id="result-modal" class="modal-overlay hidden">
+    <div class="modal-box">
+        <div class="modal-header">
+            <h3>Biometric Analysis Output</h3>
+            <button id="btn-close-modal" class="modal-close">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="status-graphic" id="modal-status-icon"></div>
+            <h4 id="modal-title">Speaker Identified[cite: 1]</h4>
+            <p id="modal-details">Target speaker is: <strong>Unknown</strong></p>
+        </div>
+        <div class="modal-footer">
+            <button id="btn-modal-ok" class="btn btn-secondary">Acknowledge</button>
+        </div>
+    </div>
+</div>
+
+<!-- Scripts Module Loading -->
+<script src="js/Aurasync_audio_core.js"></script>
+<script src="js/Aurasync_biometric_engine.js"></script>
+<script src="js/Aurasync_dashboard_ui.js"></script>
+</body>
+</html>
