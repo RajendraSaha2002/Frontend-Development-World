@@ -1,0 +1,98 @@
+/* CCTV Grid */
+.grid-2x2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 15px;
+    height: 100%;
+}
+.cam-container {
+    background: #000;
+    border: 2px solid var(--bg-panel);
+    border-radius: 8px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+.cam-header {
+    background: rgba(0,0,0,0.8);
+    color: #fff;
+    padding: 8px 12px;
+    font-size: 0.8rem;
+    font-family: monospace;
+    z-index: 10;
+    border-bottom: 1px solid #333;
+}
+.video-feed {
+    position: relative;
+    flex-grow: 1;
+    background-size: cover;
+    background-position: center;
+    background-color: #1a1a1a;
+    /* Simulated static noise background fallback */
+    background-image: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.02) 2px, rgba(255,255,255,0.02) 4px);
+}
+
+/* AI Elements Overlay */
+.ai-badge {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    padding: 5px 12px;
+    font-weight: bold;
+    font-size: 1.2rem;
+    border-radius: 4px;
+    text-transform: uppercase;
+    z-index: 20;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.5);
+}
+
+.ai-badge.clear, .ai-badge.normal {
+    background: rgba(16, 185, 129, 0.2);
+    border: 2px solid var(--color-clear);
+    color: var(--color-clear);
+}
+.ai-badge.fire {
+    background: rgba(239, 68, 68, 0.2);
+    border: 2px solid var(--color-fire);
+    color: var(--color-fire);
+}
+.ai-badge.smoke {
+    background: rgba(249, 115, 22, 0.2);
+    border: 2px solid var(--color-smoke);
+    color: var(--color-smoke);
+}
+.ai-badge.abnormal {
+    background: rgba(220, 38, 38, 0.9);
+    border: 2px solid var(--color-abnormal);
+    color: #fff;
+}
+
+/* AI Detection Bounding Box */
+.bounding-box {
+    position: absolute;
+    border: 2px solid;
+    background: rgba(255,0,0,0.1);
+    z-index: 15;
+    transition: all 0.3s ease;
+}
+.bounding-box.hidden { display: none; }
+.box-fire { border-color: var(--color-fire); }
+.box-smoke { border-color: var(--color-smoke); }
+.box-abnormal { border-color: var(--color-abnormal); }
+
+/* AI Scanner Animation */
+.ai-scanner {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(to bottom, rgba(16,185,129,0) 0%, rgba(16,185,129,0.1) 50%, rgba(16,185,129,0) 100%);
+    background-size: 100% 200%;
+    animation: scan 4s linear infinite;
+    pointer-events: none;
+    z-index: 5;
+}
+@keyframes scan {
+    0% { background-position: 0 -100%; }
+    100% { background-position: 0 200%; }
+}

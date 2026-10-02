@@ -1,0 +1,37 @@
+:root {
+    /* Color Palette */
+    --bg-dark: #090a0f;
+    --bg-panel: #161824;
+    --bg-card: #202336;
+
+    --text-main: #e2e8f0;
+    --text-muted: #94a3b8;
+
+    /* AI Status Colors */
+    --color-clear: #10b981; /* Green */
+    --color-fire: #ef4444; /* Red */
+    --color-smoke: #f97316; /* Orange */
+    --color-normal: #10b981; /* Green */
+    --color-abnormal: #dc2626; /* Dark Red */
+    --color-warning: #facc15; /* Yellow */
+
+    /* Border & Effects */
+    --border-subtle: 1px solid rgba(255, 255, 255, 0.08);
+    --shadow-neon: 0 0 10px rgba(16, 185, 129, 0.3);
+
+    /* Fonts */
+    --font-ui: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-ui);
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+    overflow: hidden;
+}

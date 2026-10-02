@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AegisVision AI Surveillance System</title>
+
+  <!-- Modular CSS Scripts -->
+  <link rel="stylesheet" href="css/IVSVAS_Variables.css">
+  <link rel="stylesheet" href="css/IVSVAS_Layout.css">
+  <link rel="stylesheet" href="css/IVSVAS_Components.css">
+  <link rel="stylesheet" href="css/IVSVAS_Cameras.css">
+</head>
+<body>
+<div class="dashboard-container">
+  <!-- Sidebar Navigation -->
+  <aside class="sidebar">
+    <div class="brand">
+      <h2>AegisVision<span>.AI</span></h2>
+      <p>Intelligent Analytics</p>
+    </div>
+    <nav class="menu">
+      <a href="#" class="active">Live Dashboard</a>
+      <a href="#">Fire & Smoke AI</a>
+      <a href="#">Crowd Analytics</a>
+      <a href="#">Notification Engine</a>
+      <a href="#">System Settings</a>
+    </nav>
+    <div class="system-health">
+      <h3>Hardware Telemetry</h3>
+      <div class="metric">
+        <span>CPU (i5 8th Gen)</span>
+        <span id="cpu-val">45%</span>
+        <div class="bar-bg"><div class="bar-fill" id="cpu-bar"></div></div>
+      </div>
+      <div class="metric">
+        <span>Nvidia GPU</span>
+        <span id="gpu-val">78%</span>
+        <div class="bar-bg"><div class="bar-fill" id="gpu-bar"></div></div>
+      </div>
+      <div class="metric">
+        <span>RAM (16 GB)</span>
+        <span id="ram-val">12GB</span>
+        <div class="bar-bg"><div class="bar-fill" id="ram-bar"></div></div>
+      </div>
+      <div class="server-info">
+        <p>OS: <span id="os-name">Ubuntu 20.04</span></p>
+        <p>Storage: <span id="storage-val">1TB HDD</span></p>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content Area -->
+  <main class="main-content">
+    <header class="topbar">
+      <div class="status-indicator">
+        <div class="pulse-dot"></div>
+        <span>AI Engine: ONLINE | Processing 4 Streams</span>
+      </div>
+      <div class="clock" id="sys-clock">00:00:00</div>
+    </header>
+
+    <div class="content-grid">
+      <!-- CCTV Camera Grid -->
+      <section class="camera-section">
+        <div class="grid-2x2">
+          <!-- Camera 1: Fire/Smoke -->
+          <div class="cam-container" id="cam1">
+            <div class="cam-header">Cam 01 - Petroleum Refinery [2MP RTSP]</div>
+            <div class="video-feed fire-bg">
+              <div class="ai-scanner"></div>
+              <div class="ai-badge clear" id="cam1-badge">CLEAR</div>
+              <div class="bounding-box hidden" id="cam1-box"></div>
+            </div>
+          </div>
+
+          <!-- Camera 2: Fire/Smoke -->
+          <div class="cam-container" id="cam2">
+            <div class="cam-header">Cam 02 - Manufacturing Plant [2MP RTSP]</div>
+            <div class="video-feed smoke-bg">
+              <div class="ai-scanner"></div>
+              <div class="ai-badge clear" id="cam2-badge">CLEAR</div>
+              <div class="bounding-box hidden" id="cam2-box"></div>
+            </div>
+          </div>
+
+          <!-- Camera 3: Crowd -->
+          <div class="cam-container" id="cam3">
+            <div class="cam-header">Cam 03 - Shopping Mall [2MP RTSP]</div>
+            <div class="video-feed normal-bg">
+              <div class="ai-scanner"></div>
+              <div class="ai-badge normal" id="cam3-badge">NORMAL</div>
+              <div class="bounding-box hidden" id="cam3-box"></div>
+            </div>
+          </div>
+
+          <!-- Camera 4: Crowd -->
+          <div class="cam-container" id="cam4">
+            <div class="cam-header">Cam 04 - Railway Station [2MP RTSP]</div>
+            <div class="video-feed abnormal-bg">
+              <div class="ai-scanner"></div>
+              <div class="ai-badge normal" id="cam4-badge">NORMAL</div>
+              <div class="bounding-box hidden" id="cam4-box"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Alerts Engine -->
+      <section class="alerts-section">
+        <div class="alerts-header">
+          <h3>Incident Reporting Pipeline</h3>
+          <span class="dispatch-status">SMS & Email Active</span>
+        </div>
+        <div class="alerts-log" id="alert-log">
+          <!-- Logs injected by JS -->
+        </div>
+      </section>
+    </div>
+  </main>
+</div>
+
+<!-- Modular JS Scripts (Order is critical for dependencies) -->
+<script src="js/IVSVAS_Config.js"></script>
+<script src="js/IVSVAS_Alert_Dispatcher.js"></script>
+<script src="js/IVSVAS_Telemetry.js"></script>
+<script src="js/IVSVAS_Ai_Engine.js"></script>
+<script src="js/IVSVAS_Main.js"></script>
+</body>
+</html>
