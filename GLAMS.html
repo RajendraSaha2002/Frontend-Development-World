@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GLAMS | EduForge Innovations</title>
+  <!-- Modular CSS -->
+  <link rel="stylesheet" href="css/GLAMS_Global.css">
+  <link rel="stylesheet" href="css/GLAMS_Dashboard.css">
+  <link rel="stylesheet" href="css/GLAMS_Arena.css">
+  <link rel="stylesheet" href="css/GLAMS_Statistics.css">
+</head>
+<body>
+<div class="app-container">
+  <!-- HEADER -->
+  <header class="app-header">
+    <div class="logo-container">
+      <h1>GLAMS <span>PRO</span></h1>
+      <p>EduForge Innovations</p>
+    </div>
+    <div class="user-profile">
+      <div class="avatar">RS</div>
+      <span id="welcome-text"></span>
+    </div>
+  </header>
+
+  <!-- VIEW 1: Dashboard -->
+  <main id="view-dashboard" class="view active-view">
+    <div class="dashboard-controls">
+      <h2>Selectable Courses</h2>
+      <input type="text" id="course-search" placeholder="Search topics...">
+    </div>
+    <div id="course-grid" class="course-grid"></div>
+  </main>
+
+  <!-- VIEW 2: War Arena (Quiz) -->
+  <main id="view-arena" class="view hidden-view">
+    <div class="battle-header">
+      <div class="player">
+        <span class="player-name" id="p1-name"></span>
+        <div class="health-bar"><div class="fill p1-fill"></div></div>
+      </div>
+      <div class="vs-badge">VS</div>
+      <div class="player">
+        <div class="health-bar"><div class="fill p2-fill"></div></div>
+        <span class="player-name">System Bot</span>
+      </div>
+    </div>
+    <div class="question-container">
+      <h3 id="question-text">Loading question...</h3>
+      <div id="options-grid" class="options-grid"></div>
+    </div>
+    <div class="timer-bar"><div id="timer-fill"></div></div>
+  </main>
+
+  <!-- VIEW 3: Results -->
+  <main id="view-results" class="view hidden-view">
+    <h2 class="result-title">Congratulations!!!</h2>
+    <h3 class="war-title">WAR: <span id="result-subject"></span></h3>
+
+    <div class="results-container">
+      <!-- Winner -->
+      <div class="result-card winner">
+        <h4>Winner</h4>
+        <div class="avatar-large" id="winner-initials"></div>
+        <span id="winner-name"></span>
+        <div class="stats-grid">
+          <div class="stat"><span>DEFENCE</span><strong id="w-def">0%</strong></div>
+          <div class="stat"><span>ATTACK</span><strong id="w-atk">0%</strong></div>
+        </div>
+      </div>
+
+      <!-- Donut Charts (Pure CSS) -->
+      <div class="charts-container">
+        <div class="donut-chart" id="chart-winner"></div>
+        <div class="donut-chart" id="chart-loser"></div>
+      </div>
+
+      <!-- Loser -->
+      <div class="result-card loser">
+        <h4>Loser</h4>
+        <div class="avatar-large system-avatar">SB</div>
+        <span>System Bot</span>
+        <div class="stats-grid">
+          <div class="stat"><span>DEFENCE</span><strong id="l-def">0%</strong></div>
+          <div class="stat"><span>ATTACK</span><strong id="l-atk">0%</strong></div>
+        </div>
+      </div>
+    </div>
+    <button id="btn-restart" class="action-btn">Return to Dashboard</button>
+  </main>
+</div>
+
+<!-- Modular JS Scripts (Loaded sequentially to avoid cross-origin module errors locally) -->
+<script src="js/GLAMS_Database.js"></script>
+<script src="js/GLAMS_Domrenderer.js"></script>
+<script src="js/GLAMS_GameLogic.js"></script>
+<script src="js/GLAMS_Main.js"></script>
+</body>
+</html>

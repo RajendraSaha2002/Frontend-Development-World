@@ -1,0 +1,48 @@
+:root {
+    --bg-primary: #040d21;
+    --bg-secondary: #0a1930;
+    --accent-blue: #00f0ff;
+    --accent-green: #00ff88;
+    --accent-red: #ff3366;
+    --text-main: #e2f1ff;
+    --text-muted: #8892b0;
+    --glass-bg: rgba(10, 25, 48, 0.7);
+    --border-glow: 0 0 10px rgba(0, 240, 255, 0.3);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+
+body {
+    background: radial-gradient(circle at 50% 50%, var(--bg-secondary), var(--bg-primary));
+    color: var(--text-main);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.app-container {
+    width: 95%; max-width: 1400px; height: 90vh;
+    background: var(--glass-bg);
+    border: 1px solid rgba(0, 240, 255, 0.2);
+    border-radius: 20px;
+    box-shadow: var(--border-glow);
+    display: flex; flex-direction: column; overflow: hidden;
+    backdrop-filter: blur(10px);
+}
+
+.app-header {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 20px 40px; background: rgba(0,0,0,0.4); border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.logo-container h1 { font-size: 1.5rem; color: var(--accent-blue); letter-spacing: 2px; }
+.logo-container h1 span { color: var(--text-main); }
+.logo-container p { font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
+
+.user-profile { display: flex; align-items: center; gap: 15px; }
+.avatar { width: 40px; height: 40px; background: var(--accent-blue); color: var(--bg-primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; }
+
+.view { flex: 1; padding: 30px 40px; overflow-y: auto; display: none; }
+.active-view { display: block; animation: fadeIn 0.4s ease; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }

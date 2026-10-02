@@ -1,0 +1,16 @@
+.dashboard-controls { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+#course-search {
+    background: rgba(255,255,255,0.05); border: 1px solid rgba(0,240,255,0.3);
+    padding: 10px 20px; border-radius: 20px; color: var(--text-main); width: 300px; outline: none;
+}
+#course-search:focus { border-color: var(--accent-blue); box-shadow: var(--border-glow); }
+
+.course-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; }
+.course-card {
+    background: linear-gradient(145deg, rgba(255,255,255,0.05), rgba(0,0,0,0.2));
+    border: 1px solid rgba(255,255,255,0.1); border-radius: 15px; padding: 20px;
+    text-align: center; cursor: pointer; transition: all 0.3s ease;
+}
+.course-card:hover { transform: translateY(-5px); border-color: var(--accent-blue); box-shadow: var(--border-glow); }
+.course-icon { font-size: 3rem; margin-bottom: 15px; display: block; }
+.course-title { font-weight: 600; font-size: 1.1rem; }
