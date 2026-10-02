@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SARAN™ NextGen Service Desk | Enterprise ITSM</title>
+    <link rel="stylesheet" href="css/SARAN_Service_Variables.css" />
+    <link rel="stylesheet" href="css/SARAN_Service_Layout.css" />
+    <link rel="stylesheet" href="css/SARAN_Service_Components.css" />
+    <link rel="stylesheet" href="css/SARAN_Service_Dashboard.css" />
+    <link rel="stylesheet" href="css/SARAN_Service_Workflow.css" />
+</head>
+<body class="theme-light">
+<div class="app-shell">
+
+    <!-- Top Global Header -->
+    <header class="app-header">
+        <div class="header-left">
+            <button id="sidebar-toggle" class="icon-btn" title="Toggle Sidebar">
+                <svg viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+            </button>
+            <div class="brand">
+          <span class="brand-logo">
+            <svg viewBox="0 0 32 32">
+              <path d="M16 2L3 9v14l13 7 13-7V9L16 2zm0 3.3L26.2 10 16 14.7 5.8 10 16 5.3zM5 11.8l10 4.6v10.5L5 22.3V11.8zm12 15.1V16.4l10-4.6v10.5l-10 4.6z"/>
+            </svg>
+          </span>
+                <div class="brand-text">
+                    <h2>SARAN<span>™</span></h2>
+                    <small>NextGen Service Desk</small>
+                </div>
+            </div>
+        </div>
+
+        <!-- Multi-Tenant Instance Switcher -->
+        <div class="header-center">
+            <div class="tenant-selector-pill">
+                <svg viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM19 18H6c-2.21 0-4-1.79-4-4 0-2.05 1.53-3.76 3.56-3.97l1.07-.11.5-.95C8.08 7.14 9.94 6 12 6c2.62 0 4.88 1.86 5.39 4.43l.3 1.5 1.53.11c1.56.1 2.78 1.41 2.78 2.96 0 1.65-1.35 3-3 3z"/></svg>
+                <label for="tenantSelect">Cloud Tenant:</label>
+                <select id="tenantSelect">
+                    <option value="tenant_apex_global">Apex Global Enterprise (Primary)</option>
+                    <option value="tenant_fintech">FinTech Prime Core Corp</option>
+                    <option value="tenant_health_care">BioCare Health Systems</option>
+                </select>
+            </div>
+
+            <div class="global-search-bar">
+                <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+                <input type="text" id="globalSearchInput" placeholder="Full-text query (e.g., ticket ID, tags, rule)..." />
+            </div>
+        </div>
+
+        <div class="header-right">
+            <!-- Auth & Role Mode -->
+            <div class="auth-mode-badge" title="LDAP Federated Authentication Active">
+                <span class="auth-indicator online"></span>
+                <span id="authModeLabel">LDAP Secured</span>
+            </div>
+
+            <!-- Notification Trigger -->
+            <button class="icon-btn relative" id="notificationBtn" title="Alerts & System Audits">
+                <svg viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>
+                <span class="badge-dot" id="unreadBadge"></span>
+            </button>
+
+            <!-- User Profile Pill -->
+            <div class="user-profile-menu">
+                <div class="user-avatar" id="userAvatar">SA</div>
+                <div class="user-details">
+                    <span class="user-name">Sarah Jenkins</span>
+                    <span class="user-role">Lead SysAdmin / SecOps</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Master Layout Wrapper -->
+    <div class="app-body">
+
+        <!-- Side Navigation -->
+        <aside class="app-sidebar" id="sidebar">
+            <nav class="sidebar-nav">
+                <div class="nav-section-title">Operations</div>
+                <button class="nav-item active" data-view="dashboard">
+                    <svg viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg>
+                    <span>Executive Dashboard</span>
+                </button>
+
+                <button class="nav-item" data-view="tickets">
+                    <svg viewBox="0 0 24 24"><path d="M20 6h-2.18c.11-.65.18-1.32.18-2 0-2.21-1.79-4-4-4-1.62 0-3.02.97-3.66 2.38L10 3.2 9.66 2.38C9.02.97 7.62 0 6 0 3.79 0 2 1.79 2 4c0 .68.07 1.35.18 2H0v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V6h-2zm-6-4c1.1 0 2 .9 2 2 0 .73-.4 1.38-1 1.73V4h-2v1.73c-.6-.35-1-1-1-1.73 0-1.1.9-2 2-2zM4 4c0-1.1.9-2 2-2s2 .9 2 2c0 .73-.4 1.38-1 1.73V4H5v1.73C4.4 5.38 4 4.73 4 4zm16 16H2V8h18v12z"/></svg>
+                    <span>Service Desk Workspace</span>
+                </button>
+
+                <div class="nav-section-title">Profiles & ITSM Core</div>
+                <button class="nav-item" data-view="incident-profile">
+                    <span class="profile-dot incident"></span>
+                    <span>Incident Management</span>
+                </button>
+                <button class="nav-item" data-view="change-profile">
+                    <span class="profile-dot change"></span>
+                    <span>Change Governance</span>
+                </button>
+                <button class="nav-item" data-view="service-request-profile">
+                    <span class="profile-dot request"></span>
+                    <span>Service Requests</span>
+                </button>
+
+                <div class="nav-section-title">Automation & Logic</div>
+                <button class="nav-item" data-view="workflow-designer">
+                    <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+                    <span>Workflow Studio (GUI)</span>
+                </button>
+                <button class="nav-item" data-view="sla-rules">
+                    <svg viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
+                    <span>SLA Engine & Calendars</span>
+                </button>
+
+                <div class="nav-section-title">Governance & Security</div>
+                <button class="nav-item" data-view="security-audit">
+                    <svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+                    <span>Security & Audit Trails</span>
+                </button>
+                <button class="nav-item" data-view="field-builder">
+                    <svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+                    <span>Custom Fields & Form Studio</span>
+                </button>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="system-status-indicator">
+                    <span class="status-pulse green"></span>
+                    <div>
+                        <strong>Multi-Instance Cloud</strong>
+                        <small>Uptime 99.98% | Encrypted</small>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Work Viewports -->
+        <main class="app-main" id="mainContainer">
+
+            <!-- View 1: Executive Dashboard -->
+            <section id="view-dashboard" class="content-view active">
+                <div class="view-header">
+                    <div>
+                        <h1>Multi-Profile Operations Hub</h1>
+                        <p>Real-time analytics, SLA tracking, and ticket status for SARAN NextGen Service Desk.</p>
+                    </div>
+                    <div class="header-actions">
+                        <button class="btn btn-secondary" id="btnExportReport">
+                            <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+                            Export PDF/CSV
+                        </button>
+                        <button class="btn btn-primary" id="btnCreateTicketModal">
+                            <svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+                            Create New Ticket
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Top Metric Cards -->
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <div class="metric-header">
+                            <span>Active Incidents</span>
+                            <span class="metric-badge red">Priority 1/2: 4</span>
+                        </div>
+                        <div class="metric-value" id="statActiveIncidents">28</div>
+                        <div class="metric-subtext positive">↓ 14% vs. previous 24h</div>
+                    </div>
+
+                    <div class="metric-card">
+                        <div class="metric-header">
+                            <span>SLA Compliance Rate</span>
+                            <span class="metric-badge green">Target 95%</span>
+                        </div>
+                        <div class="metric-value" id="statSlaRate">97.4%</div>
+                        <div class="metric-subtext positive">↑ 0.8% adherence</div>
+                    </div>
+
+                    <div class="metric-card">
+                        <div class="metric-header">
+                            <span>Mean Time to Resolution (MTTR)</span>
+                            <span class="metric-badge blue">SLA Normal</span>
+                        </div>
+                        <div class="metric-value" id="statMttr">1h 42m</div>
+                        <div class="metric-subtext neutral">Calculated via Business Hours</div>
+                    </div>
+
+                    <div class="metric-card">
+                        <div class="metric-header">
+                            <span>Change Governance</span>
+                            <span class="metric-badge amber">CAB Pending</span>
+                        </div>
+                        <div class="metric-value" id="statChangesPending">6</div>
+                        <div class="metric-subtext">2 Emergency Approvals</div>
+                    </div>
+                </div>
+
+                <!-- Charts Row -->
+                <div class="charts-row">
+                    <!-- Canvas Line Chart: Ticket Volume & Resolution -->
+                    <div class="chart-panel flex-2">
+                        <div class="panel-header">
+                            <h3>Resolution Velocity & Inflow (24 Hours)</h3>
+                            <span class="legend-note"><span class="legend-dot blue"></span> Incoming &nbsp; <span class="legend-dot green"></span> Resolved</span>
+                        </div>
+                        <div class="canvas-wrapper">
+                            <canvas id="velocityChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Canvas Donut: Profile Distribution -->
+                    <div class="chart-panel flex-1">
+                        <div class="panel-header">
+                            <h3>Tickets by ITSM Profile</h3>
+                        </div>
+                        <div class="canvas-wrapper">
+                            <canvas id="profileDonutChart"></canvas>
+                        </div>
+                        <div id="donutLegend" class="custom-legend"></div>
+                    </div>
+                </div>
+
+                <!-- Recent Critical Items & SLA Escalation Radar -->
+                <div class="grid-two-column mt-4">
+                    <div class="panel">
+                        <div class="panel-header">
+                            <h3>High Priority & At-Risk SLAs</h3>
+                            <span class="badge red">Auto-Escalation Active</span>
+                        </div>
+                        <div class="table-container">
+                            <table class="data-table" id="urgentTicketsTable">
+                                <thead>
+                                <tr>
+                                    <th>Ticket ID</th>
+                                    <th>Title</th>
+                                    <th>Profile</th>
+                                    <th>Priority</th>
+                                    <th>SLA Remaining</th>
+                                    <th>Actions</th>
+                                </tr>
+                                </thead>
+                                <tbody><!-- Dynamic Render --></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Security & Audit Quick Feed -->
+                    <div class="panel">
+                        <div class="panel-header">
+                            <h3>Security & Authentication Audit Stream</h3>
+                            <button class="text-link" id="viewFullSecurityLogs">View Audit Vault →</button>
+                        </div>
+                        <div class="audit-stream-list" id="dashboardAuditStream">
+                            <!-- Dynamic Logs -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- View 2: Tickets Workspace -->
+            <section id="view-tickets" class="content-view">
+                <div class="view-header">
+                    <div>
+                        <h1>Universal Service Workspace</h1>
+                        <p>Filter, search, assign, and process incidents, change orders, and service requests.</p>
+                    </div>
+                    <div class="header-actions">
+                        <button class="btn btn-primary" id="btnNewTicketFromWorkspace">+ Create Ticket</button>
+                    </div>
+                </div>
+
+                <!-- Filter & Saved Searches Bar -->
+                <div class="filter-toolbar">
+                    <div class="toolbar-group">
+                        <label>Saved Queries:</label>
+                        <select id="savedQuerySelector" class="form-input">
+                            <option value="all">Default: All Active Tickets</option>
+                            <option value="my_assigned">Assigned to My Team</option>
+                            <option value="sla_breaching">Approaching SLA Breach (&lt; 60 mins)</option>
+                            <option value="incidents_only">Incidents Only (P1 &amp; P2)</option>
+                            <option value="changes_approval">Changes Awaiting CAB Approval</option>
+                        </select>
+                    </div>
+
+                    <div class="toolbar-group">
+                        <label>Profile:</label>
+                        <select id="filterProfile" class="form-input">
+                            <option value="all">All Profiles</option>
+                            <option value="incident">Incident Management</option>
+                            <option value="change">Change Governance</option>
+                            <option value="service_request">Service Request</option>
+                        </select>
+                    </div>
+
+                    <div class="toolbar-group">
+                        <label>State:</label>
+                        <select id="filterStatus" class="form-input">
+                            <option value="all">Any Status</option>
+                            <option value="Open">Open</option>
+                            <option value="Work in Progress">Work in Progress</option>
+                            <option value="Pending User/CAB">Pending User/CAB</option>
+                            <option value="Resolved">Resolved</option>
+                            <option value="Closed">Closed</option>
+                        </select>
+                    </div>
+
+                    <div class="toolbar-group flex-grow">
+                        <label>Live Search:</label>
+                        <input type="text" id="ticketTextFilter" class="form-input" placeholder="Type ID, description, email, or user..." />
+                    </div>
+
+                    <button class="btn btn-secondary" id="btnSaveCustomQuery" title="Save current filter set as reusable query">Save Query</button>
+                </div>
+
+                <!-- Main Ticket Data Grid -->
+                <div class="panel mt-3">
+                    <div class="table-container">
+                        <table class="data-table" id="masterTicketsTable">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Profile</th>
+                                <th>Summary</th>
+                                <th>Source</th>
+                                <th>Priority</th>
+                                <th>Status</th>
+                                <th>Assigned Group</th>
+                                <th>SLA Timer</th>
+                                <th>Action</th>
+                            </tr>
+                            </thead>
+                            <tbody id="masterTicketsBody"><!-- Dynamic Content --></tbody>
+                        </table>
+                    </div>
+                    <div class="pagination-footer">
+                        <span id="ticketCountDisplay">Showing 0 of 0 items</span>
+                        <div class="pagination-buttons">
+                            <button class="btn btn-small btn-secondary" disabled>Prev</button>
+                            <button class="btn btn-small btn-secondary">Next</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- View 3: Visual Workflow Studio (Drag-and-Drop / Flow Node GUI) -->
+            <section id="view-workflow-designer" class="content-view">
+                <div class="view-header">
+                    <div>
+                        <h1>Graphical Workflow & Automation Studio</h1>
+                        <p>Model life-cycles, automated SLA escalations, notification rules, and script actions.</p>
+                    </div>
+                    <div class="header-actions">
+                        <button class="btn btn-secondary" id="btnTestWorkflow">Simulate Workflow Run</button>
+                        <button class="btn btn-primary" id="btnSaveWorkflow">Publish Active Graph</button>
+                    </div>
+                </div>
+
+                <div class="workflow-workbench">
+                    <!-- Left Tool Palette -->
+                    <div class="workflow-palette">
+                        <h4>Process Nodes</h4>
+                        <div class="palette-item" draggable="true" data-type="trigger">
+                            <span class="node-icon green">⚡</span>
+                            <div class="palette-meta">
+                                <strong>Event Trigger</strong>
+                                <small>Email, SMS, Webhook</small>
+                            </div>
+                        </div>
+                        <div class="palette-item" draggable="true" data-type="condition">
+                            <span class="node-icon amber">◆</span>
+                            <div class="palette-meta">
+                                <strong>SLA / Rule Condition</strong>
+                                <small>Evaluate fields &amp; hours</small>
+                            </div>
+                        </div>
+                        <div class="palette-item" draggable="true" data-type="action">
+                            <span class="node-icon blue">⚙</span>
+                            <div class="palette-meta">
+                                <strong>Script / Task Action</strong>
+                                <small>Execute custom task</small>
+                            </div>
+                        </div>
+                        <div class="palette-item" draggable="true" data-type="notify">
+                            <span class="node-icon purple">✉</span>
+                            <div class="palette-meta">
+                                <strong>Notification Hub</strong>
+                                <small>SMS / Email Gateway</small>
+                            </div>
+                        </div>
+
+                        <div class="active-rule-summary mt-4">
+                            <h4>Rule Task Engine</h4>
+                            <p>Configured for <strong>Business Calendar:</strong> 09:00 - 18:00 UTC with national holiday calculation auto-pausing.</p>
+                        </div>
+                    </div>
+
+                    <!-- Canvas Viewport -->
+                    <div class="workflow-canvas-container" id="workflowCanvasWrapper">
+                        <svg id="workflowSvgCanvas" class="workflow-canvas">
+                            <defs>
+                                <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                                    <path d="M 0 0 L 10 5 L 0 10 z" fill="#64748b"></path>
+                                </marker>
+                            </defs>
+                            <!-- SVG Connectors drawn by JS -->
+                        </svg>
+                        <!-- Interactive nodes rendered here -->
+                        <div id="workflowNodesLayer" class="nodes-layer"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- View 4: Security & Audit Vault -->
+            <section id="view-security-audit" class="content-view">
+                <div class="view-header">
+                    <div>
+                        <h1>Security, Access Control & Audit Vault</h1>
+                        <p>Tamper-evident logs, multi-factor LDAP/DB authentication, and brute-force lock rules.</p>
+                    </div>
+                    <div class="header-actions">
+                        <button class="btn btn-secondary" id="btnSimulateFailedLogin">Simulate Brute-Force Attempt</button>
+                        <button class="btn btn-primary" id="btnClearAuditLogs">Export Immutable Audit</button>
+                    </div>
+                </div>
+
+                <div class="grid-three-column">
+                    <div class="stat-banner">
+                        <strong>Security Protocol</strong>
+                        <span>LDAPv3 + TLS 1.3 Active</span>
+                    </div>
+                    <div class="stat-banner">
+                        <strong>Account Lockout Threshold</strong>
+                        <span id="lockoutStatusBadge">3 Failed Attempts = Lock</span>
+                    </div>
+                    <div class="stat-banner">
+                        <strong>Audit Integrity</strong>
+                        <span class="text-success">SHA-256 Checksums Valid</span>
+                    </div>
+                </div>
+
+                <div class="panel mt-4">
+                    <div class="panel-header">
+                        <h3>System Security & Operation Trail</h3>
+                        <input type="text" id="auditSearchInput" class="form-input search-box-inline" placeholder="Filter audit trail by IP, user, or event..." />
+                    </div>
+                    <div class="table-container">
+                        <table class="data-table" id="auditTable">
+                            <thead>
+                            <tr>
+                                <th>Timestamp</th>
+                                <th>Event Category</th>
+                                <th>User Identity</th>
+                                <th>Client Source</th>
+                                <th>Severity</th>
+                                <th>Cryptographic Audit Hash</th>
+                            </tr>
+                            </thead>
+                            <tbody id="auditTableBody"><!-- Dynamic --></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- View 5: SLA Rule Engine & Holiday Calendars -->
+            <section id="view-sla-rules" class="content-view">
+                <div class="view-header">
+                    <div>
+                        <h1>SLA Computation & Holiday Matrix</h1>
+                        <p>Define automated SLA clauses, multi-tiered escalation thresholds, and business calendar calculations.</p>
+                    </div>
+                    <div class="header-actions">
+                        <button class="btn btn-primary" id="btnNewSlaRule">+ Define SLA Policy</button>
+                    </div>
+                </div>
+
+                <div class="grid-two-column">
+                    <div class="panel">
+                        <div class="panel-header">
+                            <h3>Active SLA Matrix Policies</h3>
+                        </div>
+                        <div class="sla-policy-list" id="slaPolicyContainer">
+                            <!-- Dynamically rendered SLA rules -->
+                        </div>
+                    </div>
+
+                    <div class="panel">
+                        <div class="panel-header">
+                            <h3>Business Hours & Holiday Exclusion Engine</h3>
+                        </div>
+                        <div class="calendar-config">
+                            <div class="form-group">
+                                <label>Working Week</label>
+                                <div class="checkbox-row">
+                                    <label><input type="checkbox" checked disabled /> Mon</label>
+                                    <label><input type="checkbox" checked disabled /> Tue</label>
+                                    <label><input type="checkbox" checked disabled /> Wed</label>
+                                    <label><input type="checkbox" checked disabled /> Thu</label>
+                                    <label><input type="checkbox" checked disabled /> Fri</label>
+                                    <label><input type="checkbox" disabled /> Sat</label>
+                                    <label><input type="checkbox" disabled /> Sun</label>
+                                </div>
+                            </div>
+
+                            <div class="form-group mt-3">
+                                <label>Operating Hours Window</label>
+                                <div class="flex-row gap-2">
+                                    <input type="time" class="form-input" value="09:00" />
+                                    <span>to</span>
+                                    <input type="time" class="form-input" value="18:00" />
+                                    <span class="badge blue">UTC +05:30</span>
+                                </div>
+                            </div>
+
+                            <div class="form-group mt-3">
+                                <label>Configured Holiday Exclusions (SLA Clock Auto-Pause)</label>
+                                <ul class="holiday-list">
+                                    <li><span>National Technology Observance</span> <strong>Oct 24</strong></li>
+                                    <li><span>Enterprise System Sync Day</span> <strong>Dec 25</strong></li>
+                                    <li><span>Annual Network Maintenance Day</span> <strong>Jan 01</strong></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- View 6: Custom Form Field Studio -->
+            <section id="view-field-builder" class="content-view">
+                <div class="view-header">
+                    <div>
+                        <h1>Customizable Form & Checklist Builder</h1>
+                        <p>Dynamically configure profile forms with field types, checklists, and authorization rules.</p>
+                    </div>
+                    <div class="header-actions">
+                        <button class="btn btn-primary" id="btnSaveFieldConfig">Apply Schema Changes</button>
+                    </div>
+                </div>
+
+                <div class="grid-two-column">
+                    <div class="panel">
+                        <div class="panel-header">
+                            <h3>Profile Schema Explorer</h3>
+                            <select id="builderProfileSelect" class="form-input" style="width: auto;">
+                                <option value="incident">Incident Profile</option>
+                                <option value="change">Change Governance Profile</option>
+                                <option value="service_request">Service Request Profile</option>
+                            </select>
+                        </div>
+                        <div class="form-builder-list" id="customFieldList">
+                            <!-- Dynamically listed fields -->
+                        </div>
+                        <button class="btn btn-secondary mt-3" id="btnAddFormField">+ Append Form Field</button>
+                    </div>
+
+                    <div class="panel">
+                        <div class="panel-header">
+                            <h3>Pre-Flight Checklist Editor for Profile</h3>
+                        </div>
+                        <p class="text-muted">Mandatory checklist items that agents must complete before closing a ticket in this profile.</p>
+                        <div class="checklist-builder" id="profileChecklistEditor">
+                            <!-- Checklists rendered here -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Modal 1: Ticket Creator Dialog -->
+    <div class="modal-backdrop" id="ticketModal">
+        <div class="modal-dialog">
+            <div class="modal-header">
+                <h3 id="modalTitle">Create Service Desk Ticket</h3>
+                <button class="modal-close" id="btnCloseTicketModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="newTicketForm">
+                    <div class="grid-two-column">
+                        <div class="form-group">
+                            <label for="ticketProfile">Profile Type *</label>
+                            <select id="ticketProfile" class="form-input" required>
+                                <option value="incident">Incident Management Profile</option>
+                                <option value="change">Change Management Profile</option>
+                                <option value="service_request">Service Request Profile</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="ticketPriority">Priority Level *</label>
+                            <select id="ticketPriority" class="form-input" required>
+                                <option value="Low">P4 - Low</option>
+                                <option value="Medium" selected>P3 - Medium</option>
+                                <option value="High">P2 - High</option>
+                                <option value="Critical">P1 - Critical (Immediate Escalation)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group mt-3">
+                        <label for="ticketSummary">Title / Summary *</label>
+                        <input type="text" id="ticketSummary" class="form-input" placeholder="e.g. Core Database Replication Timeout in Node-B" required />
+                    </div>
+
+                    <div class="grid-two-column mt-3">
+                        <div class="form-group">
+                            <label for="ticketRequester">Requester (Email/LDAP ID) *</label>
+                            <input type="email" id="ticketRequester" class="form-input" placeholder="user@enterprise.org" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="ticketGroup">Hierarchical Assigned Team *</label>
+                            <select id="ticketGroup" class="form-input" required>
+                                <option value="Tier-1 Operations">Tier-1 Operations</option>
+                                <option value="Network Infrastructure Team">Network Infrastructure Team</option>
+                                <option value="Database Engineering Core">Database Engineering Core</option>
+                                <option value="Cloud SecOps Squad">Cloud SecOps Squad</option>
+                                <option value="Change Advisory Board (CAB)">Change Advisory Board (CAB)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group mt-3">
+                        <label for="ticketDescription">Comprehensive Description</label>
+                        <textarea id="ticketDescription" class="form-input" rows="3" placeholder="Provide detailed background, error messages, and telemetry data..."></textarea>
+                    </div>
+
+                    <!-- Dynamic Profile Specific Fields Container -->
+                    <div id="dynamicProfileFields" class="dynamic-fields-box mt-3">
+                        <!-- Populated dynamically via ticket manager -->
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="btnCancelTicketModal">Cancel</button>
+                <button class="btn btn-primary" id="btnSubmitTicket">Submit &amp; Route Ticket</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 2: Ticket Detail View / Inspector -->
+    <div class="modal-backdrop" id="ticketDetailModal">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-header">
+                <div>
+                    <span class="badge blue" id="detailProfileBadge">Incident</span>
+                    <h3 id="detailTicketId">TKT-8801</h3>
+                </div>
+                <button class="modal-close" id="btnCloseDetailModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="detail-split-layout">
+                    <div class="detail-main">
+                        <h2 id="detailSummary" class="mb-2">Summary Heading</h2>
+                        <p id="detailDescription" class="detail-desc-text">Description body...</p>
+
+                        <!-- Dynamic Checklist Section -->
+                        <div class="checklist-panel mt-4">
+                            <h4>Profile Mandatory Checklist</h4>
+                            <div id="detailChecklistContainer" class="checklist-items">
+                                <!-- Checklist items dynamically inserted -->
+                            </div>
+                        </div>
+
+                        <!-- Ticket Activity Audit Log -->
+                        <div class="activity-history mt-4">
+                            <h4>Ticket Audit Log & Escalation Milestones</h4>
+                            <ul class="activity-timeline" id="detailTimeline">
+                                <!-- Dynamic log entries -->
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Right Detail Sidebar -->
+                    <div class="detail-sidebar">
+                        <div class="status-box">
+                            <label>Ticket Status</label>
+                            <select id="detailStatusSelect" class="form-input">
+                                <option value="Open">Open</option>
+                                <option value="Work in Progress">Work in Progress</option>
+                                <option value="Pending User/CAB">Pending User/CAB</option>
+                                <option value="Resolved">Resolved</option>
+                                <option value="Closed">Closed</option>
+                            </select>
+                        </div>
+
+                        <div class="sla-countdown-card mt-3">
+                            <label>SLA Computation</label>
+                            <div class="sla-counter" id="detailSlaClock">01:45:00</div>
+                            <small id="detailSlaStatus" class="sla-sub">In Compliance (Tier-1 SLA)</small>
+                        </div>
+
+                        <div class="meta-attributes mt-3">
+                            <div><label>Priority:</label> <strong id="detailPriority">High</strong></div>
+                            <div><label>Assigned Team:</label> <strong id="detailGroup">Cloud SecOps</strong></div>
+                            <div><label>Requester:</label> <span id="detailRequester">dev@apex.org</span></div>
+                            <div><label>Created:</label> <span id="detailCreated">Just now</span></div>
+                        </div>
+
+                        <div class="action-buttons-stack mt-4">
+                            <button class="btn btn-secondary w-full" id="btnTriggerSlaEscalation">Trigger Manual Escalation</button>
+                            <button class="btn btn-secondary w-full" id="btnNotifySmsEmail">Dispatch SMS / Email Alert</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" id="btnSaveTicketDetail">Apply &amp; Sync Changes</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Toast Deck -->
+    <div class="toast-deck" id="toastDeck"></div>
+
+</div>
+
+<!-- Application Logic Modules -->
+<script src="js/SARAN_Service_Data_Store.js"></script>
+<script src="js/SARAN_Service_Chart_Engine.js"></script>
+<script src="js/SARAN_Service_Sla_Engine.js"></script>
+<script src="js/SARAN_Service_Workflow_Studio.js"></script>
+<script src="js/SARAN_Service_Ticket_Manager.js"></script>
+<script src="js/SARAN_Service_Security_Audit.js"></script>
+<script src="js/SARAN_Service_App.js"></script>
+</body>
+</html>
