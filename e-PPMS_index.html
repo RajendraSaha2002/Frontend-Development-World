@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>e-PPMS | Electronic Project Proposal Management System</title>
+
+    <!-- Modular CSS Inclusions -->
+    <link rel="stylesheet" href="css/e-PPMS_variables.css">
+    <link rel="stylesheet" href="css/e-PPMS_base.css">
+    <link rel="stylesheet" href="css/e-PPMS_layout.css">
+    <link rel="stylesheet" href="css/e-PPMS_lifecycle_stepper.css">
+    <link rel="stylesheet" href="css/e-PPMS_cards_stats.css">
+    <link rel="stylesheet" href="css/e-PPMS_tables_data.css">
+    <link rel="stylesheet" href="css/e-PPMS_charts.css">
+    <link rel="stylesheet" href="css/e-PPMS_proposal_modules.css">
+    <link rel="stylesheet" href="css/e-PPMS_modals_workflow.css">
+</head>
+<body data-theme="light">
+
+<div class="app-layout">
+    <!-- Top Institutional Bulletin Ticker -->
+    <aside class="announcement-bar" role="region" aria-label="System Notice">
+        <div class="announcement-tag">CALL FOR PROPOSALS 2024-25</div>
+        <div class="marquee-track">
+        <span class="marquee-content" id="liveTicker">
+          National R&D Mission: Special Call on Quantum Computing & Bio-Energy open until September 30 | TEC Meeting for Clean Energy proposals scheduled for next Monday | Financial Sanction clearances released for Batch Q2.
+        </span>
+        </div>
+        <div class="announcement-actions">
+            <span class="pulse-indicator"></span> Secretariat Gateway: <strong>SEC-ACTIVE</strong>
+        </div>
+    </aside>
+
+    <!-- Master Header -->
+    <header class="master-header">
+        <div class="header-brand">
+            <div class="brand-symbol">
+                <svg viewBox="0 0 32 32" width="28" height="28" fill="none">
+                    <rect width="32" height="32" rx="6" fill="#0c4a6e"/>
+                    <path d="M7 16L13 22L25 10" stroke="#38bdf8" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                    <circle cx="16" cy="16" r="13" stroke="#e0f2fe" stroke-width="1.5" stroke-dasharray="4 2"/>
+                </svg>
+            </div>
+            <div class="brand-titles">
+                <h1>e-PPMS</h1>
+                <span class="brand-sub">Electronic Project Proposal Management System</span>
+            </div>
+        </div>
+
+        <!-- Free-Text Search on Proposal (Feature #7) -->
+        <div class="header-search-wrap">
+            <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" stroke-width="2" class="search-icon">
+                <circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input type="text" id="globalProposalSearch" placeholder="Free text search: Proposal ID, Title, PI, Keywords..." autocomplete="off">
+            <div class="search-results-dropdown" id="searchResultsDropdown"></div>
+        </div>
+
+        <!-- Controls & Persona Switcher -->
+        <div class="header-controls">
+            <div class="role-selector-wrap">
+                <label for="personaSelector">Active Role:</label>
+                <select id="personaSelector" class="form-control-sm">
+                    <option value="admin">Secretariat Admin (Sanctioning Authority)</option>
+                    <option value="pi" selected>Principal Investigator (PI / Researcher)</option>
+                    <option value="reviewer">Peer Reviewer / Subject Expert</option>
+                    <option value="tec">TEC Committee Chairman</option>
+                </select>
+            </div>
+
+            <button class="icon-button" id="notifTrayBtn" title="Alerts & Notification System">
+                <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" fill="none" stroke-width="2">
+                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                    <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                </svg>
+                <span class="badge-dot" id="unreadBadge"></span>
+            </button>
+
+            <div class="user-profile-badge">
+                <div class="avatar-circle">PI</div>
+                <div class="user-info">
+                    <strong id="headerUserName">Prof. V. Raman</strong>
+                    <span id="headerUserRole">National Research Lab</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="app-body">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar" aria-label="Main Navigation">
+            <ul class="nav-menu">
+                <li class="nav-item active" data-tab="dashboard">
+                    <a href="#dashboard">
+                        <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" fill="none" stroke-width="2"><rect x="3" y="3" width="7" height="9"></rect><rect x="14" y="3" width="7" height="5"></rect><rect x="14" y="12" width="7" height="9"></rect><rect x="3" y="16" width="7" height="5"></rect></svg>
+                        <span>Interactive Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item" data-tab="lifecycle">
+                    <a href="#lifecycle">
+                        <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" fill="none" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                        <span>Lifecycle Workflow</span>
+                    </a>
+                </li>
+                <li class="nav-item" data-tab="submission">
+                    <a href="#submission">
+                        <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" fill="none" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="12" y1="18" x2="12" y2="12"></line><line x1="9" y1="15" x2="15" y2="15"></line></svg>
+                        <span>Submit Proposal</span>
+                    </a>
+                </li>
+                <li class="nav-item" data-tab="scrutiny">
+                    <a href="#scrutiny">
+                        <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" fill="none" stroke-width="2"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+                        <span>Scrutiny & Review</span>
+                    </a>
+                </li>
+                <li class="nav-item" data-tab="tec">
+                    <a href="#tec">
+                        <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" fill="none" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                        <span>TEC Evaluation</span>
+                    </a>
+                </li>
+                <li class="nav-item" data-tab="sanction">
+                    <a href="#sanction">
+                        <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" fill="none" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+                        <span>Sanction & Release</span>
+                    </a>
+                </li>
+                <li class="nav-item" data-tab="duplicate">
+                    <a href="#duplicate">
+                        <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" fill="none" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                        <span>Duplicate Tracker</span>
+                    </a>
+                </li>
+                <li class="nav-item" data-tab="monitoring">
+                    <a href="#monitoring">
+                        <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" fill="none" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"></path></svg>
+                        <span>Monitoring & Closure</span>
+                    </a>
+                </li>
+                <li class="nav-item" data-tab="reports">
+                    <a href="#reports">
+                        <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" fill="none" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+                        <span>Analytics & Reports</span>
+                    </a>
+                </li>
+                <li class="nav-item" data-tab="communications">
+                    <a href="#communications">
+                        <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" fill="none" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                        <span>Communication Hub</span>
+                    </a>
+                </li>
+            </ul>
+
+            <div class="sidebar-footer">
+                <div class="tech-stack-indicator">
+                    <span class="badge-tech">Paperless R&D Protocol</span>
+                    <span class="badge-tech">End-to-End Cryptographic Audit</span>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Workspace -->
+        <main class="main-content" id="workspace">
+
+            <!-- =================== VIEW 1: INTERACTIVE DASHBOARD =================== -->
+            <section id="view-dashboard" class="module-view active">
+                <div class="view-header">
+                    <div>
+                        <h2>R&D Grants Executive Dashboard</h2>
+                        <p class="subtitle">Complete life-cycle funding overview, sanctions, and research telemetry</p>
+                    </div>
+                    <div class="action-row">
+                        <button class="btn btn-secondary" onclick="window.print()">
+                            <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+                            Export Summary
+                        </button>
+                        <button class="btn btn-primary" onclick="MainApp.navigate('submission')">
+                            + Submit New Proposal
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Top Metric KPI Cards -->
+                <div class="metrics-grid">
+                    <div class="metric-card border-top-sky">
+                        <div class="metric-icon bg-light-sky">
+                            <svg viewBox="0 0 24 24" width="22" height="22" stroke="#0284c7" fill="none" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+                        </div>
+                        <div class="metric-data">
+                            <span class="metric-label">Total Submissions</span>
+                            <h3 class="metric-value" id="kpiTotalProposals">1,482</h3>
+                            <span class="metric-sub text-success">↑ 18.2% vs previous cycle</span>
+                        </div>
+                    </div>
+
+                    <div class="metric-card border-top-teal">
+                        <div class="metric-icon bg-light-teal">
+                            <svg viewBox="0 0 24 24" width="22" height="22" stroke="#0d9488" fill="none" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                        </div>
+                        <div class="metric-data">
+                            <span class="metric-label">Under Active Review</span>
+                            <h3 class="metric-value" id="kpiUnderReview">314</h3>
+                            <span class="metric-sub text-muted">Across 8 Scrutiny Panels</span>
+                        </div>
+                    </div>
+
+                    <div class="metric-card border-top-indigo">
+                        <div class="metric-icon bg-light-indigo">
+                            <svg viewBox="0 0 24 24" width="22" height="22" stroke="#4f46e5" fill="none" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+                        </div>
+                        <div class="metric-data">
+                            <span class="metric-label">Grants Disbursed</span>
+                            <h3 class="metric-value" id="kpiDisbursed">₹ 142.8 Cr</h3>
+                            <span class="metric-sub text-success">98.4% utilization rate</span>
+                        </div>
+                    </div>
+
+                    <div class="metric-card border-top-emerald">
+                        <div class="metric-icon bg-light-emerald">
+                            <svg viewBox="0 0 24 24" width="22" height="22" stroke="#059669" fill="none" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                        </div>
+                        <div class="metric-data">
+                            <span class="metric-label">Patents / IPR Filed</span>
+                            <h3 class="metric-value" id="kpiPatents">89</h3>
+                            <span class="metric-sub text-muted">100% Secure IP Repository</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Octagon System Features Showcase (Directly matching PDF Page 2 Octagon Diagram) -->
+                <div class="panel margin-bottom-24">
+                    <div class="panel-header">
+                        <div>
+                            <h4>System Architecture & Key Modules</h4>
+                            <small class="text-muted">Core capabilities defined in the National R&D Specification</small>
+                        </div>
+                        <span class="badge badge-info">Octagonal Framework</span>
+                    </div>
+                    <div class="features-octagon-grid">
+                        <div class="feature-tile" onclick="MainApp.navigate('lifecycle')">
+                            <div class="tile-number">1</div>
+                            <strong>Responsive GUI</strong>
+                            <p>Adaptive interface for high-density multi-device review panels.</p>
+                        </div>
+                        <div class="feature-tile" onclick="MainApp.navigate('lifecycle')">
+                            <div class="tile-number">2</div>
+                            <strong>Configurable Workflow</strong>
+                            <p>Configurable approval stages, role permissions, and rules.</p>
+                        </div>
+                        <div class="feature-tile" onclick="MainApp.openNewsletterModal()">
+                            <div class="tile-number">3</div>
+                            <strong>Newsletter & Calls</strong>
+                            <p>Call bulletins, thrust areas, and circulars.</p>
+                        </div>
+                        <div class="feature-tile" onclick="MainApp.navigate('dashboard')">
+                            <div class="tile-number">4</div>
+                            <strong>Interactive Dashboards</strong>
+                            <p>Real-time analytics on grant funds, tranches, and metrics.</p>
+                        </div>
+                        <div class="feature-tile" onclick="MainApp.navigate('communications')">
+                            <div class="tile-number">5</div>
+                            <strong>Communication System</strong>
+                            <p>Direct encrypted dialogue between PI, Experts, and Secretariat.</p>
+                        </div>
+                        <div class="feature-tile" onclick="MainApp.openNotificationCenter()">
+                            <div class="tile-number">6</div>
+                            <strong>Automated Alerts</strong>
+                            <p>Real-time SMS & email notifications at every milestone.</p>
+                        </div>
+                        <div class="feature-tile" onclick="document.getElementById('globalProposalSearch').focus()">
+                            <div class="tile-number">7</div>
+                            <strong>Free Text Search</strong>
+                            <p>Full-text keyword scanning across proposals and abstracts.</p>
+                        </div>
+                        <div class="feature-tile" onclick="MainApp.navigate('reports')">
+                            <div class="tile-number">8</div>
+                            <strong>Statistical Analysis</strong>
+                            <p>Deep grant analytics, regional spread, and FTR reports.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts Row: R&D Disciplines & Grant Allocations -->
+                <div class="charts-row">
+                    <div class="chart-panel">
+                        <div class="chart-header">
+                            <div>
+                                <h4>Proposals by R&D Domain</h4>
+                                <small class="text-muted">Distribution across national thrust areas</small>
+                            </div>
+                        </div>
+                        <div class="chart-container">
+                            <div class="svg-chart-wrapper" id="domainDonutChartContainer"></div>
+                            <div class="chart-legend" id="domainLegend"></div>
+                        </div>
+                    </div>
+
+                    <div class="chart-panel">
+                        <div class="chart-header">
+                            <div>
+                                <h4>Annual R&D Funding Disbursals (₹ in Crores)</h4>
+                                <small class="text-muted">Multi-year capital and operational funding</small>
+                            </div>
+                        </div>
+                        <div class="chart-container">
+                            <div class="svg-chart-wrapper" id="fundingBarChartContainer"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Implementation Timeline (Page 1 Blueprint) -->
+                <div class="panel">
+                    <div class="panel-header">
+                        <div>
+                            <h4>Agency Adoption & Deployment Timeline</h4>
+                            <small class="text-muted">Chronological rollout across national funding agencies</small>
+                        </div>
+                        <span class="badge badge-success">Multi-Agency Interoperability</span>
+                    </div>
+                    <div class="deployment-timeline" id="deploymentTimelineContainer"></div>
+                </div>
+            </section>
+
+            <!-- =================== VIEW 2: LIFECYCLE STEPPER & WORKFLOW =================== -->
+            <section id="view-lifecycle" class="module-view">
+                <div class="view-header">
+                    <div>
+                        <h2>End-to-End Information Flow (8-Stage Lifecycle)</h2>
+                        <p class="subtitle">Audited journey from initial submission to technical closure</p>
+                    </div>
+                </div>
+
+                <!-- Visual Stepper from PDF Page 1 -->
+                <div class="stepper-horizontal">
+                    <div class="stepper-step completed" onclick="LifecycleTracker.selectStep(1)">
+                        <div class="step-circle">1</div>
+                        <div class="step-label">Proposal Submission</div>
+                    </div>
+                    <div class="stepper-step completed" onclick="LifecycleTracker.selectStep(2)">
+                        <div class="step-circle">2</div>
+                        <div class="step-label">Preliminary Scrutiny</div>
+                    </div>
+                    <div class="stepper-step active" onclick="LifecycleTracker.selectStep(3)">
+                        <div class="step-circle">3</div>
+                        <div class="step-label">Peer Review</div>
+                    </div>
+                    <div class="stepper-step" onclick="LifecycleTracker.selectStep(4)">
+                        <div class="step-circle">4</div>
+                        <div class="step-label">Technical Evaluation Committee</div>
+                    </div>
+                    <div class="stepper-step" onclick="LifecycleTracker.selectStep(5)">
+                        <div class="step-circle">5</div>
+                        <div class="step-label">Admin & Financial Approval</div>
+                    </div>
+                    <div class="stepper-step" onclick="LifecycleTracker.selectStep(6)">
+                        <div class="step-circle">6</div>
+                        <div class="step-label">Financial Sanction & Release</div>
+                    </div>
+                    <div class="stepper-step" onclick="LifecycleTracker.selectStep(7)">
+                        <div class="step-circle">7</div>
+                        <div class="step-label">Project Monitoring</div>
+                    </div>
+                    <div class="stepper-step" onclick="LifecycleTracker.selectStep(8)">
+                        <div class="step-circle">8</div>
+                        <div class="step-label">Project Closure</div>
+                    </div>
+                </div>
+
+                <div class="panel margin-top-20" id="lifecycleDetailsCard">
+                    <div class="panel-header">
+                        <h4 id="activeStepTitle">Stage 3: Peer Review Evaluation</h4>
+                        <span class="badge badge-warning" id="activeStepStatus">In Progress</span>
+                    </div>
+                    <div id="activeStepBody"></div>
+                </div>
+            </section>
+
+            <!-- =================== VIEW 3: PROPOSAL SUBMISSION =================== -->
+            <section id="view-submission" class="module-view">
+                <div class="view-header">
+                    <div>
+                        <h2>New Project Proposal Submission Portal</h2>
+                        <p class="subtitle">Paperless submission with automatic validation and duplicate analysis</p>
+                    </div>
+                </div>
+
+                <div class="panel">
+                    <form id="proposalSubmissionForm" class="form-grid">
+                        <div class="form-group full-width">
+                            <label for="pTitle">Project Title *</label>
+                            <input type="text" id="pTitle" class="form-control" placeholder="e.g., Autonomous Edge-AI Sensors for Coastal Bio-Diversity Monitoring" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="pDomain">R&D Thrust Area *</label>
+                            <select id="pDomain" class="form-control" required>
+                                <option value="Artificial Intelligence">Artificial Intelligence & Robotics</option>
+                                <option value="Biotechnology">Biotechnology & Healthcare</option>
+                                <option value="Clean Energy">Clean Energy & Green Hydrogen</option>
+                                <option value="Quantum Systems">Quantum Systems & Photonics</option>
+                                <option value="Ocean Engineering">Ocean & Marine Engineering</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="pDuration">Proposed Duration (Months) *</label>
+                            <input type="number" id="pDuration" class="form-control" value="36" min="6" max="60" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="pPIName">Principal Investigator (PI) *</label>
+                            <input type="text" id="pPIName" class="form-control" value="Prof. V. Raman" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="pInstitute">Host Institution *</label>
+                            <input type="text" id="pInstitute" class="form-control" value="National Center for Advanced Technology" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="pBudget">Total Budget Requested (₹ In Lakhs) *</label>
+                            <input type="number" id="pBudget" class="form-control" value="84.50" step="0.1" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="pCoPI">Co-Principal Investigator(s)</label>
+                            <input type="text" id="pCoPI" class="form-control" placeholder="Dr. S. K. Mahajan (Optional)">
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label for="pAbstract">Executive Technical Abstract & Methodology *</label>
+                            <textarea id="pAbstract" rows="5" class="form-control" placeholder="Detailed technical synopsis, scope, deliverables, and socio-economic benefits..." required></textarea>
+                        </div>
+
+                        <div class="form-group full-width checkbox-row">
+                            <input type="checkbox" id="pIPRCheck" required checked>
+                            <label for="pIPRCheck">
+                                <strong>Secure IPR Compliance:</strong> I certify that this proposal contains original research and does not infringe upon third-party patents or previously funded proposals.
+                            </label>
+                        </div>
+
+                        <div class="form-group full-width align-end">
+                            <button type="button" class="btn btn-secondary" id="btnRunPreCheck">Run Duplicate Check</button>
+                            <button type="submit" class="btn btn-primary">Transmit Final Proposal</button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+
+            <!-- =================== VIEW 4: SCRUTINY & PEER REVIEW =================== -->
+            <section id="view-scrutiny" class="module-view">
+                <div class="view-header">
+                    <div>
+                        <h2>Preliminary Scrutiny & Peer Review Station</h2>
+                        <p class="subtitle">Eligibility screening and external expert appraisals</p>
+                    </div>
+                </div>
+
+                <div class="data-table-container">
+                    <table class="data-table">
+                        <thead>
+                        <tr>
+                            <th>Proposal ID</th>
+                            <th>Project Title</th>
+                            <th>Principal Investigator</th>
+                            <th>Domain</th>
+                            <th>Budget</th>
+                            <th>Scrutiny Status</th>
+                            <th>Review Score</th>
+                            <th>Action</th>
+                        </tr>
+                        </thead>
+                        <tbody id="scrutinyTableBody"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- =================== VIEW 5: TEC EVALUATION =================== -->
+            <section id="view-tec" class="module-view">
+                <div class="view-header">
+                    <div>
+                        <h2>Technical Evaluation Committee (TEC) Apex Board</h2>
+                        <p class="subtitle">Committee appraisals, oral defense records, and sanction recommendations</p>
+                    </div>
+                    <button class="btn btn-primary" id="btnScheduleTEC">+ Convene TEC Meeting</button>
+                </div>
+
+                <div class="data-table-container">
+                    <table class="data-table">
+                        <thead>
+                        <tr>
+                            <th>Meeting ID</th>
+                            <th>Proposal Reference</th>
+                            <th>PI Name</th>
+                            <th>Presentation Date</th>
+                            <th>Board Decision</th>
+                            <th>Approved Ceiling</th>
+                            <th>Action</th>
+                        </tr>
+                        </thead>
+                        <tbody id="tecTableBody"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- =================== VIEW 6: FINANCIAL SANCTION & RELEASE =================== -->
+            <section id="view-sanction" class="module-view">
+                <div class="view-header">
+                    <div>
+                        <h2>Financial Sanction & Tranche Release Engine</h2>
+                        <p class="subtitle">Cryptographic sanction order formulation, UC/SE validation, and electronic fund transfers</p>
+                    </div>
+                    <button class="btn btn-primary" id="btnBatchSanction">Generate Sanction Orders</button>
+                </div>
+
+                <div class="data-table-container">
+                    <table class="data-table">
+                        <thead>
+                        <tr>
+                            <th>Sanction Order #</th>
+                            <th>Proposal ID</th>
+                            <th>Grantee Institute</th>
+                            <th>Year-1 Capital</th>
+                            <th>Year-1 General</th>
+                            <th>Total Grant</th>
+                            <th>Disbursal Status</th>
+                            <th>Order Voucher</th>
+                        </tr>
+                        </thead>
+                        <tbody id="sanctionTableBody"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- =================== VIEW 7: DUPLICATE PROPOSAL TRACKER =================== -->
+            <section id="view-duplicate" class="module-view">
+                <div class="view-header">
+                    <div>
+                        <h2>Duplicate Proposals & Plagiarism Engine</h2>
+                        <p class="subtitle">N-gram semantic vector comparison to prevent dual funding across federal repositories</p>
+                    </div>
+                </div>
+
+                <div class="panel">
+                    <div class="duplicate-test-box">
+                        <label>Enter Proposal Abstract or Title to Cross-Scan System Repositories:</label>
+                        <textarea id="duplicateScanInput" class="form-control" rows="3" placeholder="Paste abstract or keywords here..."></textarea>
+                        <div class="action-row margin-top-20">
+                            <button class="btn btn-primary" id="btnScanDuplicate">Scan 1,482 Historical Repositories</button>
+                        </div>
+                    </div>
+
+                    <div class="scan-results-box" id="duplicateResultsBox">
+                        <p class="text-muted">Repository index ready. Run scan to inspect similarity indices.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- =================== VIEW 8: PROJECT MONITORING & CLOSURE =================== -->
+            <section id="view-monitoring" class="module-view">
+                <div class="view-header">
+                    <div>
+                        <h2>Project Monitoring, UC/SE & Final Closure</h2>
+                        <p class="subtitle">Annual progress reporting, milestone verification, and asset transfer</p>
+                    </div>
+                </div>
+
+                <div class="data-table-container">
+                    <table class="data-table">
+                        <thead>
+                        <tr>
+                            <th>Project ID</th>
+                            <th>Project Title</th>
+                            <th>Tenure</th>
+                            <th>Milestones</th>
+                            <th>UC / SE Status</th>
+                            <th>IPR / Patents</th>
+                            <th>Closure Clearance</th>
+                        </tr>
+                        </thead>
+                        <tbody id="monitoringTableBody"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- =================== VIEW 9: STATISTICAL ANALYSIS & REPORTS =================== -->
+            <section id="view-reports" class="module-view">
+                <div class="view-header">
+                    <div>
+                        <h2>Statistical Analysis & Dynamic Reports</h2>
+                        <p class="subtitle">Multi-parameter queries and audit exports</p>
+                    </div>
+                </div>
+
+                <div class="panel">
+                    <div class="report-filter-bar">
+                        <div class="form-group">
+                            <label>Report Domain</label>
+                            <select id="reportDataset" class="form-control">
+                                <option value="proposals">All Project Proposals Master Registry</option>
+                                <option value="sanctions">Financial Sanctions & Disbursals</option>
+                                <option value="tec">TEC Committee Verdicts & Scoring</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Format</label>
+                            <select id="reportExportType" class="form-control">
+                                <option value="csv">Standard Comma Separated (.CSV)</option>
+                                <option value="json">Raw Data Structure (.JSON)</option>
+                            </select>
+                        </div>
+                        <div class="form-group align-end">
+                            <button class="btn btn-primary" id="btnRunExport">Generate & Download Report</button>
+                        </div>
+                    </div>
+                    <div class="report-preview-box" id="reportLivePreview">
+                        <p class="text-muted">Select dataset parameters above to generate dynamic output.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- =================== VIEW 10: COMMUNICATION HUB =================== -->
+            <section id="view-communications" class="module-view">
+                <div class="view-header">
+                    <div>
+                        <h2>Encrypted Communication System</h2>
+                        <p class="subtitle">Direct, paperless dialogue between Principal Investigators, Reviewers, and Secretariat</p>
+                    </div>
+                    <button class="btn btn-primary" id="btnNewThread">+ New Direct Query</button>
+                </div>
+
+                <div class="comm-split-view">
+                    <div class="comm-thread-list" id="commThreadList"></div>
+                    <div class="comm-message-pane" id="commMessagePane">
+                        <div class="comm-placeholder">
+                            <p>Select a message thread from the left to view correspondence.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Live Notification Drawer -->
+    <div class="notification-drawer" id="notificationDrawer">
+        <div class="drawer-header">
+            <h4>Automated Alerts & Dispatch Gateway</h4>
+            <button class="close-btn" id="closeNotifDrawer">&times;</button>
+        </div>
+        <div class="notification-feed" id="notificationFeed"></div>
+    </div>
+
+    <!-- Generic Modal Window -->
+    <div class="modal-backdrop" id="modalBackdrop">
+        <div class="modal-window" id="modalWindow">
+            <div class="modal-header">
+                <h4 id="modalTitle">System Dialog</h4>
+                <button class="close-btn" id="closeModalBtn">&times;</button>
+            </div>
+            <div class="modal-body" id="modalBody"></div>
+        </div>
+    </div>
+
+    <!-- Cryptographic Sanction Toast -->
+    <div class="signature-toast" id="sigToast">
+        <div class="sig-icon">🛡️</div>
+        <div class="sig-details">
+            <strong id="sigSigner">Signed: National Sanctioning Authority</strong>
+            <span id="sigHash">SHA-256: 4b29c91f49e4905cf83d2c67b2d5d852a39219e8</span>
+        </div>
+    </div>
+</div>
+
+<!-- Modular Scripts Architecture -->
+<script src="js/e-PPMS_app_state.js"></script>
+<script src="js/e-PPMS_chart_engine.js"></script>
+<script src="js/e-PPMS_lifecycle_tracker.js"></script>
+<script src="js/e-PPMS_proposal_submission.js"></script>
+<script src="js/e-PPMS_scrutiny_review.js"></script>
+<script src="js/e-PPMS_tec_evaluation.js"></script>
+<script src="js/e-PPMS_financial_sanction.js"></script>
+<script src="js/e-PPMS_duplicate_detector.js"></script>
+<script src="js/e-PPMS_communication_hub.js"></script>
+<script src="js/e-PPMS_reports_analytics.js"></script>
+<script src="js/e-PPMS_main.js"></script>
+</body>
+</html>
