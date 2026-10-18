@@ -1,0 +1,115 @@
+/* Modal Backdrop & Dialog */
+.modal-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background-color: rgba(15, 23, 42, 0.6);
+    z-index: 100;
+    place-items: center;
+    padding: 20px;
+}
+
+.modal-backdrop.open {
+    display: grid;
+}
+
+.modal-window {
+    background: #ffffff;
+    border-radius: var(--border-radius-md);
+    width: 100%;
+    max-width: 650px;
+    box-shadow: var(--shadow-lg);
+    overflow: hidden;
+}
+
+.modal-header {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-body {
+    padding: 20px;
+    max-height: 75vh;
+    overflow-y: auto;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    font-size: 22px;
+    line-height: 1;
+    cursor: pointer;
+    color: var(--text-muted);
+}
+
+/* Notification Drawer */
+.notification-drawer {
+    position: fixed;
+    top: 0;
+    right: -380px;
+    width: 360px;
+    height: 100vh;
+    background: #ffffff;
+    box-shadow: var(--shadow-lg);
+    z-index: 90;
+    transition: right 0.3s ease-in-out;
+    display: flex;
+    flex-direction: column;
+}
+
+.notification-drawer.open {
+    right: 0;
+}
+
+.drawer-header {
+    padding: 16px;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.notification-feed {
+    padding: 16px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.notif-item {
+    padding: 10px;
+    border-left: 3px solid var(--primary-light);
+    background: #f8fafc;
+    border-radius: 0 var(--border-radius-sm) var(--border-radius-sm) 0;
+    font-size: 12px;
+}
+
+/* Digital Signature Verification Toast */
+.signature-toast {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: #0f172a;
+    color: #ffffff;
+    padding: 12px 18px;
+    border-radius: var(--border-radius-md);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: var(--shadow-lg);
+    transform: translateY(150%);
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    z-index: 120;
+}
+
+.signature-toast.visible {
+    transform: translateY(0);
+}
+
+.sig-icon { font-size: 20px; }
+.sig-details { display: flex; flex-direction: column; font-size: 11px; }
+.sig-details span { color: #94a3b8; font-family: monospace; font-size: 9px; }

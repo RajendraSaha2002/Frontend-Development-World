@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AURA e-HRMIS | Advanced Human Resource Management Information System</title>
+
+  <!-- Modular CSS Imports -->
+  <link rel="stylesheet" href="css/e-HRMIS_variables.css">
+  <link rel="stylesheet" href="css/e-HRMIS_base.css">
+  <link rel="stylesheet" href="css/e-HRMIS_layout.css">
+  <link rel="stylesheet" href="css/e-HRMIS_cards_stats.css">
+  <link rel="stylesheet" href="css/e-HRMIS_tables.css">
+  <link rel="stylesheet" href="css/e-HRMIS_charts.css">
+  <link rel="stylesheet" href="css/e-HRMIS_modules.css">
+  <link rel="stylesheet" href="css/e-HRMIS_modals.css">
+</head>
+<body data-theme="light">
+
+<div class="app-layout">
+  <!-- Top System Announcement Ribbon -->
+  <aside class="announcement-bar" role="region" aria-label="System Notice">
+    <div class="announcement-tag">URGENT NOTIFICATION</div>
+    <div class="marquee-track">
+        <span class="marquee-content" id="liveTicker">
+          Notice: Submission of Annual Property Returns and Income Tax Declarations ends on August 31st | Biometric synchronization for Shift-B is live | Transfer Board Cycle Q3 is now open for review.
+        </span>
+    </div>
+    <div class="announcement-actions">
+      <span class="pulse-indicator"></span> System: Operational (v4.8.2-PRO)
+    </div>
+  </aside>
+
+  <!-- Master Header -->
+  <header class="master-header">
+    <div class="header-brand">
+      <div class="brand-symbol">
+        <svg viewBox="0 0 32 32" width="28" height="28" fill="none">
+          <rect width="32" height="32" rx="6" fill="#1b4b8a"/>
+          <path d="M16 6L24 12V22L16 26L8 22V12L16 6Z" stroke="#ffffff" stroke-width="2" fill="#1e3a5f"/>
+          <circle cx="16" cy="16" r="4" fill="#38bdf8"/>
+        </svg>
+      </div>
+      <div class="brand-titles">
+        <h1>e-HRMIS</h1>
+        <span class="brand-sub">Enterprise Human Resource Information System</span>
+      </div>
+    </div>
+
+    <!-- Quick Role Switcher (Simulating Technical Role-Based Architecture) -->
+    <div class="header-controls">
+      <div class="role-selector-wrap">
+        <label for="userRoleSelector">Active Persona:</label>
+        <select id="userRoleSelector" class="form-control-sm">
+          <option value="admin">System Administrator (Govt/Apex)</option>
+          <option value="hrmanager" selected>HR Director / Section Officer</option>
+          <option value="depthead">Departmental Head (HOD)</option>
+          <option value="employee">Staff / Field Employee</option>
+        </select>
+      </div>
+
+      <!-- Notification Tray Toggle -->
+      <button class="icon-button" id="notifTrayBtn" title="SMS & Email Alerts">
+        <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" fill="none" stroke-width="2">
+          <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+          <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+        </svg>
+        <span class="badge-dot" id="unreadBadge"></span>
+      </button>
+
+      <div class="user-profile-badge">
+        <div class="avatar-circle">AD</div>
+        <div class="user-info">
+          <strong id="headerUserName">A. Devraj</strong>
+          <span id="headerUserRole">Joint Director (HR)</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="app-body">
+    <!-- Main Navigation Sidebar -->
+    <nav class="sidebar" aria-label="Main Navigation">
+      <ul class="nav-menu">
+        <li class="nav-item active" data-tab="dashboard">
+          <a href="#dashboard">
+            <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" fill="none" stroke-width="2">
+              <rect x="3" y="3" width="7" height="9"></rect>
+              <rect x="14" y="3" width="7" height="5"></rect>
+              <rect x="14" y="12" width="7" height="9"></rect>
+              <rect x="3" y="16" width="7" height="5"></rect>
+            </svg>
+            <span>Analytics Dashboard</span>
+          </a>
+        </li>
+        <li class="nav-item" data-tab="recruitment">
+          <a href="#recruitment">
+            <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" fill="none" stroke-width="2">
+              <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+              <circle cx="8.5" cy="7" r="4"></circle>
+              <line x1="20" y1="8" x2="20" y2="14"></line>
+              <line x1="23" y1="11" x2="17" y2="11"></line>
+            </svg>
+            <span>Recruitment Cell</span>
+          </a>
+        </li>
+        <li class="nav-item" data-tab="employee">
+          <a href="#employee">
+            <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" fill="none" stroke-width="2">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+              <circle cx="9" cy="7" r="4"></circle>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+            </svg>
+            <span>Employee Master</span>
+          </a>
+        </li>
+        <li class="nav-item" data-tab="attendance">
+          <a href="#attendance">
+            <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" fill="none" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+            <span>Biometric & Shifts</span>
+          </a>
+        </li>
+        <li class="nav-item" data-tab="leave">
+          <a href="#leave">
+            <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" fill="none" stroke-width="2">
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+              <line x1="16" y1="2" x2="16" y2="6"></line>
+              <line x1="8" y1="2" x2="8" y2="6"></line>
+              <line x1="3" y1="10" x2="21" y2="10"></line>
+            </svg>
+            <span>Leave Workflow</span>
+          </a>
+        </li>
+        <li class="nav-item" data-tab="transfer">
+          <a href="#transfer">
+            <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" fill="none" stroke-width="2">
+              <polyline points="17 1 21 5 17 9"></polyline>
+              <path d="M3 11V9a4 4 0 0 1 4-4h14"></path>
+              <polyline points="7 23 3 19 7 15"></polyline>
+              <path d="M21 13v2a4 4 0 0 1-4 4H3"></path>
+            </svg>
+            <span>Transfer & Posting</span>
+          </a>
+        </li>
+        <li class="nav-item" data-tab="payroll">
+          <a href="#payroll">
+            <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" fill="none" stroke-width="2">
+              <line x1="12" y1="1" x2="12" y2="23"></line>
+              <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+            </svg>
+            <span>Payroll & Pay Slips</span>
+          </a>
+        </li>
+        <li class="nav-item" data-tab="grievance">
+          <a href="#grievance">
+            <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" fill="none" stroke-width="2">
+              <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+              <line x1="12" y1="9" x2="12" y2="13"></line>
+              <line x1="12" y1="17" x2="12.01" y2="17"></line>
+            </svg>
+            <span>Grievance Tracking</span>
+          </a>
+        </li>
+        <li class="nav-item" data-tab="reports">
+          <a href="#reports">
+            <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" fill="none" stroke-width="2">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <polyline points="14 2 14 8 20 8"></polyline>
+              <line x1="16" y1="13" x2="8" y2="13"></line>
+              <line x1="16" y1="17" x2="8" y2="17"></line>
+            </svg>
+            <span>Dynamic Reports</span>
+          </a>
+        </li>
+      </ul>
+
+      <div class="sidebar-footer">
+        <div class="tech-stack-indicator">
+          <span class="badge-tech">J2EE N-Tier Standard</span>
+          <span class="badge-tech">Cloud-Ready</span>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main Workspace -->
+    <main class="main-content" id="workspace">
+
+      <!-- =================== VIEW 1: DASHBOARD =================== -->
+      <section id="view-dashboard" class="module-view active">
+        <div class="view-header">
+          <div>
+            <h2>Executive HR Analytics & Telemetry</h2>
+            <p class="subtitle">Unified real-time metrics across all regional directorates and cadres</p>
+          </div>
+          <div class="action-row">
+            <button class="btn btn-secondary" onclick="window.print()">
+              <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+              Print Summary
+            </button>
+            <button class="btn btn-primary" id="syncBioBtn">
+              <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="2"><path d="M23 4v6h-6"></path><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>
+              Sync Terminal Logs
+            </button>
+          </div>
+        </div>
+
+        <!-- Top Metric KPI Cards -->
+        <div class="metrics-grid">
+          <div class="metric-card border-top-blue">
+            <div class="metric-icon bg-light-blue">
+              <svg viewBox="0 0 24 24" width="22" height="22" stroke="#1e40af" fill="none" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle></svg>
+            </div>
+            <div class="metric-data">
+              <span class="metric-label">Total Active Cadre</span>
+              <h3 class="metric-value" id="kpiTotalEmployees">1,015</h3>
+              <span class="metric-sub text-success">↑ 2.4% vs last quarter</span>
+            </div>
+          </div>
+
+          <div class="metric-card border-top-emerald">
+            <div class="metric-icon bg-light-green">
+              <svg viewBox="0 0 24 24" width="22" height="22" stroke="#047857" fill="none" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+            </div>
+            <div class="metric-data">
+              <span class="metric-label">Today's Attendance Rate</span>
+              <h3 class="metric-value" id="kpiAttendanceRate">94.8%</h3>
+              <span class="metric-sub text-muted">962 logged via Biometric</span>
+            </div>
+          </div>
+
+          <div class="metric-card border-top-amber">
+            <div class="metric-icon bg-light-amber">
+              <svg viewBox="0 0 24 24" width="22" height="22" stroke="#b45309" fill="none" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+            </div>
+            <div class="metric-data">
+              <span class="metric-label">Leave & Absence</span>
+              <h3 class="metric-value" id="kpiLeavesToday">53</h3>
+              <span class="metric-sub text-warning">38 Casual, 15 Medical</span>
+            </div>
+          </div>
+
+          <div class="metric-card border-top-purple">
+            <div class="metric-icon bg-light-purple">
+              <svg viewBox="0 0 24 24" width="22" height="22" stroke="#6d28d9" fill="none" stroke-width="2"><polyline points="17 1 21 5 17 9"></polyline><path d="M3 11V9a4 4 0 0 1 4-4h14"></path><polyline points="7 23 3 19 7 15"></polyline><path d="M21 13v2a4 4 0 0 1-4 4H3"></path></svg>
+            </div>
+            <div class="metric-data">
+              <span class="metric-label">Transfers in Pipeline</span>
+              <h3 class="metric-value" id="kpiTransfersPending">14</h3>
+              <span class="metric-sub text-muted">6 awaiting Vigilance clearance</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Charts Row 1: Demographics and Cadre Composition (As specified in PDF) -->
+        <div class="charts-row">
+          <!-- Male vs Female Ratio Chart (Matching PDF: 411 Male (40.5%) vs 604 Female (59.5%)) -->
+          <div class="chart-panel">
+            <div class="chart-header">
+              <div>
+                <h4>Gender Representation Ratio</h4>
+                <small class="text-muted">Direct alignment with technical analytics</small>
+              </div>
+              <span class="badge badge-info">Cadre Breakdown</span>
+            </div>
+            <div class="chart-container ratio-visual-box">
+              <div class="svg-chart-wrapper" id="genderRatioChartContainer">
+                <!-- SVG Rendered by js/chart-engine.js -->
+              </div>
+              <div class="gender-stat-split">
+                <div class="gender-stat-item">
+                  <div class="stat-indicator male-bg"></div>
+                  <div>
+                    <strong>Male: 411</strong>
+                    <span>40.5%</span>
+                  </div>
+                </div>
+                <div class="gender-stat-item">
+                  <div class="stat-indicator female-bg"></div>
+                  <div>
+                    <strong>Female: 604</strong>
+                    <span>59.5%</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Contractual vs Permanent Ratio Chart (Donut) -->
+          <div class="chart-panel">
+            <div class="chart-header">
+              <div>
+                <h4>Contractual vs Permanent Cadre</h4>
+                <small class="text-muted">Tenure classifications</small>
+              </div>
+            </div>
+            <div class="chart-container">
+              <div class="svg-chart-wrapper" id="contractDonutChartContainer"></div>
+              <div class="chart-legend" id="contractLegend"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Charts Row 2: Manpower Cost & Attendance Trends -->
+        <div class="charts-row">
+          <!-- Multi-Year Man-Power Cost Trend (Bar Chart matching PDF structure) -->
+          <div class="chart-panel">
+            <div class="chart-header">
+              <div>
+                <h4>Man-Power Cost Expenditure Trend (₹ In Millions)</h4>
+                <small class="text-muted">Audit-verified annual payroll costs</small>
+              </div>
+            </div>
+            <div class="chart-container">
+              <div class="svg-chart-wrapper" id="manpowerCostChartContainer"></div>
+            </div>
+          </div>
+
+          <!-- Live Biometric Terminal Status Widget -->
+          <div class="chart-panel">
+            <div class="chart-header">
+              <div>
+                <h4>Connected Terminal Status</h4>
+                <small class="text-muted">Multi-site biometric IoT gateway</small>
+              </div>
+              <span class="badge badge-success">8 Online</span>
+            </div>
+            <div class="terminal-list" id="terminalListContainer">
+              <!-- Dynamically Populated -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Module Navigation Shortcuts (As in PDF Modules section) -->
+        <div class="modules-overview-grid">
+          <div class="module-card" onclick="appRouter.navigate('recruitment')">
+            <div class="mod-icon">📋</div>
+            <h5>Recruitment</h5>
+            <p>Requisitions, screening, entrance scores & applicant workflows.</p>
+          </div>
+          <div class="module-card" onclick="appRouter.navigate('employee')">
+            <div class="mod-icon">👤</div>
+            <h5>Employee Info</h5>
+            <p>Complete computerized dossiers, Service Books, and records.</p>
+          </div>
+          <div class="module-card" onclick="appRouter.navigate('attendance')">
+            <div class="mod-icon">🕒</div>
+            <h5>Attendance</h5>
+            <p>Real-time terminal polling, shift rotas & late compensation.</p>
+          </div>
+          <div class="module-card" onclick="appRouter.navigate('leave')">
+            <div class="mod-icon">🏖️</div>
+            <h5>Leave Master</h5>
+            <p>Multi-tier approval hierarchy, earned & medical encashment.</p>
+          </div>
+          <div class="module-card" onclick="appRouter.navigate('transfer')">
+            <div class="mod-icon">🔄</div>
+            <h5>Transfers</h5>
+            <p>Zonal transfer orders, digital relieving & joining reports.</p>
+          </div>
+          <div class="module-card" onclick="appRouter.navigate('payroll')">
+            <div class="mod-icon">💰</div>
+            <h5>Payroll Engine</h5>
+            <p>Automatic allowances, deductions, GPF/NPS & digital pay slips.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- =================== VIEW 2: RECRUITMENT CELL =================== -->
+      <section id="view-recruitment" class="module-view">
+        <div class="view-header">
+          <div>
+            <h2>Recruitment & Talent Acquisition Portal</h2>
+            <p class="subtitle">Cadre vacancies, applicant scores, and multi-round selection</p>
+          </div>
+          <button class="btn btn-primary" id="openNewJobModalBtn">
+            + Post New Requisition
+          </button>
+        </div>
+
+        <div class="recruitment-pipeline-board">
+          <div class="pipeline-column">
+            <div class="pipeline-header">
+              <span>Screening (72)</span>
+            </div>
+            <div class="pipeline-cards" id="pipeScreening"></div>
+          </div>
+
+          <div class="pipeline-column">
+            <div class="pipeline-header">
+              <span>Written / Technical Evaluation (28)</span>
+            </div>
+            <div class="pipeline-cards" id="pipeTechnical"></div>
+          </div>
+
+          <div class="pipeline-column">
+            <div class="pipeline-header">
+              <span>Board Interview (9)</span>
+            </div>
+            <div class="pipeline-cards" id="pipeInterview"></div>
+          </div>
+
+          <div class="pipeline-column">
+            <div class="pipeline-header">
+              <span>Final Clearance / Offer (4)</span>
+            </div>
+            <div class="pipeline-cards" id="pipeOffered"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =================== VIEW 3: EMPLOYEE MASTER =================== -->
+      <section id="view-employee" class="module-view">
+        <div class="view-header">
+          <div>
+            <h2>Employee Master Directory</h2>
+            <p class="subtitle">Complete Electronic Service Register (e-SR) and records</p>
+          </div>
+          <div class="action-row">
+            <input type="text" id="employeeSearchInput" class="form-control" placeholder="Search by PIN, Name, Division...">
+            <select id="empCadreFilter" class="form-control">
+              <option value="ALL">All Cadres</option>
+              <option value="Permanent">Permanent</option>
+              <option value="Contractual">Contractual</option>
+              <option value="Deputation">Deputation</option>
+            </select>
+            <button class="btn btn-primary" id="addNewEmployeeBtn">+ Register Officer</button>
+          </div>
+        </div>
+
+        <div class="data-table-container">
+          <table class="data-table" id="employeeTable">
+            <thead>
+            <tr>
+              <th>PIN / Photo</th>
+              <th>Employee Name</th>
+              <th>Cadre / Designation</th>
+              <th>Department / Zone</th>
+              <th>Status</th>
+              <th>Tenure</th>
+              <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody id="employeeTableBody">
+            <!-- Dynamically populated -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- =================== VIEW 4: ATTENDANCE & BIOMETRIC =================== -->
+      <section id="view-attendance" class="module-view">
+        <div class="view-header">
+          <div>
+            <h2>Attendance & Biometric Polling Station</h2>
+            <p class="subtitle">Hardware terminal logs, geo-location clock-ins, shift adjustments</p>
+          </div>
+          <div class="action-row">
+            <button class="btn btn-secondary" id="simulateTerminalPunch">Simulate Terminal Punch</button>
+            <button class="btn btn-primary" id="exportAttendanceLogBtn">Export Audit Log</button>
+          </div>
+        </div>
+
+        <div class="grid-2-col">
+          <div class="panel">
+            <h4>Live Terminal Stream (TCP/IP Port 4370)</h4>
+            <div class="terminal-raw-log" id="terminalRawConsole"></div>
+          </div>
+
+          <div class="panel">
+            <h4>Shift Overview Today</h4>
+            <div class="shift-stats-list">
+              <div class="shift-item">
+                <span>General Administrative Shift (09:00 - 17:30)</span>
+                <strong>842 Present / 21 Late</strong>
+              </div>
+              <div class="shift-item">
+                <span>Technical Shift A (06:00 - 14:30)</span>
+                <strong>94 Present / 2 Late</strong>
+              </div>
+              <div class="shift-item">
+                <span>Technical Shift B (14:00 - 22:30)</span>
+                <strong>26 Present / 0 Late</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =================== VIEW 5: LEAVE WORKFLOW =================== -->
+      <section id="view-leave" class="module-view">
+        <div class="view-header">
+          <div>
+            <h2>Leave Information & Processing Workflow</h2>
+            <p class="subtitle">Automated leave balances, statutory medical sheets, sanction requests</p>
+          </div>
+          <button class="btn btn-primary" id="btnApplyLeaveModal">+ Apply For Leave</button>
+        </div>
+
+        <div class="leave-quota-cards">
+          <div class="quota-pill">
+            <span class="quota-num" id="quotaEL">28</span>
+            <span class="quota-type">Earned Leave (EL)</span>
+          </div>
+          <div class="quota-pill">
+            <span class="quota-num" id="quotaCL">8</span>
+            <span class="quota-type">Casual Leave (CL)</span>
+          </div>
+          <div class="quota-pill">
+            <span class="quota-num" id="quotaML">16</span>
+            <span class="quota-type">Half-Pay / Medical</span>
+          </div>
+          <div class="quota-pill">
+            <span class="quota-num" id="quotaRH">2</span>
+            <span class="quota-type">Restricted Holiday</span>
+          </div>
+        </div>
+
+        <div class="data-table-container margin-top-20">
+          <h4>Pending Sanction Queue</h4>
+          <table class="data-table">
+            <thead>
+            <tr>
+              <th>Request ID</th>
+              <th>Applicant</th>
+              <th>Leave Type</th>
+              <th>Period</th>
+              <th>Days</th>
+              <th>Reason</th>
+              <th>Recommendation</th>
+            </tr>
+            </thead>
+            <tbody id="leaveRequestsTbody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- =================== VIEW 6: TRANSFER & POSTING =================== -->
+      <section id="view-transfer" class="module-view">
+        <div class="view-header">
+          <div>
+            <h2>Transfer & Relieving Order Management</h2>
+            <p class="subtitle">Inter-departmental movement, rotational postings, digital signing</p>
+          </div>
+          <button class="btn btn-primary" id="btnInitiateTransfer">+ Draft Transfer Order</button>
+        </div>
+
+        <div class="data-table-container">
+          <table class="data-table">
+            <thead>
+            <tr>
+              <th>Order #</th>
+              <th>Employee</th>
+              <th>Current Station</th>
+              <th>Target Station</th>
+              <th>Effective Date</th>
+              <th>Approval State</th>
+              <th>Digital Sign</th>
+            </tr>
+            </thead>
+            <tbody id="transferOrdersTbody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- =================== VIEW 7: PAYROLL & PAYSLIPS =================== -->
+      <section id="view-payroll" class="module-view">
+        <div class="view-header">
+          <div>
+            <h2>Payroll Calculation & Pay Slip Engine</h2>
+            <p class="subtitle">Automatic calculation from performance, attendance, DA, HRA, and tax</p>
+          </div>
+          <div class="action-row">
+            <button class="btn btn-secondary" id="btnBatchCalculate">Batch Calculate Month</button>
+            <button class="btn btn-primary" id="btnDisbursePayroll">Lock & Authorize Disbursal</button>
+          </div>
+        </div>
+
+        <div class="data-table-container">
+          <table class="data-table">
+            <thead>
+            <tr>
+              <th>PIN</th>
+              <th>Officer Name</th>
+              <th>Basic Pay</th>
+              <th>DA (50%)</th>
+              <th>HRA</th>
+              <th>Gross Pay</th>
+              <th>Deductions</th>
+              <th>Net Disbursed</th>
+              <th>Slip</th>
+            </tr>
+            </thead>
+            <tbody id="payrollTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- =================== VIEW 8: GRIEVANCE TRACKING =================== -->
+      <section id="view-grievance" class="module-view">
+        <div class="view-header">
+          <div>
+            <h2>Employee Grievance Redressal & Tracking</h2>
+            <p class="subtitle">Confidential escalation matrix, internal inquiry boards, timelines</p>
+          </div>
+          <button class="btn btn-primary" id="btnOpenGrievanceModal">+ File Redressal Appeal</button>
+        </div>
+
+        <div class="data-table-container">
+          <table class="data-table">
+            <thead>
+            <tr>
+              <th>Ticket #</th>
+              <th>Complainant</th>
+              <th>Category</th>
+              <th>Filing Date</th>
+              <th>Appointed Officer</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+            </thead>
+            <tbody id="grievanceTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- =================== VIEW 9: DYNAMIC REPORTS =================== -->
+      <section id="view-reports" class="module-view">
+        <div class="view-header">
+          <div>
+            <h2>Dynamic Report Generator & Export</h2>
+            <p class="subtitle">Configurable parameter extracts across transactions</p>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="report-filter-bar">
+            <div class="form-group">
+              <label>Report Type</label>
+              <select id="reportDomain" class="form-control">
+                <option value="attendance">Biometric Attendance Log</option>
+                <option value="payroll">Monthly Salary Summary</option>
+                <option value="cadre">Cadre Strength & Vacancies</option>
+                <option value="transfers">Annual Transfers Roster</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Format</label>
+              <select id="reportFormat" class="form-control">
+                <option value="csv">Comma Separated Values (.CSV)</option>
+                <option value="print">Standard Printable Roster</option>
+              </select>
+            </div>
+            <div class="form-group align-end">
+              <button class="btn btn-primary" id="btnExecuteReport">Generate Dynamic Report</button>
+            </div>
+          </div>
+          <div class="report-preview-box" id="reportPreviewArea">
+            <p class="text-muted">Select criteria above and click generate to query transactional store.</p>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Live Notification Drawer (SMS & Email System Alert Simulation) -->
+  <div class="notification-drawer" id="notificationDrawer">
+    <div class="drawer-header">
+      <h4>System Messages, SMS & Mail Gateway</h4>
+      <button class="close-btn" id="closeNotifDrawer">&times;</button>
+    </div>
+    <div class="notification-feed" id="notificationFeed">
+      <!-- Dynamically rendered alerts -->
+    </div>
+  </div>
+
+  <!-- Generic Modal Container -->
+  <div class="modal-backdrop" id="modalBackdrop">
+    <div class="modal-window" id="modalWindow">
+      <div class="modal-header">
+        <h4 id="modalTitle">System Dialog</h4>
+        <button class="close-btn" id="closeModalBtn">&times;</button>
+      </div>
+      <div class="modal-body" id="modalBody"></div>
+    </div>
+  </div>
+
+  <!-- Digital Signature Verification Toast -->
+  <div class="signature-toast" id="sigToast">
+    <div class="sig-icon">🔒</div>
+    <div class="sig-details">
+      <strong id="sigSigner">Signed by: A. Devraj, Joint Director</strong>
+      <span id="sigHash">SHA256: 7f83b1657ff1fc53b92dc18148a1d65dfc2d4b1fa3d677284addd200126d9069</span>
+    </div>
+  </div>
+</div>
+
+<!-- Modular Scripts Architecture -->
+<script src="js/e-HRMIS_app-state.js"></script>
+<script src="js/e-HRMIS_chart-engine.js"></script>
+<script src="js/e-HRMIS_attendance-module.js"></script>
+<script src="js/e-HRMIS_employee_module.js"></script>
+<script src="js/e-HRMIS_recruitment_module.js"></script>
+<script src="js/e-HRMIS_transfer_module.js"></script>
+<script src="js/e-HRMIS_payroll_module.js"></script>
+<script src="js/e-HRMIS_reports_module.js"></script>
+<script src="js/e-HRMIS_notifications.js"></script>
+<script src="js/e-HRMIS_main.js"></script>
+</body>
+</html>
