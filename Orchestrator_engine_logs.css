@@ -1,0 +1,30 @@
+#terminal-view {
+    flex: 1;
+    background: #080a0f;
+    padding: 16px;
+    overflow-y: auto;
+    font-family: "Consolas", "Courier New", monospace;
+    font-size: 12px;
+    line-height: 1.5;
+    color: #a5b4fc;
+}
+
+.log-entry {
+    display: flex;
+    gap: 8px;
+    word-break: break-all;
+    margin-bottom: 2px;
+}
+
+.log-stream {
+    color: var(--text-secondary);
+    user-select: none;
+}
+
+.log-stream.STDERR {
+    color: var(--color-failed);
+}
+
+.log-stream.SYSTEM {
+    color: var(--color-running);
+}

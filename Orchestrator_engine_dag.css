@@ -1,0 +1,43 @@
+#svg-viewport {
+    flex: 1;
+    position: relative;
+    background: radial-gradient(circle, #1a2233 1px, transparent 1px);
+    background-size: 24px 24px;
+}
+
+.dag-node {
+    cursor: pointer;
+}
+
+.dag-node rect {
+    fill: var(--bg-surface);
+    stroke: var(--status-color, var(--color-blocked));
+    stroke-width: 2px;
+    rx: 6px;
+    transition: stroke 0.3s, filter 0.3s;
+}
+
+.dag-node:hover rect {
+    filter: drop-shadow(0 0 6px var(--status-color));
+}
+
+.dag-node text {
+    fill: var(--text-primary);
+    font-family: monospace;
+    font-size: 12px;
+    pointer-events: none;
+}
+
+.dag-edge {
+    stroke: var(--border-color);
+    stroke-width: 2px;
+    fill: none;
+    stroke-dasharray: 4;
+    animation: dash 1s linear infinite;
+}
+
+@keyframes dash {
+    to {
+        stroke-dashoffset: -8;
+    }
+}
